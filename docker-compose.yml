@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  english-listening:
+    build: .
+    container_name: english-listening-practice
+    ports:
+      - "8888:80"
+    restart: unless-stopped
+    # 如果需要持久化或动态更新内容，取消下面的注释
+    # volumes:
+    #   - ./index.html:/usr/share/nginx/html/index.html:ro
+    #   - ./app_audio.js:/usr/share/nginx/html/app_audio.js:ro
+    #   - ./sentences_data.json:/usr/share/nginx/html/sentences_data.json:ro
+    #   - ./audio:/usr/share/nginx/html/audio:ro
+    environment:
+      - TZ=Asia/Shanghai
+    labels:
+      - "com.example.description=英语900句听力练习网站"
+      - "com.example.version=3.0"

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语词汇量测试 - 牛津标准分级</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh; display:flex; align-items:center; justify-content:center;
+  padding: 20px;
+}
+.container {
+  background: #fff; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  width: 100%; max-width: 640px; padding: 40px; position: relative; overflow: hidden;
+}
+.screen { display: none; }
+.screen.active { display: block; }
+h1 { font-size: 26px; color: #333; margin-bottom: 8px; text-align: center; }
+.subtitle { color: #888; font-size: 14px; text-align: center; margin-bottom: 30px; }
+.info-box {
+  background: #f0f4ff; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;
+  font-size: 14px; color: #555; line-height: 1.8;
+}
+.info-box strong { color: #4a5acd; }
+.option-group { margin-bottom: 24px; }
+.option-label { font-size: 14px; color: #666; margin-bottom: 10px; display: block; font-weight: 500; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.opt-btn {
+  padding: 10px 20px; border-radius: 10px; border: 2px solid #e0e0e0; background: #fff;
+  font-size: 14px; cursor: pointer; transition: all 0.2s; color: #555;
+}
+.opt-btn:hover { border-color: #667eea; color: #667eea; }
+.opt-btn.selected { border-color: #667eea; background: #667eea; color: #fff; }
+.primary-btn {
+  width: 100%; padding: 16px; border-radius: 12px; border: none;
+  background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+  font-size: 17px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+}
+.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+.progress-bar { height: 6px; background: #eee; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 3px; transition: width 0.3s ease; }
+.progress-text { font-size: 13px; color: #999; margin-bottom: 20px; text-align: center; }
+.word-card {
+  text-align: center; padding: 40px 20px; margin-bottom: 30px;
+  background: #fafbff; border-radius: 16px; border: 1px solid #eee;
+}
+.word-display { font-size: 42px; font-weight: 700; color: #333; margin-bottom: 12px; letter-spacing: 1px; word-break: break-all; }
+.level-badge {
+  display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 13px;
+  font-weight: 600; margin-top: 8px;
+}
+.level-A1 { background: #e8f5e9; color: #2e7d32; }
+.level-A2 { background: #e3f2fd; color: #1565c0; }
+.level-B1 { background: #fff3e0; color: #e65100; }
+.level-B2 { background: #fce4ec; color: #c62828; }
+.level-C1 { background: #ede7f6; color: #4527a0; }
+.level-C2 { background: #263238; color: #ffd54f; }
+.answer-btns { display: flex; gap: 16px; }
+.answer-btn {
+  flex: 1; padding: 18px; border-radius: 14px; border: 2px solid transparent;
+  font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-know { background: #e8f5e9; color: #2e7d32; }
+.btn-know:hover { background: #2e7d32; color: #fff; transform: translateY(-2px); }
+.btn-unknown { background: #ffebee; color: #c62828; }
+.btn-unknown:hover { background: #c62828; color: #fff; transform: translateY(-2px); }
+.result-header { text-align: center; margin-bottom: 24px; }
+.vocab-number { font-size: 52px; font-weight: 800; color: #667eea; }
+.vocab-label { font-size: 14px; color: #888; margin-top: 4px; }
+.cefr-badge {
+  display: inline-block; padding: 8px 24px; border-radius: 30px; font-size: 20px;
+  font-weight: 700; margin-top: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+}
+.mastery-section { margin: 24px 0; }
+.mastery-title { font-size: 15px; font-weight: 600; color: #444; margin-bottom: 14px; }
+.mastery-row { display: flex; align-items: center; margin-bottom: 10px; }
+.mastery-label { width: 36px; font-size: 13px; font-weight: 600; color: #666; }
+.mastery-bar { flex: 1; height: 22px; background: #f0f0f0; border-radius: 11px; overflow: hidden; margin: 0 10px; }
+.mastery-fill { height: 100%; border-radius: 11px; transition: width 0.6s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; color: #fff; font-weight: 600; min-width: 0; }
+.mastery-pct { width: 42px; font-size: 13px; color: #666; text-align: right; }
+.advice-box {
+  background: #fffde7; border-radius: 12px; padding: 16px 20px; margin: 20px 0;
+  font-size: 14px; color: #555; line-height: 1.8; border-left: 4px solid #ffd54f;
+}
+.review-section { margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid #eee; border-radius: 12px; padding: 16px; }
+.review-title { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 10px; }
+.review-word { display: inline-block; margin: 3px 4px; padding: 3px 10px; border-radius: 6px; font-size: 13px; }
+.review-known { background: #e8f5e9; color: #2e7d32; }
+.review-unknown { background: #ffebee; color: #c62828; text-decoration: line-through; }
+.stats-row { display: flex; justify-content: center; gap: 30px; margin: 16px 0; }
+.stat-item { text-align: center; }
+.stat-num { font-size: 24px; font-weight: 700; color: #444; }
+.stat-label { font-size: 12px; color: #999; margin-top: 2px; }
+.footer-note { text-align: center; font-size: 12px; color: #bbb; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="screen active" id="screen-start">
+    <h1>英语词汇量测试</h1>
+    <p class="subtitle">基于牛津 3000/5000 · CEFR 分级标准</p>
+    <div class="info-box">
+      <strong>测试说明：</strong><br>
+      系统将展示从 A1（入门）到 C2（精通）六个级别的英语单词，请根据你是否认识该单词作答。<br>
+      测试结束后，系统将根据各级别的掌握率估算你的词汇量，并给出对应 CEFR 等级与学习建议。
+    </div>
+    <div class="option-group">
+      <span class="option-label">选择题目数量：</span>
+      <div class="btn-row" id="num-options">
+        <button class="opt-btn" data-num="24">24 题（快速）</button>
+        <button class="opt-btn selected" data-num="36">36 题（标准）</button>
+        <button class="opt-btn" data-num="48">48 题（详细）</button>
+        <button class="opt-btn" data-num="60">60 题（全面）</button>
+      </div>
+    </div>
+    <button class="primary-btn" onclick="startTest()">开始测试</button>
+    <div class="footer-note">内置词库：3373 词 · A1-C2 六级覆盖 · 离线可用</div>
+  </div>
+
+  <div class="screen" id="screen-test">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-text" id="progress-text"></div>
+    <div class="word-card">
+      <div class="word-display" id="word-display"></div>
+      <div><span class="level-badge" id="level-badge"></span></div>
+    </div>
+    <div class="answer-btns">
+      <button class="answer-btn btn-know" onclick="answer(true)">认识</button>
+      <button class="answer-btn btn-unknown" onclick="answer(false)">不认识</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="result-header">
+      <h1>测试结果</h1>
+      <div class="vocab-number" id="vocab-number"></div>
+      <div class="vocab-label">估算词汇量</div>
+      <div class="cefr-badge" id="cefr-badge"></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num" id="stat-total"></div><div class="stat-label">测试单词数</div></div>
+      <div class="stat-item"><div class="stat-num" id="stat-known"></div><div class="stat-label">认识</div></div>
+      <div class="stat-item"><div class="stat-num" id="stat-unknown"></div><div class="stat-label">不认识</div></div>
+    </div>
+    <div class="mastery-section">
+      <div class="mastery-title">各级别掌握率</div>
+      <div id="mastery-bars"></div>
+    </div>
+    <div class="advice-box" id="advice-box"></div>
+    <div class="review-section" id="review-section">
+      <div class="review-title">答题回顾</div>
+      <div id="review-words"></div>
+    </div>
+    <br>
+    <button class="primary-btn" onclick="resetTest()">重新测试</button>
+  </div>
+</div>
+
+<script>
+const VOCAB = {"A1":["an","the","and","or","but","if","because","so","then","am","is","are","was","were","be","been","being","have","has","had","do","does","did","can","could","will","would","should","may","might","must","you","he","she","it","we","they","me","him","her","us","them","my","your","his","its","our","their","this","that","these","who","what","where","when","why","how","which","here","there","now","yes","no","not","hello","goodbye","please","sorry","thank","name","age","boy","girl","man","woman","child","family","mother","father","brother","sister","friend","people","person","house","home","room","door","window","table","chair","bed","kitchen","bath","school","class","teacher","student","book","pen","paper","word","number","letter","time","day","month","today","tomorrow","yesterday","morning","afternoon","evening","night","food","water","bread","milk","egg","rice","meat","fish","fruit","banana","orange","vegetable","tea","coffee","sugar","salt","color","red","blue","green","black","white","pink","big","small","large","sad","angry","tired","hot","warm","new","old","young","come","go","walk","run","eat","drink","sleep","wake","see","look","watch","listen","talk","say","ask","answer","read","learn","study","play","work","live","love","like","want","need","help","open","start","stop","buy","pay","money","price","shop","store","city","town","country","street","road","car","bus","plane","boat","bike","weather","sun","rain","snow","wind","cloud","animal","dog","cat","bird","horse","cow","pig","tree","flower","body","nose","mouth","tooth","hair","leg","heart","music","song","game","sport","picture","photo","phone","computer","television","job","question","problem","idea","way","thing","place","part","lot","kind","nice","ugly","right","wrong","near","far","up","down","in","on","again"],"A2":["about","above","abroad","accept","accident","according","account","act","action","activity","actually","add","address","adult","advantage","advice","afraid","after","against","agreement","ahead","airport","alive","allow","almost","alone","along","already","also","although","always","among","amount","another","anybody","anyone","anything","anyway","anywhere","appear","apple","apply","area","argue","argument","arm","around","arrange","arrive","art","article","asleep","at","attack","attempt","attention","aunt","autumn","available","away","awful","background","back","bad","bag","ball","band","bank","base","basketball","bathroom","beach","bear","beat","beautiful","became","become","beer","before","begin","behalf","behave","behind","believe","below","belt","bench","best","better","between","bicycle","bill","bit","bite","bitter","blind","block","blood","blow","board","bone","born","borrow","both","bottle","bottom","bowl","box","brain","brave","breakfast","break","breathe","bridge","bright","bring","broken","build","building","burn","busy","business","butter","button","cake","call","camera","camp","candle","cap","capital","captain","card","care","careful","carry","case","catch","cause","celebrate","centre","century","certain","challenge","chance","change","charge","cheap","check","cheese","chemist","chicken","chief","choice","choose","church","cinema","circle","clean","clear","clever","climb","clock","close","clothes","club","coach","coast","coat","coin","cold","collect","college","common","company","compare","complete","concert","condition","consider","continue","control","cook","cool","corner","correct","cost","count","couple","course","cousin","cover","create","cross","crowd","cry","culture","cup","customer","cut","dance","danger","dark","date","daughter","dead","decide","decision","deep","degree","deliver","describe","desert","design","desk","detail","dictionary","die","difference","different","difficult","dinner","direction","dirty","discover","discussion","disease","dish","distance","doctor","dollar","double","draw","dream","dress","drive","drop","dry","duck","during","dust","duty","each","ear","early","earth","east","easy","economy","edge","education","effect","effort","either","electricity","element","else","empty","end","enemy","energy","engine","enjoy","enough","enter","environment","escape","especially","europe","even","ever","every","everybody","everyone","everything","exact","example","excellent","except","exchange","excited","exercise","expect","experience","expert","explain","express","extra","eye","face","fact","factory","fail","fair","fall","famous","fan","farm","farmer","fast","fat","favour","fear","feed","feel","few","field","fight","fill","film","final","find","finger","finish","fire","first","fit","five","fix","flag","flat","floor","fly","follow","foot","football","for","force","foreign","forest","forget","fork","form","forward","free","fresh","full","fun","funny","future","garden","gate","general","gentle","get","gift","give","glad","glass","glove","goal","gold","gone","good","government","grade","grand","grass","great","ground","group","grow","guard","guess","guest","guide","habit","half","hall","hand","handle","happen","happy","harbour","hard","hat","hate","head","health","hear","heat","heavy","height","hide","high","hill","history","hit","hold","hole","holiday","hope","hospital","hotel","hour","huge","human","hundred","hungry","hurry","hurt","husband","ice","ill","imagine","important","improve","inch","include","increase","indeed","industry","inside","instead","interest","into","introduce","invent","iron","island","issue","item","itself","jacket","jam","join","joke","journey","judge","juice","jump","just","keep","key","kick","kid","king","knee","knife","knock","know","ladder","lady","lake","lamp","land","last","late","laugh","law","lazy","lead","leaf","least","leave","left","length","lesson","let","level","library","lie","life","lift","light","line","lion","list","little","local","lock","long","lord","lose","loss","lost","loud","low","luck","machine","mad","magazine","main","make","manage","many","map","mark","market","marry","master","match","material","matter","maybe","meal","mean","measure","medicine","meet","member","memory","mend","mention","menu","message","metal","method","metre","middle","mile","mind","mine","minute","miss","mistake","mix","model","modern","moment","moon","more","most","mountain","mouse","move","much","nation","nature","neck","neighbour","never","news","newspaper","noise","none","north","note","nothing","notice","noun","nurse","object","ocean","offer","office","officer","oil","once","one","only","onto","opposite","option","order","other","out","outside","over","own","owner","page","pain","paint","pair","palace","pale","pan","park","partner","party","pass","past","path","patient","pattern","pencil","penny","perfect","period","perhaps","pet","pick","piece","pile","pipe","plan","plant","plastic","plate","pleasant","pleasure","plenty","pocket","poem","point","police","polite","pond","pool","poor","popular","position","possible","post","potato","pound","pour","power","present","president","press","pretty","prevent","prince","princess","print","prison","probably","produce","promise","proper","protect","proud","prove","provide","public","pull","punish","pupil","push","put","queen","quick","quiet","quite","race","radio","raise","range","reach","ready","real","really","reason","receive","record","reduce","refuse","regard","region","relation","remember","rent","repair","repeat","reply","report","rest","result","return","reward","rich","ride","ring","rise","rock","roll","roof","round","route","row","rubber","rude","rule","ruler","safe","sail","salad","sale","same","sand","save","scene","science","scissors","sea","search","season","seat","second","secret","seem","sell","send","sentence","separate","serious","serve","set","several","shake","shall","shape","share","sharp","sheet","shine","ship","shirt","shoe","shoot","short","shot","shoulder","shout","show","shut","sick","side","sight","sign","silence","silver","similar","simple","since","sing","sit","site","size","skill","skin","skirt","sky","slow","smell","smile","smoke","smooth","soft","some","someone","something","sometimes","son","soon","sort","sound","soup","south","space","speak","special","speed","spell","spend","spider","spoon","spring","square","stair","stand","star","station","stay","steal","steam","steel","step","stick","still","stone","storm","story","strange","strong","structure","stupid","subject","success","such","sudden","suggest","suit","summer","supper","supply","support","sure","surface","surprise","sweet","swim","take","taste","tax","teach","team","telephone","tell","tennis","tent","term","terrible","test","than","thick","thin","think","third","those","thought","thread","through","throw","thus","ticket","tidy","tie","tight","till","title","toe","together","toilet","tool","top","total","touch","tour","towards","tower","trade","train","travel","treat","trick","trip","trouble","trousers","truck","true","trust","truth","try","turn","twice","type","uncle","under","understand","unit","until","upon","upstairs","use","used","useful","user","usual","valley","value","variety","various","verb","very","victory","video","view","village","visit","voice","wait","wall","war","wash","waste","wave","weak","wear","web","website","wedding","week","weigh","welcome","well","west","wet","whale","wheel","whether","while","whole","whose","wide","wife","wild","win","wine","winter","wire","wise","wish","with","without","wolf","wonder","wood","wool","world","worry","worst","worth","write","year","yellow","yet","zero","zone"],"B1":["ability","absence","absent","academic","accent","achieve","achievement","acid","acquire","across","active","activist","actor","actress","adapt","addition","additional","adequate","adjust","administration","admire","admission","admit","advance","advanced","adventure","advertise","affair","affect","afford","alternative","altogether","ambition","ambulance","analyse","analysis","ancient","ankle","anniversary","announce","annual","anonymous","anticipate","anxiety","anxious","apparently","appeal","appearance","application","appoint","appointment","appreciate","approach","appropriate","approval","approve","approximately","artificial","aspect","assess","asset","assign","assist","assistance","assistant","associate","association","assume","atmosphere","attach","attitude","attract","attraction","attractive","audience","author","authority","automatic","avoid","award","aware","awareness","balance","ban","bar","bargain","basic","basis","battery","battle","behaviour","belong","bend","benefit","bet","birth","blame","blank","bond","boost","border","bore","boring","bound","branch","brand","brief","brilliant","budget","burden","bury","campaign","candidate","capable","capacity","capture","carbon","career","cast","catalogue","category","celebration","chain","charity","civil","cloth","clothing","combination","combine","comfortable","command","comment","commercial","commit","commitment","committee","communication","community","comparison","compete","competition","competitor","complain","complaint","complex","concentrate","concept","concern","conclude","conclusion","conduct","confidence","confident","confirm","conflict","confuse","confusion","connect","connection","conscious","consequence","conservative","considerable","consist","consistent","constant","consume","contact","contain","content","contest","context","contrast","contribute","contribution","convince","cope","copy","core","cotton","counter","cream","creative","crew","crime","criminal","crisis","criterion","critical","criticism","criticise","crop","cultural","currency","current","cycle","debate","debt","decade","decent","decline","decrease","dedicate","defeat","defend","define","definitely","definition","delay","delicate","delight","demand","democracy","demonstrate","deny","depart","depend","deposit","depress","depression","derive","deserve","designer","desire","desperate","despite","destroy","destruction","detect","device","devote","dialogue","differ","dig","digital","dimension","disappoint","disaster","discipline","discount","discrimination","dismiss","disorder","display","distant","distinct","distribute","distribution","district","disturb","diverse","division","divorce","domestic","dominate","draft","dramatic","drift","due","dump","duration","dynamic","eager","earn","edition","editor","educate","educated","effective","efficiency","efficient","election","electric","electrical","eliminate","elite","emotion","emotional","emphasis","emphasise","employ","employee","employer","employment","enable","encounter","encourage","enforce","engage","engineer","enormous","ensure","enterprise","enthusiasm","enthusiastic","entire","entirely","environmental","episode","equal","equally","equipment","error","essential","establish","estate","estimate","evaluate","event","evidence","evil","evolution","evolve","exam","examination","examine","exception","excitement","exclude","excuse","execute","exhibition","exist","existence","expand","expansion","expectation","expense","experiment","explanation","explode","explore","export","expose","expression","extend","extent","external","extraordinary","extreme","facility","factor","faculty","failure","faith","familiar","fashion","favourite","feature","federal","fee","fiction","fierce","figure","finance","financial","firm","flash","flavour","flesh","flight","flow","focus","fold","folk","forecast","formal","former","formula","fortune","found","foundation","frame","frequent","frequently","fuel","function","fundamental","fund","funeral","furniture","gallery","gap","gather","gear","gender","generation","generous","genius","genuine","gesture","global","glory","goods","govern","grab","graduate","grain","grant","grateful","guarantee","guidance","guilty","harm","healthy","hearing","heaven","heavily","heritage","highlight","highly","hire","historian","historic","hollow","holy","honest","honour","household","housing","humour","identity","ignore","illegal","illustrate","image","imagination","immediate","immediately","impact","implement","implication","imply","importance","impose","impression","impressive","incident","income","independent","indicate","individual","industrial","inevitable","infect","inflation","influence","inform","initial","initiative","inner","innocent","innovation","input","inquiry","inspection","inspire","install","instance","institute","institution","instruction","instrument","insurance","integrate","intellectual","intelligence","intend","intense","intention","interact","internal","international","interpret","interview","invest","investigation","investment","involve","isolate","joint","journal","joy","judgement","justice","keen","labour","lack","landscape","lane","launch","layer","leadership","league","lean","leap","legislation","leisure","lens","liberal","licence","lifestyle","likely","limit","limitation","link","lip","literary","literature","load","loan","logical","loyal","luxury","maintain","majority","management","manner","manufacture","margin","massive","mate","mathematics","maximum","mayor","meanwhile","mechanism","media","medical","medium","membership","mental","mentor","merely","military","minimum","minister","minor","mission","mixed","mobile","mode","moderate","modest","modify","monitor","mood","moral","moreover","motion","motivation","motor","mount","multiple","murder","muscle","museum","mutual","mystery","narrow","native","necessary","negotiate","negotiation","nerve","nervous","network","nevertheless","novel","nuclear","numerous","nutrition","objective","obligation","observation","observe","obstacle","obtain","obvious","occasion","occupy","odd","offence","offend","offensive","official","outcome","outer","output","overall","overcome","owe","pace","pack","package","panel","panic","participate","particular","partnership","passion","passive","patience","pause","payment","peace","penalty","perceive","percentage","perception","perform","performance","permanent","permit","personality","persuade","phase","phenomenon","philosophy","phrase","pilot","pitch","platform","plot","plus","poetry","pole","policy","polish","political","politician","politics","poll","pollution","population","pose","positive","possess","possibility","possibly","potential","poverty","powerful","practical","practice","praise","pray","prayer","precise","predict","prefer","preference","prepare","presence","preserve","pressure","presumably","previous","pride","primarily","primary","prime","principal","principle","prior","priority","privacy","procedure","proceed","process","producer","production","profession","professional","professor","profile","profit","program","progress","project","promote","prompt","proof","property","proposal","propose","prospect","protection","protest","provision","psychological","psychology","publication","publish","purchase","qualification","quality","quantity","quarter","quote","racial","radical","random","rank","rapid","rate","rather","raw","react","reaction","reality","realise","reasonable","recall","recover","recruit","reference","reflect","reform","register","regulate","regulation","reject","relate","relative","release","relief","religion","religious","reluctant","rely","remain","remarkable","remedy","remote","remove","replace","representation","republic","reputation","request","require","research","reserve","resident","resist","resolution","resource","respond","response","restore","restrict","reveal","review","revolution","rhythm","rival","role","root","rope","rough","roughly","rural","rush","sacrifice","salary","sample","satisfy","scale","scan","scare","scatter","schedule","scheme","scholar","scholarship","scope","screen","script","secondary","sector","secure","security","seek","select","selection","sensible","sensitive","sequence","session","settle","settlement","severe","shade","shadow","shift","shock","shore","shortage","significant","silly","slight","slip","smart","software","soil","solar","solid","solution","solve","soul","source","spare","specific","spirit","spiritual","split","spread","stable","staff","stare","statement","status","steady","steep","stiff","stimulate","stock","stomach","storage","strain","strategic","strategy","stream","stress","stretch","strict","strike","string","stroke","studio","style","submit","substantial","succeed","suffer","sufficient","suitable","sum","suppose","surround","survey","survive","suspect","sustain","switch","symbol","sympathy","tale","talent","tall","tank","tape","target","task","tear","technique","tender","tension","territory","terror","testimony","theme","theory","thorough","threat","tone","topic","tough","trace","track","tradition","traffic","trail","training","transfer","transform","transition","translate","transport","trap","treasure","trend","trial","triangle","triumph","troop","tune","tunnel","twist","ultimate","underground","undertake","uniform","union","unique","unite","universal","universe","unknown","upper","urban","urge","usage","utility","valid","variable","variation","vary","vast","vehicle","version","victim","violence","virtual","virtue","visible","vision","vital","volume","wage","wealth","weapon","welfare","western","whatever","widespread","willing","wisdom","witness","wooden","worker","workshop","worldwide","worship","wound","wrap","yard","yeah","yield"],"B2":["abandon","abnormal","abolish","abrupt","absorb","abstract","absurd","abundance","abuse","accelerate","accessible","accommodation","accompany","accomplish","accordance","accordingly","accountable","accumulate","accuracy","accusation","accuse","acknowledge","acquisition","activate","acute","addiction","adequately","adjustment","administrator","adolescent","adoption","advocate","aesthetic","aftermath","aggregate","allegation","allege","allocate","allowance","amateur","ambassador","amendment","amid","analogy","analyst","ancestor","anchor","animation","annoy","annually","apparatus","apparent","appetite","applaud","appliance","applicant","appreciation","apprentice","arbitration","archive","arouse","array","articulate","ascend","ascertain","aspiration","assassinate","assembly","assert","assertion","assessment","assortment","assure","astounding","astronomy","asylum","attain","attendance","attic","attire","attorney","attribute","auction","audible","audit","augment","authentic","authoritative","authorize","automate","autonomous","availability","avalanche","avenue","avert","aviation","avid","await","awkward","backbone","backup","bacterial","ballot","banner","barren","basement","basin","batch","beam","beneath","beneficiary","betray","beverage","bias","bid","billion","biography","biology","bishop","bizarre","bleak","blend","bless","bliss","blunt","blur","boast","bold","bolt","bonus","boom","bounce","boundary","bout","boycott","brace","bracket","brake","breach","breakdown","breadth","breed","brew","bribe","brick","brigade","brisk","brochure","broker","bronze","browse","bruise","brutal","bubble","buckle","buffet","bulk","bulletin","bump","bundle","bureaucratic","cabin","cable","cafeteria","canal","canvas","capability","cape","capitalism","caption","captive","cardinal","cargo","carpenter","carriage","carrier","cartoon","carve","cascade","casino","casual","casualty","cathedral","cattle","caution","cautious","cavity","cease","celebrity","cement","censor","census","cereal","ceremony","certificate","chalk","chamber","champion","championship","channel","chaos","chapter","characterize","charter","chase","cheat","cheerful","chef","chemical","chemistry","cheque","cherish","chest","childhood","chill","chip","chocolate","choir","choke","chord","chore","chorus","chronic","chronicle","chunk","cigarette","circuit","circular","circulate","circumstance","cite","citizen","citizenship","civic","civilian","civilization","claim","clarify","clarity","clash","classic","classical","classification","classify","clause","clay","clergy","clerk","click","client","cliff","climate","cling","clinic","clinical","clip","cloak","clone","closet","closure","clothe","cloudy","clown","clue","clumsy","cluster","clutch","coalition","coarse","code","coerce","coffin","cognitive","coherent","coil","coincide","coincidence","collaborate","collaboration","collapse","collar","colleague","collection","collective","collector","collide","collision","colonel","colonial","colony","colorful","column","columnist","combat","comedy","comet","comfort","comic","commander","commemorate","commence","commend","commentary","commentator","commerce","commission","commissioner","commodity","commonplace","commonwealth","communicate","communist","commute","compact","companion","comparable","comparative","compartment","compass","compassion","compel","compensate","compensation","competence","competent","compile","complement","completion","complexity","compliance","compliant","complicate","complicated","complication","comply","component","compose","composer","composite","composition","compound","comprehend","comprehensive","comprise","compromise","compulsory","compute","comrade","concede","conceive","concentration","conception","concession","concise","conclusive","concrete","condemn","condense","conditional","conductor","cone","confer","confess","confession","confide","confidential","configuration","confine","conform","confront","confrontation","congratulate","congregation","congress","conjunction","conquer","conquest","conscience","consciousness","consecutive","consent","consequent","consequently","conservation","conserve","considerably","considerate","consideration","consistency","console","consolidate","conspicuous","conspiracy","constellation","constituency","constitute","constitution","constitutional","constrain","constraint","construction","consultation","consumer","consumption","container","contemplate","contemporary","contempt","contend","continent","continual","continuity","contract","contradiction","contrary","contributor","controversial","controversy","convention","conventional","converge","conversation","conversion","convert","convey","convict","conviction","cooperate","cooperation","cooperative","coordinate","coordination","copper","copyright","cord","corporate","corporation","corps","corpse","correction","correlate","correspond","correspondence","correspondent","corridor","corrupt","corruption","costume","cottage","couch","cough","council","councillor","counsel","counteract","counterpart","countryside","county","coup","courage","courageous","court","courtesy","coverage","covert","coward","crack","cracker","cradle","craft","cram","crash","crawl","creation","creativity","creator","creature","credibility","credible","credit","creek","creep","crimson","cripple","crisp","crossing","crouch","crowded","crown","crucial","crude","cruel","cruise","cruiser","crumble","crush","crust","crystal","cube","cubic","cuisine","culminate","cultivate","cumbersome","cumulative","cunning","cupboard","curb","cure","curiosity","curl","curriculum","curse","cursor","curtain","curve","cushion","custody","custom","cute","cylinder"],"C1":["abolition","abide","abstain","academy","accentuate","accessibility","acclaim","acquaint","acquit","acrimonious","acumen","adaptation","adhere","adjacent","administer","admonish","adorn","adversarial","adversity","advocacy","aegis","affable","affiliation","affinity","affluence","affluent","aggravate","agitate","agnostic","agrarian","allegiance","alleviate","allude","alluring","aloof","altruistic","amalgamate","ambiguity","ambivalent","amenable","amenity","amnesty","analgesic","anarchy","anatomy","anecdote","animosity","annex","annihilate","annotate","anonymity","antagonism","antecedent","anthology","anthropologist","antiquated","apartheid","apathy","apex","appease","appraise","apprehend","approbation","aptitude","arbitrary","archipelago","arduous","ascendancy","aspersion","assail","assiduous","astute","attainment","audacious","auspicious","austere","authenticity","autonomy","avarice","aver","aversion","avuncular","axiomatic","bastion","belligerent","benevolent","bigotry","blatant","bolster","brevity","broach","brusque","cajole","callow","candor","captivate","catalyst","catharsis","caustic","censure","circumspect","clandestine","clemency","coalesce","collusion","complacent","concur","condone","confluence","conjecture","connoisseur","conscientious","consensus","contingent","corroborate","cosmopolitan","counterfeit","covet","credulous","cursory","cynicism","daunt","debase","debilitate","decadence","decipher","decorum","deference","deft","dejected","delineate","demeanor","deplete","deride","desolate","despotic","despondent","destitute","detrimental","devoid","dexterity","dichotomy","didactic","diffident","digress","dilapidated","dilemma","diligent","discordant","disseminate","dissonance","divergent","dogma","dubious","duplicity","eccentric","eclectic","efficacy","eloquent","elucidate","empathy","empirical","endemic","enigma","ephemeral","epitome","equanimity","equivocal","erratic","esoteric","euphemism","evade","evasive","exacerbate","exalt","exasperate","exemplary","exert","exonerate","expedient","explicit","extrapolate","extricate","exuberant","fabricate","facetious","facilitate","fallacy","fastidious","feasible","fervent","fidelity","flagrant","flippant","forbearance","foresight","fortuitous","frugal","futile","galvanize","garner","gratuitous","grievous","guile","gullible","hackneyed","harbinger","haughty","hedonist","heresy","hierarchy","hubris","hypocrisy","idiosyncrasy","impartial","impeccable","impede","implicit","impromptu","impunity","inadvertent","incisive","incongruous","indefatigable","indifference","indolent","inept","inexplicable","infallible","ingenious","inherent","inhibit","innate","innovate","insatiable","insidious","insight","intrepid","intrinsic","inundate","invoke","irascible","itinerary","judicious","jubilant","juxtapose","labyrinth","lament","latent","laudable","lethargy","lucid","ludicrous","magnanimous","meticulous","nefarious","nonchalant","nostalgic","notorious","nuanced","obsolete","oblivious","ominous","opulent","orthodox","paradox","pervasive","poignant","pragmatic","precarious","precursor","prevalent","pristine","profound","prolific","prudent","quandary","quaint","quintessential","rampant","rancor","rationale","reciprocal","redundant","resilient","reticent","reverent","rigorous","sagacious","salient","scrupulous","serene","skeptical","solemn","sparse","sporadic","stoic","stringent","sublime","succinct","superfluous","suppress","tangible","tenacious","tentative","transient","trivial","unprecedented","vehement","versatile","viable","vigilant","vindicate","virtuous","vociferous","volatile","wary","zealous"],"C2":["abstruse","acquiesce","alacrity","anodyne","apotheosis","asperity","bellicose","bombastic","cacophony","capricious","chicanery","cogent","commensurate","compendium","conciliatory","confluent","contrite","corpulent","deleterious","desultory","dilatory","disabuse","effervescent","efficacious","emollient","ersatz","euphony","exculpate","felicitous","florid","fulsome","garrulous","grandiloquent","harangue","iconoclast","immutable","inchoate","ineffable","intransigent","laconic","lugubrious","mellifluous","mercurial","nebulous","obfuscate","obsequious","obtuse","ostentatious","panacea","parsimonious","pedantic","pellucid","perfunctory","perspicacious","phlegmatic","placate","prattle","precocious","progeny","propitious","querulous","quixotic","recalcitrant","recondite","redolent","sardonic","sanguine","specious","spurious","stultify","sycophant","taciturn","tenuous","torpid","truculent","umbrage","usurp","vacillate","verbose","verisimilitude","vituperate","voluble","wonted","zealot","abscond","abstemious","accretion","adumbrate","aggrandize","animadversion","aplomb","apocryphal","arrogate","ascetic","astringent","atavistic","augury","bathos","beleaguered","bilk","blandishment","boorish","braggadocio","bromide","bucolic","bulwark","burlesque","cachet","calumny","caparison","carapace","catalpa","chagrin","chimera","churlish","cloying","coeval","cogitate","comely","comity","complaisant","conclave","concordance","condign","conflagration","confrere","connubial","contumely","corporeal","crepuscular","declivity","defalcate","defray","deign","demur","denouement","deracinate","derogate","desiccate","desuetude","detraction","diffidence","digitate","discomfit","disingenuous","dissemble","dithyramb","doggerel","doyen","draconian","dross","dubiety","dyspeptic","ebullience","edify","effete","effrontery","egotism","elan","elision","elocution","emetic","eminence","encomium","ennui","enervate","entreaty","ephemeris","epistolary","equable","eristic","errant","esprit","estrangement","etiolate","evanescent","excoriate","execrable","exigency","expatiate","expiate","expostulate","extant","extol","extraneous","fastuous","fatuous","feckless","fecund","feint","feral","fervid","festoon","fiasco","filibuster","finicky","flaunt","florilegium","flout","forbidding","frond","fulcrum","fuliginous","fulminate","furtive","gainsay","gamut","gaucherie","genuflect","gluttonous","grandiose","gratuity","halcyon","harrow","heinous","hermetic","hirsute","hyperbole","iconoclastic","ignominious","imbroglio","immolate","impecunious","imperious","impervious","impugn","inestimable","inimical","innocuous","insipid","insouciant","intractable","invective","jejune","jettison","juggernaut","lachrymose","lassitude","legerdemain","licentious","limpid","litany","loquacious","lucubration","maladroit","malapropism","maudlin","maverick","meander","mellifluent","mendacious","meretricious","mettle","milquetoast","minatory","misanthrope","modicum","moribund","mundane","myopic","narcissistic","nascent","naysayer","neophyte","noisome","noxious","obdurate","oblique","oblivion","obtrusive","odious","officious","oligarchy","onerous","opine","opulence","orotund","ossify","ostracize","palatable","pallid","palpable","paltry","panegyric","parable","paragon","pariah","paucity","pecuniary","pedagogue","pellmell","penchant","penury","peregrination","perfidious","peripatetic","pernicious","persiflage","pertinacious","pestilent","petulant","philistine","picayune","pillory","pithy","pittance","platitude","plethora","polymath","portentous","precipitous","preponderance","prescient","probity","proclivity","prodigal","profligate","prognosticate","prolix","propensity","prosaic","proviso","pugnacious","quiescent","raffish","ramification","rapacious","ratiocination","recidivism","redoubtable","refractory","remiss","renegade","reprehensible","repudiate","rescind","reprobate","resplendent","rhapsodize","riposte","rubicund","sacrilege","salubrious","saturnine","scintilla","scurrilous","sedulous","sententious","seraphic","sibilant","sinuous","sobriety","soliloquy","somnolent","sophistry","spartan","spleenful","squalid","stalwart","stolid","strident","subterfuge","suffuse","supercilious","surreptitious","tangential","temerity","tenable","tenebrous","tepid","tirade","toady","tortuous","tractable","transcend","trenchant","trite","turpitude","turgid","ultimatum","umbrageous","unctuous","unfeigned","unpropitious","unwonted","upbraid","usury","utopian","uxorious","vagary","vainglorious","vapid","variegated","venal","veracity","vestige","vex","vicarious","vicissitude","virulent","vitiate","vitriolic","vivacious","vocation","voluptuous","vouchsafe","waif","wan","wane","wily","winsome","wistful","wizened","xenophobia","yokel","zephyr","zenith"]};
+const LEVELS = ['A1','A2','B1','B2','C1','C2'];
+const LEVEL_COLORS = { A1:'#4caf50', A2:'#2196f3', B1:'#ff9800', B2:'#e91e63', C1:'#673ab7', C2:'#37474f' };
+const BAND_WIDTH = { A1:1000, A2:1000, B1:1000, B2:1000, C1:1000, C2:3000 };
+
+let testWords = [];
+let currentIndex = 0;
+let responses = [];
+let selectedNum = 36;
+
+document.querySelectorAll('#num-options .opt-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#num-options .opt-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedNum = parseInt(btn.dataset.num);
+  });
+});
+
+function shuffle(arr) {
+  let a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startTest() {
+  testWords = generateQuestions(selectedNum);
+  currentIndex = 0;
+  responses = [];
+  showScreen('screen-test');
+  renderQuestion();
+}
+
+function generateQuestions(n) {
+  let questions = [];
+  const perLevel = Math.floor(n / LEVELS.length);
+  const remainder = n % LEVELS.length;
+  for (let i = 0; i < LEVELS.length; i++) {
+    const lv = LEVELS[i];
+    const pool = VOCAB[lv];
+    const count = perLevel + (i < remainder ? 1 : 0);
+    const sampled = shuffle(pool).slice(0, count);
+    sampled.forEach(w => questions.push({ word: w, level: lv }));
+  }
+  return shuffle(questions);
+}
+
+function renderQuestion() {
+  const item = testWords[currentIndex];
+  document.getElementById('word-display').textContent = item.word;
+  const badge = document.getElementById('level-badge');
+  badge.textContent = item.level;
+  badge.className = 'level-badge level-' + item.level;
+  const pct = (currentIndex / testWords.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = '第 ' + (currentIndex + 1) + ' / ' + testWords.length + ' 题';
+}
+
+function answer(known) {
+  responses.push({ word: testWords[currentIndex].word, level: testWords[currentIndex].level, known: known });
+  currentIndex++;
+  if (currentIndex < testWords.length) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const levelStats = {};
+  LEVELS.forEach(lv => { levelStats[lv] = { total: 0, known: 0 }; });
+  responses.forEach(r => {
+    levelStats[r.level].total++;
+    if (r.known) levelStats[r.level].known++;
+  });
+  const mastery = {};
+  LEVELS.forEach(lv => {
+    mastery[lv] = levelStats[lv].total > 0 ? levelStats[lv].known / levelStats[lv].total : 0;
+  });
+
+  let estimated = 0;
+  LEVELS.forEach(lv => {
+    if (levelStats[lv].total > 0) estimated += mastery[lv] * BAND_WIDTH[lv];
+  });
+  estimated = Math.round(estimated / 50) * 50;
+
+  let cefr = 'A1';
+  if (estimated >= 4500) cefr = 'C2';
+  else if (estimated >= 3750) cefr = 'C1';
+  else if (estimated >= 3250) cefr = 'B2';
+  else if (estimated >= 2500) cefr = 'B1';
+  else if (estimated >= 1500) cefr = 'A2';
+
+  const knownCount = responses.filter(r => r.known).length;
+  document.getElementById('vocab-number').textContent = '~' + estimated.toLocaleString();
+  document.getElementById('cefr-badge').textContent = 'CEFR ' + cefr;
+  document.getElementById('stat-total').textContent = responses.length;
+  document.getElementById('stat-known').textContent = knownCount;
+  document.getElementById('stat-unknown').textContent = responses.length - knownCount;
+
+  let barsHtml = '';
+  LEVELS.forEach(lv => {
+    const rate = Math.round(mastery[lv] * 100);
+    const color = LEVEL_COLORS[lv];
+    barsHtml += '<div class="mastery-row">' +
+      '<span class="mastery-label">' + lv + '</span>' +
+      '<div class="mastery-bar"><div class="mastery-fill" style="width:' + rate + '%;background:' + color + '">' + (rate > 15 ? rate + '%' : '') + '</div></div>' +
+      '<span class="mastery-pct">' + rate + '%</span></div>';
+  });
+  document.getElementById('mastery-bars').innerHTML = barsHtml;
+
+  let advice = '';
+  if (estimated < 1500) advice = '建议从 A1-A2 基础词汇入手，每天学习 20-30 个高频词，配合简单阅读材料巩固。';
+  else if (estimated < 2500) advice = '基础词汇已有一定积累！建议重点攻克 A2-B1 级别词汇，多读简单英文文章和对话。';
+  else if (estimated < 3250) advice = '达到 B1 中级水平！建议挑战 B1-B2 词汇，尝试阅读英文新闻、看带字幕的英文视频。';
+  else if (estimated < 3750) advice = '已达 B2 中高级水平！建议拓展学术与专业词汇，阅读原版小说、报刊。';
+  else if (estimated < 4500) advice = '优秀！已达 C1 高级水平。建议深入学术词汇与地道表达，进行大量原版阅读。';
+  else advice = '词汇量达到 C2 精通级别！建议持续接触专业文献与高阶材料，保持并精进。';
+  document.getElementById('advice-box').innerHTML = '<strong>学习建议：</strong><br>' + advice;
+
+  let reviewHtml = '';
+  responses.forEach(r => {
+    const cls = r.known ? 'review-known' : 'review-unknown';
+    reviewHtml += '<span class="review-word ' + cls + '">' + r.word + '</span>';
+  });
+  document.getElementById('review-words').innerHTML = reviewHtml;
+
+  showScreen('screen-result');
+}
+
+function resetTest() { showScreen('screen-start'); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>

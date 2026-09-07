@@ -1,0 +1,5402 @@
+[
+  {
+    "id": 1,
+    "english": "Hi there!",
+    "chinese": "",
+    "audio": "audio/sentence_001.mp3"
+  },
+  {
+    "id": 2,
+    "english": "Hello, how are you doing?",
+    "chinese": "你好你最近怎么样",
+    "audio": "audio/sentence_002.mp3"
+  },
+  {
+    "id": 3,
+    "english": "Good morning!",
+    "chinese": "早上好",
+    "audio": "audio/sentence_003.mp3"
+  },
+  {
+    "id": 4,
+    "english": "Good afternoon, everyone.",
+    "chinese": "大家下午好Good,",
+    "audio": "audio/sentence_004.mp3"
+  },
+  {
+    "id": 5,
+    "english": "Good evening, sir.",
+    "chinese": "晚上好先生",
+    "audio": "audio/sentence_005.mp3"
+  },
+  {
+    "id": 6,
+    "english": "How are you today?",
+    "chinese": "你今天好吗 today",
+    "audio": "audio/sentence_006.mp3"
+  },
+  {
+    "id": 7,
+    "english": "How's it going?",
+    "chinese": "最近怎么样 How's, going",
+    "audio": "audio/sentence_007.mp3"
+  },
+  {
+    "id": 8,
+    "english": "What's up?",
+    "chinese": "怎么了 你好啊 What's",
+    "audio": "audio/sentence_008.mp3"
+  },
+  {
+    "id": 9,
+    "english": "How have you been?",
+    "chinese": "你近来如何",
+    "audio": "audio/sentence_009.mp3"
+  },
+  {
+    "id": 10,
+    "english": "Long time no see!",
+    "chinese": "好久不见",
+    "audio": "audio/sentence_010.mp3"
+  },
+  {
+    "id": 11,
+    "english": "It's been a while since we last met.",
+    "chinese": "我们上次见面已经过了一段时",
+    "audio": "audio/sentence_011.mp3"
+  },
+  {
+    "id": 12,
+    "english": "Nice to meet you.",
+    "chinese": "很高兴认识你",
+    "audio": "audio/sentence_012.mp3"
+  },
+  {
+    "id": 13,
+    "english": "Pleased to meet you, too.",
+    "chinese": "我也很高兴认识你",
+    "audio": "audio/sentence_013.mp3"
+  },
+  {
+    "id": 14,
+    "english": "Great to see you again!",
+    "chinese": "再次见到你真高兴",
+    "audio": "audio/sentence_014.mp3"
+  },
+  {
+    "id": 15,
+    "english": "How's everything going?",
+    "chinese": "一切都还好吗How's,",
+    "audio": "audio/sentence_015.mp3"
+  },
+  {
+    "id": 16,
+    "english": "I'm fine, thank you.",
+    "chinese": "我很好谢谢 I'm,",
+    "audio": "audio/sentence_016.mp3"
+  },
+  {
+    "id": 17,
+    "english": "Not bad, thanks for asking.",
+    "chinese": "还不错谢谢关心",
+    "audio": "audio/sentence_017.mp3"
+  },
+  {
+    "id": 18,
+    "english": "I've been pretty good lately.",
+    "chinese": "我最近 挺好的 I've,",
+    "audio": "audio/sentence_018.mp3"
+  },
+  {
+    "id": 19,
+    "english": "Can't complain.",
+    "chinese": "没什么可抱怨的Can't, complain",
+    "audio": "audio/sentence_019.mp3"
+  },
+  {
+    "id": 20,
+    "english": "Goodbye!",
+    "chinese": "再见 Goodbye",
+    "audio": "audio/sentence_020.mp3"
+  },
+  {
+    "id": 21,
+    "english": "See you later.",
+    "chinese": "回头见",
+    "audio": "audio/sentence_021.mp3"
+  },
+  {
+    "id": 22,
+    "english": "See you tomorrow.",
+    "chinese": "明天见",
+    "audio": "audio/sentence_022.mp3"
+  },
+  {
+    "id": 23,
+    "english": "Take care!",
+    "chinese": "保重",
+    "audio": "audio/sentence_023.mp3"
+  },
+  {
+    "id": 24,
+    "english": "Have a nice day!",
+    "chinese": "祝你有美好的一天",
+    "audio": "audio/sentence_024.mp3"
+  },
+  {
+    "id": 25,
+    "english": "Have a great weekend!",
+    "chinese": "周末愉快",
+    "audio": "audio/sentence_025.mp3"
+  },
+  {
+    "id": 26,
+    "english": "Talk to you soon.",
+    "chinese": "很快再聊",
+    "audio": "audio/sentence_026.mp3"
+  },
+  {
+    "id": 27,
+    "english": "It was nice talking to you.",
+    "chinese": "和你聊天很愉快nice, talking",
+    "audio": "audio/sentence_027.mp3"
+  },
+  {
+    "id": 28,
+    "english": "I'd better get going now.",
+    "chinese": "我得走了 I'd,",
+    "audio": "audio/sentence_028.mp3"
+  },
+  {
+    "id": 29,
+    "english": "Catch you later!",
+    "chinese": "待会儿见",
+    "audio": "audio/sentence_029.mp3"
+  },
+  {
+    "id": 30,
+    "english": "Good night, sleep well.",
+    "chinese": "晚安睡个好觉Good,",
+    "audio": "audio/sentence_030.mp3"
+  },
+  {
+    "id": 31,
+    "english": "My name is Li Wei.",
+    "chinese": "我叫李伟",
+    "audio": "audio/sentence_031.mp3"
+  },
+  {
+    "id": 32,
+    "english": "Nice to meet you, I'm Sarah.",
+    "chinese": "很高兴认识你我 是莎拉Nice,",
+    "audio": "audio/sentence_032.mp3"
+  },
+  {
+    "id": 33,
+    "english": "I'm twenty-five years old.",
+    "chinese": "我二十五岁了I'm, twenty-five,",
+    "audio": "audio/sentence_033.mp3"
+  },
+  {
+    "id": 34,
+    "english": "Where are you from?",
+    "chinese": "你从哪里来",
+    "audio": "audio/sentence_034.mp3"
+  },
+  {
+    "id": 35,
+    "english": "I'm from Beijing, China.",
+    "chinese": "我来自中 国北京I'm,",
+    "audio": "audio/sentence_035.mp3"
+  },
+  {
+    "id": 36,
+    "english": "What do you do for a living?",
+    "chinese": "你是做什么工作的 living",
+    "audio": "audio/sentence_036.mp3"
+  },
+  {
+    "id": 37,
+    "english": "I work as a software engineer.",
+    "chinese": "我是一名软件工程师work,",
+    "audio": "audio/sentence_037.mp3"
+  },
+  {
+    "id": 38,
+    "english": "I'm currently a student at university.",
+    "chinese": "我现在是一名大学生I'm,",
+    "audio": "audio/sentence_038.mp3"
+  },
+  {
+    "id": 39,
+    "english": "My phone number is 138-0000-1234.",
+    "chinese": "我的电话 号码是138-0000-",
+    "audio": "audio/sentence_039.mp3"
+  },
+  {
+    "id": 40,
+    "english": "You can reach me by email at liwei@example.com.",
+    "chinese": "",
+    "audio": "audio/sentence_040.mp3"
+  },
+  {
+    "id": 41,
+    "english": "I live in the downtown area.",
+    "chinese": "我住在 市中心live,",
+    "audio": "audio/sentence_041.mp3"
+  },
+  {
+    "id": 42,
+    "english": "My hobby is reading and playing guitar.",
+    "chinese": "我的爱好 是阅读和弹吉他hobby,",
+    "audio": "audio/sentence_042.mp3"
+  },
+  {
+    "id": 43,
+    "english": "I enjoy traveling and photography in my free time.",
+    "chinese": "",
+    "audio": "audio/sentence_043.mp3"
+  },
+  {
+    "id": 44,
+    "english": "I have one older brother and one younger sister.",
+    "chinese": "",
+    "audio": "audio/sentence_044.mp3"
+  },
+  {
+    "id": 45,
+    "english": "Are you married or single?",
+    "chinese": "你结婚了还是单身married, single",
+    "audio": "audio/sentence_045.mp3"
+  },
+  {
+    "id": 46,
+    "english": "I'm single at the moment.",
+    "chinese": "我目前单身 I'm,",
+    "audio": "audio/sentence_046.mp3"
+  },
+  {
+    "id": 47,
+    "english": "My birthday is on March fifteenth.",
+    "chinese": "我的生日 是三月十五号birthday,",
+    "audio": "audio/sentence_047.mp3"
+  },
+  {
+    "id": 48,
+    "english": "I graduated from Peking University.",
+    "chinese": "我毕业于北京大学graduated,",
+    "audio": "audio/sentence_048.mp3"
+  },
+  {
+    "id": 49,
+    "english": "I've been working here for three years.",
+    "chinese": "我在这里工作三 年了I've,",
+    "audio": "audio/sentence_049.mp3"
+  },
+  {
+    "id": 50,
+    "english": "Could you tell me a little about yourself?",
+    "chinese": "你能简单介绍一下自 己吗tell,",
+    "audio": "audio/sentence_050.mp3"
+  },
+  {
+    "id": 51,
+    "english": "Let me introduce myself.",
+    "chinese": "让我自我介绍一下Let,",
+    "audio": "audio/sentence_051.mp3"
+  },
+  {
+    "id": 52,
+    "english": "I speak Mandarin and English fluently.",
+    "chinese": "我能流利地说普通话和英语speak,",
+    "audio": "audio/sentence_052.mp3"
+  },
+  {
+    "id": 53,
+    "english": "My favorite food is Chinese cuisine.",
+    "chinese": "我最喜欢的食物 是中国菜favorite,",
+    "audio": "audio/sentence_053.mp3"
+  },
+  {
+    "id": 54,
+    "english": "I usually wake up at seven in the morning.",
+    "chinese": "我通常早上 七点起床usually,",
+    "audio": "audio/sentence_054.mp3"
+  },
+  {
+    "id": 55,
+    "english": "Do you have any siblings?",
+    "chinese": "你有兄弟姐妹吗any, siblings",
+    "audio": "audio/sentence_055.mp3"
+  },
+  {
+    "id": 56,
+    "english": "I grew up in a small town.",
+    "chinese": "我在一个 小镇长大grew,",
+    "audio": "audio/sentence_056.mp3"
+  },
+  {
+    "id": 57,
+    "english": "My major was computer science.",
+    "chinese": "我的专业是计算机科学major,",
+    "audio": "audio/sentence_057.mp3"
+  },
+  {
+    "id": 58,
+    "english": "I'm looking forward to getting to know you.",
+    "chinese": "",
+    "audio": "audio/sentence_058.mp3"
+  },
+  {
+    "id": 59,
+    "english": "Feel free to call me anytime.",
+    "chinese": "随时可以给我打电话",
+    "audio": "audio/sentence_059.mp3"
+  },
+  {
+    "id": 60,
+    "english": "That's all about me for now.",
+    "chinese": "关于我就先介绍到 这里That's,",
+    "audio": "audio/sentence_060.mp3"
+  },
+  {
+    "id": 61,
+    "english": "What time is it?",
+    "chinese": "现在几点了 time",
+    "audio": "audio/sentence_061.mp3"
+  },
+  {
+    "id": 62,
+    "english": "It's half past three.",
+    "chinese": "现在三点半 It's,",
+    "audio": "audio/sentence_062.mp3"
+  },
+  {
+    "id": 63,
+    "english": "It's a quarter to ten.",
+    "chinese": "现在九点四十五It's,",
+    "audio": "audio/sentence_063.mp3"
+  },
+  {
+    "id": 64,
+    "english": "What day is today?",
+    "chinese": "今天星期几",
+    "audio": "audio/sentence_064.mp3"
+  },
+  {
+    "id": 65,
+    "english": "Today is Monday.",
+    "chinese": "今天是星期一",
+    "audio": "audio/sentence_065.mp3"
+  },
+  {
+    "id": 66,
+    "english": "What's the date today?",
+    "chinese": "今天几号 What's,",
+    "audio": "audio/sentence_066.mp3"
+  },
+  {
+    "id": 67,
+    "english": "It's January twentieth.",
+    "chinese": "今天是一月二十号It's,",
+    "audio": "audio/sentence_067.mp3"
+  },
+  {
+    "id": 68,
+    "english": "When does the meeting start?",
+    "chinese": "会议什么时候 开始meeting, start",
+    "audio": "audio/sentence_068.mp3"
+  },
+  {
+    "id": 69,
+    "english": "The appointment is at two o'clock in the afternoon.",
+    "chinese": "",
+    "audio": "audio/sentence_069.mp3"
+  },
+  {
+    "id": 70,
+    "english": "I'll be there in about ten minutes.",
+    "chinese": "我大约十分钟后到I'll,",
+    "audio": "audio/sentence_070.mp3"
+  },
+  {
+    "id": 71,
+    "english": "We need to finish this by Friday.",
+    "chinese": "我们需要在周五之前完成这件",
+    "audio": "audio/sentence_071.mp3"
+  },
+  {
+    "id": 72,
+    "english": "The deadline is next Wednesday.",
+    "chinese": "截止日期是下周三deadline,",
+    "audio": "audio/sentence_072.mp3"
+  },
+  {
+    "id": 73,
+    "english": "Can we reschedule for tomorrow morning?",
+    "chinese": "",
+    "audio": "audio/sentence_073.mp3"
+  },
+  {
+    "id": 74,
+    "english": "I'm free on Saturday afternoon.",
+    "chinese": "我周六下午有空I'm,",
+    "audio": "audio/sentence_074.mp3"
+  },
+  {
+    "id": 75,
+    "english": "Let's meet at nine thirty.",
+    "chinese": "我们九点半见面吧Let's,",
+    "audio": "audio/sentence_075.mp3"
+  },
+  {
+    "id": 76,
+    "english": "How long will it take?",
+    "chinese": "这需要多长时间",
+    "audio": "audio/sentence_076.mp3"
+  },
+  {
+    "id": 77,
+    "english": "It usually takes about an hour.",
+    "chinese": "通常需要大约一个小时usually,",
+    "audio": "audio/sentence_077.mp3"
+  },
+  {
+    "id": 78,
+    "english": "I've been waiting for twenty minutes.",
+    "chinese": "我已经 等了二十分钟了I've,",
+    "audio": "audio/sentence_078.mp3"
+  },
+  {
+    "id": 79,
+    "english": "Summer vacation starts in July.",
+    "chinese": "暑假从七月开始Summer,",
+    "audio": "audio/sentence_079.mp3"
+  },
+  {
+    "id": 80,
+    "english": "My flight leaves at six in the evening.",
+    "chinese": "我的航班傍晚六点起飞flight,",
+    "audio": "audio/sentence_080.mp3"
+  },
+  {
+    "id": 81,
+    "english": "Could you remind me at eight o'clock?",
+    "chinese": "你能在 八点提醒我吗remind,",
+    "audio": "audio/sentence_081.mp3"
+  },
+  {
+    "id": 82,
+    "english": "The store opens at ten and closes at nine.",
+    "chinese": "商店十点开门九点关门store,",
+    "audio": "audio/sentence_082.mp3"
+  },
+  {
+    "id": 83,
+    "english": "We have a test next month.",
+    "chinese": "我们下个 月有考试test,",
+    "audio": "audio/sentence_083.mp3"
+  },
+  {
+    "id": 84,
+    "english": "It's already past midnight.",
+    "chinese": "已经过了午 夜了It's,",
+    "audio": "audio/sentence_084.mp3"
+  },
+  {
+    "id": 85,
+    "english": "Spring begins in March.",
+    "chinese": "春天从三月开始Spring,",
+    "audio": "audio/sentence_085.mp3"
+  },
+  {
+    "id": 86,
+    "english": "I was born in nineteen ninety-five.",
+    "chinese": "我出生 于一九九五年born,",
+    "audio": "audio/sentence_086.mp3"
+  },
+  {
+    "id": 87,
+    "english": "Are you available this weekend?",
+    "chinese": "你这个周末有空吗available, weekend",
+    "audio": "audio/sentence_087.mp3"
+  },
+  {
+    "id": 88,
+    "english": "Let's set a time to discuss this.",
+    "chinese": "我们定个时间 讨论一下吧Let's,",
+    "audio": "audio/sentence_088.mp3"
+  },
+  {
+    "id": 89,
+    "english": "Hurry up, we're running late!",
+    "chinese": "快点我们 要迟到了Hurry, we're,",
+    "audio": "audio/sentence_089.mp3"
+  },
+  {
+    "id": 90,
+    "english": "Time flies when you're having fun.",
+    "chinese": "快乐的时候时间过 得飞快Time,",
+    "audio": "audio/sentence_090.mp3"
+  },
+  {
+    "id": 91,
+    "english": "What's the weather like today?",
+    "chinese": "今天天气怎么样What's,",
+    "audio": "audio/sentence_091.mp3"
+  },
+  {
+    "id": 92,
+    "english": "It's sunny and warm outside.",
+    "chinese": "外面阳光明媚很暖和It's,",
+    "audio": "audio/sentence_092.mp3"
+  },
+  {
+    "id": 93,
+    "english": "It looks like it's going to rain.",
+    "chinese": "看起来要下雨了looks,",
+    "audio": "audio/sentence_093.mp3"
+  },
+  {
+    "id": 94,
+    "english": "It's been raining all day.",
+    "chinese": "雨下了一整天了 It's,",
+    "audio": "audio/sentence_094.mp3"
+  },
+  {
+    "id": 95,
+    "english": "Don't forget your umbrella.",
+    "chinese": "别忘了带伞Don't,",
+    "audio": "audio/sentence_095.mp3"
+  },
+  {
+    "id": 96,
+    "english": "It's snowing heavily right now.",
+    "chinese": "现在雪下得很大It's,",
+    "audio": "audio/sentence_096.mp3"
+  },
+  {
+    "id": 97,
+    "english": "The temperature is below zero today.",
+    "chinese": "今天气 温在零度以下temperature,",
+    "audio": "audio/sentence_097.mp3"
+  },
+  {
+    "id": 98,
+    "english": "It's quite chilly this morning.",
+    "chinese": "今天早上 挺冷的It's,",
+    "audio": "audio/sentence_098.mp3"
+  },
+  {
+    "id": 99,
+    "english": "What a beautiful day!",
+    "chinese": "多么美好的一天",
+    "audio": "audio/sentence_099.mp3"
+  },
+  {
+    "id": 100,
+    "english": "It's getting warmer these days.",
+    "chinese": "这几天天气 越来越暖和了It's,",
+    "audio": "audio/sentence_100.mp3"
+  },
+  {
+    "id": 101,
+    "english": "I love spring because the flowers are blooming.",
+    "chinese": "",
+    "audio": "audio/sentence_101.mp3"
+  },
+  {
+    "id": 102,
+    "english": "Summer is my favorite season.",
+    "chinese": "夏天是我最喜欢的季节Summer,",
+    "audio": "audio/sentence_102.mp3"
+  },
+  {
+    "id": 103,
+    "english": "The leaves are turning yellow in autumn.",
+    "chinese": "秋天树叶变黄了leaves,",
+    "audio": "audio/sentence_103.mp3"
+  },
+  {
+    "id": 104,
+    "english": "Winter here is very cold and dry.",
+    "chinese": "这里的冬天又冷又干燥Winter,",
+    "audio": "audio/sentence_104.mp3"
+  },
+  {
+    "id": 105,
+    "english": "The forecast says it will be cloudy tomorrow.",
+    "chinese": "",
+    "audio": "audio/sentence_105.mp3"
+  },
+  {
+    "id": 106,
+    "english": "There might be a thunderstorm tonight.",
+    "chinese": "今晚可能 有雷暴thunderstorm,",
+    "audio": "audio/sentence_106.mp3"
+  },
+  {
+    "id": 107,
+    "english": "It's a perfect day for a picnic.",
+    "chinese": "今天是野餐的好日子 It's,",
+    "audio": "audio/sentence_107.mp3"
+  },
+  {
+    "id": 108,
+    "english": "The wind is blowing really hard.",
+    "chinese": "风刮得很猛",
+    "audio": "audio/sentence_108.mp3"
+  },
+  {
+    "id": 109,
+    "english": "It's humid and uncomfortable today.",
+    "chinese": "今天又潮湿又不舒服It's,",
+    "audio": "audio/sentence_109.mp3"
+  },
+  {
+    "id": 110,
+    "english": "We had a heatwave last week.",
+    "chinese": "上周我们经 历了热浪heatwave,",
+    "audio": "audio/sentence_110.mp3"
+  },
+  {
+    "id": 111,
+    "english": "The air quality is pretty good today.",
+    "chinese": "今天空气 质量不错air,",
+    "audio": "audio/sentence_111.mp3"
+  },
+  {
+    "id": 112,
+    "english": "I prefer cool weather to hot weather.",
+    "chinese": "比起热天我更喜欢凉爽的天",
+    "audio": "audio/sentence_112.mp3"
+  },
+  {
+    "id": 113,
+    "english": "Let's go for a walk while the sun is out.",
+    "chinese": "趁太阳还在我们 去散步吧Let's,",
+    "audio": "audio/sentence_113.mp3"
+  },
+  {
+    "id": 114,
+    "english": "It rained cats and dogs yesterday.",
+    "chinese": "昨天下了 倾盆大雨rained,",
+    "audio": "audio/sentence_114.mp3"
+  },
+  {
+    "id": 115,
+    "english": "Spring is the best time to plant flowers.",
+    "chinese": "春天是种花的最佳时节Spring,",
+    "audio": "audio/sentence_115.mp3"
+  },
+  {
+    "id": 116,
+    "english": "We usually go skiing in winter.",
+    "chinese": "我们冬天通常 去滑雪usually,",
+    "audio": "audio/sentence_116.mp3"
+  },
+  {
+    "id": 117,
+    "english": "The sunset was absolutely gorgeous tonight.",
+    "chinese": "",
+    "audio": "audio/sentence_117.mp3"
+  },
+  {
+    "id": 118,
+    "english": "Is it supposed to be cold this weekend?",
+    "chinese": "这个周末会很冷吗supposed,",
+    "audio": "audio/sentence_118.mp3"
+  },
+  {
+    "id": 119,
+    "english": "I wish it would stop raining.",
+    "chinese": "真希望雨能停wish,",
+    "audio": "audio/sentence_119.mp3"
+  },
+  {
+    "id": 120,
+    "english": "After the storm, the sky cleared up beautifully.",
+    "chinese": "",
+    "audio": "audio/sentence_120.mp3"
+  },
+  {
+    "id": 121,
+    "english": "This is my mother.",
+    "chinese": "这是我妈妈 mother",
+    "audio": "audio/sentence_121.mp3"
+  },
+  {
+    "id": 122,
+    "english": "My father works at a bank.",
+    "chinese": "我爸爸在银行工作",
+    "audio": "audio/sentence_122.mp3"
+  },
+  {
+    "id": 123,
+    "english": "I have two brothers and one sister.",
+    "chinese": "我有两个哥哥和一个 姐姐two,",
+    "audio": "audio/sentence_123.mp3"
+  },
+  {
+    "id": 124,
+    "english": "My grandparents live in the countryside.",
+    "chinese": "我的祖父母住在乡下grandparents,",
+    "audio": "audio/sentence_124.mp3"
+  },
+  {
+    "id": 125,
+    "english": "She's my best friend from college.",
+    "chinese": "她是我大学时最好的朋友 She's,",
+    "audio": "audio/sentence_125.mp3"
+  },
+  {
+    "id": 126,
+    "english": "We've been friends for over ten years.",
+    "chinese": "我们做朋友已经 超过十年了We've,",
+    "audio": "audio/sentence_126.mp3"
+  },
+  {
+    "id": 127,
+    "english": "My uncle is a doctor.",
+    "chinese": "我叔叔是一名医生uncle, doctor",
+    "audio": "audio/sentence_127.mp3"
+  },
+  {
+    "id": 128,
+    "english": "How is your family doing?",
+    "chinese": "你家人最近怎么样",
+    "audio": "audio/sentence_128.mp3"
+  },
+  {
+    "id": 129,
+    "english": "They're all doing well, thank you.",
+    "chinese": "他们都很好谢谢 They're,",
+    "audio": "audio/sentence_129.mp3"
+  },
+  {
+    "id": 130,
+    "english": "Let's get together this weekend.",
+    "chinese": "我们这个周末聚一聚 吧Let's,",
+    "audio": "audio/sentence_130.mp3"
+  },
+  {
+    "id": 131,
+    "english": "Would you like to come over for dinner?",
+    "chinese": "你想来我家 吃晚饭吗like,",
+    "audio": "audio/sentence_131.mp3"
+  },
+  {
+    "id": 132,
+    "english": "My cousin is getting married next month.",
+    "chinese": "我表妹下个月要结婚了cousin,",
+    "audio": "audio/sentence_132.mp3"
+  },
+  {
+    "id": 133,
+    "english": "I miss my parents so much.",
+    "chinese": "我非常想念我的父母miss,",
+    "audio": "audio/sentence_133.mp3"
+  },
+  {
+    "id": 134,
+    "english": "He looks just like his older brother.",
+    "chinese": "他长得和他哥哥一模一样looks,",
+    "audio": "audio/sentence_134.mp3"
+  },
+  {
+    "id": 135,
+    "english": "My daughter just started kindergarten.",
+    "chinese": "我女儿刚上幼儿园daughter,",
+    "audio": "audio/sentence_135.mp3"
+  },
+  {
+    "id": 136,
+    "english": "We usually have family reunions during the holidays.",
+    "chinese": "",
+    "audio": "audio/sentence_136.mp3"
+  },
+  {
+    "id": 137,
+    "english": "My wife and I have been married for five years.",
+    "chinese": "",
+    "audio": "audio/sentence_137.mp3"
+  },
+  {
+    "id": 138,
+    "english": "She's very kind and easy to get along with.",
+    "chinese": "她很善良很容易相处She's,",
+    "audio": "audio/sentence_138.mp3"
+  },
+  {
+    "id": 139,
+    "english": "He's always there when I need help.",
+    "chinese": "我需要帮助的时候 他总是在身",
+    "audio": "audio/sentence_139.mp3"
+  },
+  {
+    "id": 140,
+    "english": "My son loves playing soccer after school.",
+    "chinese": "我儿子放学后 喜欢踢足球son,",
+    "audio": "audio/sentence_140.mp3"
+  },
+  {
+    "id": 141,
+    "english": "We took a family trip to the beach last summer.",
+    "chinese": "",
+    "audio": "audio/sentence_141.mp3"
+  },
+  {
+    "id": 142,
+    "english": "My aunt makes the best dumplings I've ever tasted.",
+    "chinese": "",
+    "audio": "audio/sentence_142.mp3"
+  },
+  {
+    "id": 143,
+    "english": "I'd like you to meet my friend Tom.",
+    "chinese": "我想让你认识一下我的朋友 汤",
+    "audio": "audio/sentence_143.mp3"
+  },
+  {
+    "id": 144,
+    "english": "They are like family to me.",
+    "chinese": "他们对我来 说就像家人一样like, family",
+    "audio": "audio/sentence_144.mp3"
+  },
+  {
+    "id": 145,
+    "english": "My younger sister is studying abroad.",
+    "chinese": "我妹妹在国外留学younger,",
+    "audio": "audio/sentence_145.mp3"
+  },
+  {
+    "id": 146,
+    "english": "We celebrate birthdays together every year.",
+    "chinese": "",
+    "audio": "audio/sentence_146.mp3"
+  },
+  {
+    "id": 147,
+    "english": "It's important to spend quality time with family.",
+    "chinese": "",
+    "audio": "audio/sentence_147.mp3"
+  },
+  {
+    "id": 148,
+    "english": "My nephew is such a cute little boy.",
+    "chinese": "我侄子是个非常可爱的 小男",
+    "audio": "audio/sentence_148.mp3"
+  },
+  {
+    "id": 149,
+    "english": "Friends are the family you choose.",
+    "chinese": "朋友是你自己选择的家人Friends,",
+    "audio": "audio/sentence_149.mp3"
+  },
+  {
+    "id": 150,
+    "english": "I'm so grateful to have such wonderful people in my life.",
+    "chinese": "",
+    "audio": "audio/sentence_150.mp3"
+  },
+  {
+    "id": 151,
+    "english": "I work at a technology company.",
+    "chinese": "我在一家科技 公司工作work,",
+    "audio": "audio/sentence_151.mp3"
+  },
+  {
+    "id": 152,
+    "english": "What do you do for work?",
+    "chinese": "你是做什么工作的 work",
+    "audio": "audio/sentence_152.mp3"
+  },
+  {
+    "id": 153,
+    "english": "I'm responsible for project management.",
+    "chinese": "我负责项目管理I'm,",
+    "audio": "audio/sentence_153.mp3"
+  },
+  {
+    "id": 154,
+    "english": "We have a team meeting every Monday morning.",
+    "chinese": "",
+    "audio": "audio/sentence_154.mp3"
+  },
+  {
+    "id": 155,
+    "english": "Could you send me the report by email?",
+    "chinese": "你能把报告通过 邮件发给我",
+    "audio": "audio/sentence_155.mp3"
+  },
+  {
+    "id": 156,
+    "english": "I need to prepare for tomorrow's presentation.",
+    "chinese": "",
+    "audio": "audio/sentence_156.mp3"
+  },
+  {
+    "id": 157,
+    "english": "The boss wants to see you in his office.",
+    "chinese": "老板想让你在办公室见他boss,",
+    "audio": "audio/sentence_157.mp3"
+  },
+  {
+    "id": 158,
+    "english": "Let's schedule a meeting for next week.",
+    "chinese": "我们安排下周开个会吧Let's,",
+    "audio": "audio/sentence_158.mp3"
+  },
+  {
+    "id": 159,
+    "english": "I've been working overtime this week.",
+    "chinese": "我这周一直在加班I've,",
+    "audio": "audio/sentence_159.mp3"
+  },
+  {
+    "id": 160,
+    "english": "Can I take a day off on Friday?",
+    "chinese": "我周五能请一天 假吗take,",
+    "audio": "audio/sentence_160.mp3"
+  },
+  {
+    "id": 161,
+    "english": "I'm looking for a new job opportunity.",
+    "chinese": "我正在 寻找新的工作机会I'm,",
+    "audio": "audio/sentence_161.mp3"
+  },
+  {
+    "id": 162,
+    "english": "She got promoted to senior manager.",
+    "chinese": "她晋升为高 级经理了got,",
+    "audio": "audio/sentence_162.mp3"
+  },
+  {
+    "id": 163,
+    "english": "The interview went really well.",
+    "chinese": "面试进行得很顺利interview,",
+    "audio": "audio/sentence_163.mp3"
+  },
+  {
+    "id": 164,
+    "english": "What are your career goals?",
+    "chinese": "你的职业目 标是什么career, goals",
+    "audio": "audio/sentence_164.mp3"
+  },
+  {
+    "id": 165,
+    "english": "I'd like to develop my leadership skills.",
+    "chinese": "我想提升自 己的领导能力I'd,",
+    "audio": "audio/sentence_165.mp3"
+  },
+  {
+    "id": 166,
+    "english": "We need to meet the deadline.",
+    "chinese": "我们需要赶上截止日期need,",
+    "audio": "audio/sentence_166.mp3"
+  },
+  {
+    "id": 167,
+    "english": "Could you help me with this task?",
+    "chinese": "你能帮我 处理这个任务吗help, task",
+    "audio": "audio/sentence_167.mp3"
+  },
+  {
+    "id": 168,
+    "english": "I just finished writing the quarterly report.",
+    "chinese": "我刚写完季 度报告finished,",
+    "audio": "audio/sentence_168.mp3"
+  },
+  {
+    "id": 169,
+    "english": "Our department is hiring new employees.",
+    "chinese": "我们部 门正在招 聘新员工department,",
+    "audio": "audio/sentence_169.mp3"
+  },
+  {
+    "id": 170,
+    "english": "Please review the contract before signing.",
+    "chinese": "签字前请先审阅合同Please,",
+    "audio": "audio/sentence_170.mp3"
+  },
+  {
+    "id": 171,
+    "english": "I commute to work by subway every day.",
+    "chinese": "我每天 坐地铁上班commute,",
+    "audio": "audio/sentence_171.mp3"
+  },
+  {
+    "id": 172,
+    "english": "Working from home has its advantages.",
+    "chinese": "在家办公有它的好处Working,",
+    "audio": "audio/sentence_172.mp3"
+  },
+  {
+    "id": 173,
+    "english": "Teamwork makes the dream work.",
+    "chinese": "团队合作成就 梦想Teamwork,",
+    "audio": "audio/sentence_173.mp3"
+  },
+  {
+    "id": 174,
+    "english": "I resigned from my previous job last month.",
+    "chinese": "",
+    "audio": "audio/sentence_174.mp3"
+  },
+  {
+    "id": 175,
+    "english": "The company offers great benefits.",
+    "chinese": "公司提供很好的 福利待遇company,",
+    "audio": "audio/sentence_175.mp3"
+  },
+  {
+    "id": 176,
+    "english": "Let's wrap up this meeting.",
+    "chinese": "我们结束这次会议 吧Let's,",
+    "audio": "audio/sentence_176.mp3"
+  },
+  {
+    "id": 177,
+    "english": "I'll follow up with you after lunch.",
+    "chinese": "午饭后我再 跟你跟进这件事I'll,",
+    "audio": "audio/sentence_177.mp3"
+  },
+  {
+    "id": 178,
+    "english": "Professional development is important to me.",
+    "chinese": "",
+    "audio": "audio/sentence_178.mp3"
+  },
+  {
+    "id": 179,
+    "english": "We achieved our sales target this quarter.",
+    "chinese": "我们这个季度完成了 销售目",
+    "audio": "audio/sentence_179.mp3"
+  },
+  {
+    "id": 180,
+    "english": "Thank you for your hard work.",
+    "chinese": "感谢你的 辛勤付出Thank,",
+    "audio": "audio/sentence_180.mp3"
+  },
+  {
+    "id": 181,
+    "english": "I'm studying English at a language school.",
+    "chinese": "我在语 言学校学英语I'm,",
+    "audio": "audio/sentence_181.mp3"
+  },
+  {
+    "id": 182,
+    "english": "What subject are you majoring in?",
+    "chinese": "你主修什么专业subject, majoring",
+    "audio": "audio/sentence_182.mp3"
+  },
+  {
+    "id": 183,
+    "english": "The exam is coming up next week.",
+    "chinese": "考试下周就要来了exam,",
+    "audio": "audio/sentence_183.mp3"
+  },
+  {
+    "id": 184,
+    "english": "I need to finish my homework tonight.",
+    "chinese": "我今晚 必须完成作业need,",
+    "audio": "audio/sentence_184.mp3"
+  },
+  {
+    "id": 185,
+    "english": "Could you explain this concept again?",
+    "chinese": "你能再 解释一下这个概念吗explain,",
+    "audio": "audio/sentence_185.mp3"
+  },
+  {
+    "id": 186,
+    "english": "The teacher asked us to read chapter five.",
+    "chinese": "老师让我们读第 五章teacher,",
+    "audio": "audio/sentence_186.mp3"
+  },
+  {
+    "id": 187,
+    "english": "I got an A on my math test!",
+    "chinese": "我数学考试得了Agot,",
+    "audio": "audio/sentence_187.mp3"
+  },
+  {
+    "id": 188,
+    "english": "Let's study together at the library.",
+    "chinese": "我们一 起去图书馆学习吧Let's,",
+    "audio": "audio/sentence_188.mp3"
+  },
+  {
+    "id": 189,
+    "english": "I find this topic really interesting.",
+    "chinese": "我觉得这个话题 非常有趣find,",
+    "audio": "audio/sentence_189.mp3"
+  },
+  {
+    "id": 190,
+    "english": "She graduated with honors last year.",
+    "chinese": "她去年以优异成绩毕业了graduated,",
+    "audio": "audio/sentence_190.mp3"
+  },
+  {
+    "id": 191,
+    "english": "Do you have any questions about the lesson?",
+    "chinese": "",
+    "audio": "audio/sentence_191.mp3"
+  },
+  {
+    "id": 192,
+    "english": "I've been practicing speaking English every day.",
+    "chinese": "",
+    "audio": "audio/sentence_192.mp3"
+  },
+  {
+    "id": 193,
+    "english": "The professor gave us a research assignment.",
+    "chinese": "",
+    "audio": "audio/sentence_193.mp3"
+  },
+  {
+    "id": 194,
+    "english": "I prefer learning through hands-on experience.",
+    "chinese": "",
+    "audio": "audio/sentence_194.mp3"
+  },
+  {
+    "id": 195,
+    "english": "Reading helps improve your vocabulary.",
+    "chinese": "阅读有助于提高词 汇量Reading,",
+    "audio": "audio/sentence_195.mp3"
+  },
+  {
+    "id": 196,
+    "english": "We have a group project due next Friday.",
+    "chinese": "我们的 小组项目下周五截止group,",
+    "audio": "audio/sentence_196.mp3"
+  },
+  {
+    "id": 197,
+    "english": "I signed up for an online course.",
+    "chinese": "我报名了一门在线课程signed,",
+    "audio": "audio/sentence_197.mp3"
+  },
+  {
+    "id": 198,
+    "english": "Education opens doors to new opportunities.",
+    "chinese": "",
+    "audio": "audio/sentence_198.mp3"
+  },
+  {
+    "id": 199,
+    "english": "My goal is to pass the certification exam.",
+    "chinese": "我的目 标是通过认 证考试goal,",
+    "audio": "audio/sentence_199.mp3"
+  },
+  {
+    "id": 200,
+    "english": "The classroom is on the third floor.",
+    "chinese": "教室在三楼classroom,",
+    "audio": "audio/sentence_200.mp3"
+  },
+  {
+    "id": 201,
+    "english": "I took notes during the lecture.",
+    "chinese": "我在讲座期间做了笔记took,",
+    "audio": "audio/sentence_201.mp3"
+  },
+  {
+    "id": 202,
+    "english": "Learning a new language takes time and patience.",
+    "chinese": "",
+    "audio": "audio/sentence_202.mp3"
+  },
+  {
+    "id": 203,
+    "english": "Can I borrow your textbook?",
+    "chinese": "我能借你的课本吗borrow, textbook",
+    "audio": "audio/sentence_203.mp3"
+  },
+  {
+    "id": 204,
+    "english": "The scholarship covers tuition and living expenses.",
+    "chinese": "",
+    "audio": "audio/sentence_204.mp3"
+  },
+  {
+    "id": 205,
+    "english": "I'm preparing for the entrance examination.",
+    "chinese": "",
+    "audio": "audio/sentence_205.mp3"
+  },
+  {
+    "id": 206,
+    "english": "Practice makes perfect.",
+    "chinese": "",
+    "audio": "audio/sentence_206.mp3"
+  },
+  {
+    "id": 207,
+    "english": "The school offers various extracurricular activities.",
+    "chinese": "",
+    "audio": "audio/sentence_207.mp3"
+  },
+  {
+    "id": 208,
+    "english": "I learned so much from that workshop.",
+    "chinese": "我从那个研讨班学到了很 多learned,",
+    "audio": "audio/sentence_208.mp3"
+  },
+  {
+    "id": 209,
+    "english": "Never stop learning, no matter your age.",
+    "chinese": "无论多大年纪都不 要停止学",
+    "audio": "audio/sentence_209.mp3"
+  },
+  {
+    "id": 210,
+    "english": "Knowledge is power.",
+    "chinese": "知识就是力量Knowledge, power",
+    "audio": "audio/sentence_210.mp3"
+  },
+  {
+    "id": 211,
+    "english": "How much does this cost?",
+    "chinese": "这个多少钱",
+    "audio": "audio/sentence_211.mp3"
+  },
+  {
+    "id": 212,
+    "english": "Can I try this on?",
+    "chinese": "我可以试穿一下吗 try",
+    "audio": "audio/sentence_212.mp3"
+  },
+  {
+    "id": 213,
+    "english": "Do you have this in a larger size?",
+    "chinese": "这件有大一号的吗larger, size",
+    "audio": "audio/sentence_213.mp3"
+  },
+  {
+    "id": 214,
+    "english": "I'm just looking, thanks.",
+    "chinese": "我只是看看谢谢 I'm,",
+    "audio": "audio/sentence_214.mp3"
+  },
+  {
+    "id": 215,
+    "english": "Is there any discount?",
+    "chinese": "有折扣吗",
+    "audio": "audio/sentence_215.mp3"
+  },
+  {
+    "id": 216,
+    "english": "This is on sale for twenty percent off.",
+    "chinese": "这件打八折",
+    "audio": "audio/sentence_216.mp3"
+  },
+  {
+    "id": 217,
+    "english": "Can I pay by credit card?",
+    "chinese": "可以用信用 卡付款吗pay,",
+    "audio": "audio/sentence_217.mp3"
+  },
+  {
+    "id": 218,
+    "english": "Do you accept mobile payment?",
+    "chinese": "你们接受移动支付吗accept,",
+    "audio": "audio/sentence_218.mp3"
+  },
+  {
+    "id": 219,
+    "english": "I'd like to return this item.",
+    "chinese": "我想退这件商品I'd,",
+    "audio": "audio/sentence_219.mp3"
+  },
+  {
+    "id": 220,
+    "english": "Could I get a refund?",
+    "chinese": "我能退款吗",
+    "audio": "audio/sentence_220.mp3"
+  },
+  {
+    "id": 221,
+    "english": "Where is the fitting room?",
+    "chinese": "试衣间在哪里fitting, room",
+    "audio": "audio/sentence_221.mp3"
+  },
+  {
+    "id": 222,
+    "english": "This shirt fits me perfectly.",
+    "chinese": "这件衬衫我穿着正合适shirt,",
+    "audio": "audio/sentence_222.mp3"
+  },
+  {
+    "id": 223,
+    "english": "It's a bit too expensive for me.",
+    "chinese": "对我来 说有点太贵了It's,",
+    "audio": "audio/sentence_223.mp3"
+  },
+  {
+    "id": 224,
+    "english": "Can you give me a better price?",
+    "chinese": "能便宜点吗",
+    "audio": "audio/sentence_224.mp3"
+  },
+  {
+    "id": 225,
+    "english": "I'll take it.",
+    "chinese": "我买了 I'll, take",
+    "audio": "audio/sentence_225.mp3"
+  },
+  {
+    "id": 226,
+    "english": "Do you have this in another color?",
+    "chinese": "这件有其他颜色吗another, color",
+    "audio": "audio/sentence_226.mp3"
+  },
+  {
+    "id": 227,
+    "english": "The quality is really good.",
+    "chinese": "质量真的很好",
+    "audio": "audio/sentence_227.mp3"
+  },
+  {
+    "id": 228,
+    "english": "I ordered this online last week.",
+    "chinese": "我上周在网上 订购了这个ordered,",
+    "audio": "audio/sentence_228.mp3"
+  },
+  {
+    "id": 229,
+    "english": "Free shipping on orders over fifty dollars.",
+    "chinese": "订单满五十美元免运费Free,",
+    "audio": "audio/sentence_229.mp3"
+  },
+  {
+    "id": 230,
+    "english": "When will my package arrive?",
+    "chinese": "我的包 裹什么时候到",
+    "audio": "audio/sentence_230.mp3"
+  },
+  {
+    "id": 231,
+    "english": "I need to exchange this for a different size.",
+    "chinese": "我需要换一件不同尺码的need,",
+    "audio": "audio/sentence_231.mp3"
+  },
+  {
+    "id": 232,
+    "english": "Keep the receipt in case you need to return it.",
+    "chinese": "",
+    "audio": "audio/sentence_232.mp3"
+  },
+  {
+    "id": 233,
+    "english": "This brand is known for its durability.",
+    "chinese": "这个品牌以耐用著称brand,",
+    "audio": "audio/sentence_233.mp3"
+  },
+  {
+    "id": 234,
+    "english": "Let me check if we have it in stock.",
+    "chinese": "让我查一下 有没有库存Let,",
+    "audio": "audio/sentence_234.mp3"
+  },
+  {
+    "id": 235,
+    "english": "Would you like a bag?",
+    "chinese": "您需要袋子吗",
+    "audio": "audio/sentence_235.mp3"
+  },
+  {
+    "id": 236,
+    "english": "I bought these shoes at half price.",
+    "chinese": "我以半价买了这双鞋bought,",
+    "audio": "audio/sentence_236.mp3"
+  },
+  {
+    "id": 237,
+    "english": "Online shopping is so convenient.",
+    "chinese": "网购真方 便Online,",
+    "audio": "audio/sentence_237.mp3"
+  },
+  {
+    "id": 238,
+    "english": "Read the reviews before you buy.",
+    "chinese": "买之前先看看 评价Read,",
+    "audio": "audio/sentence_238.mp3"
+  },
+  {
+    "id": 239,
+    "english": "That's a great deal!",
+    "chinese": "这真是个好价钱That's,",
+    "audio": "audio/sentence_239.mp3"
+  },
+  {
+    "id": 240,
+    "english": "Thank you for your purchase.",
+    "chinese": "感谢您的购买Thank, purchase",
+    "audio": "audio/sentence_240.mp3"
+  },
+  {
+    "id": 241,
+    "english": "What would you like to order?",
+    "chinese": "您想点些什么",
+    "audio": "audio/sentence_241.mp3"
+  },
+  {
+    "id": 242,
+    "english": "I'd like a cup of coffee, please.",
+    "chinese": "请给我一杯咖啡I'd,",
+    "audio": "audio/sentence_242.mp3"
+  },
+  {
+    "id": 243,
+    "english": "Could I see the menu?",
+    "chinese": "我能看一下 菜单吗see, menu",
+    "audio": "audio/sentence_243.mp3"
+  },
+  {
+    "id": 244,
+    "english": "This dish is absolutely delicious!",
+    "chinese": "这道菜太好吃了dish,",
+    "audio": "audio/sentence_244.mp3"
+  },
+  {
+    "id": 245,
+    "english": "I'm allergic to peanuts.",
+    "chinese": "我对花生过敏I'm,",
+    "audio": "audio/sentence_245.mp3"
+  },
+  {
+    "id": 246,
+    "english": "Do you have any vegetarian options?",
+    "chinese": "你们有素食选项吗any,",
+    "audio": "audio/sentence_246.mp3"
+  },
+  {
+    "id": 247,
+    "english": "The soup is too salty for my taste.",
+    "chinese": "这汤对我来 说太咸了soup,",
+    "audio": "audio/sentence_247.mp3"
+  },
+  {
+    "id": 248,
+    "english": "Can I have the check, please?",
+    "chinese": "请结账",
+    "audio": "audio/sentence_248.mp3"
+  },
+  {
+    "id": 249,
+    "english": "Let's split the bill.",
+    "chinese": "我们AA制吧Let's,",
+    "audio": "audio/sentence_249.mp3"
+  },
+  {
+    "id": 250,
+    "english": "I usually cook dinner at home.",
+    "chinese": "我通常在家 做晚饭usually,",
+    "audio": "audio/sentence_250.mp3"
+  },
+  {
+    "id": 251,
+    "english": "What's your favorite food?",
+    "chinese": "你最喜欢什么食物What's,",
+    "audio": "audio/sentence_251.mp3"
+  },
+  {
+    "id": 252,
+    "english": "I love spicy Sichuan cuisine.",
+    "chinese": "我喜欢辣的四川菜love,",
+    "audio": "audio/sentence_252.mp3"
+  },
+  {
+    "id": 253,
+    "english": "Would you like something to drink?",
+    "chinese": "你想喝点什么吗like,",
+    "audio": "audio/sentence_253.mp3"
+  },
+  {
+    "id": 254,
+    "english": "Just water, please.",
+    "chinese": "白水就好谢谢",
+    "audio": "audio/sentence_254.mp3"
+  },
+  {
+    "id": 255,
+    "english": "This restaurant has great reviews.",
+    "chinese": "这家餐厅评价很好restaurant,",
+    "audio": "audio/sentence_255.mp3"
+  },
+  {
+    "id": 256,
+    "english": "We need to make a reservation for tonight.",
+    "chinese": "我们需要预订今晚的 位子need,",
+    "audio": "audio/sentence_256.mp3"
+  },
+  {
+    "id": 257,
+    "english": "How do you like your steak cooked?",
+    "chinese": "您的牛排要几分熟like,",
+    "audio": "audio/sentence_257.mp3"
+  },
+  {
+    "id": 258,
+    "english": "Medium rare, please.",
+    "chinese": "五分熟谢谢Medium,",
+    "audio": "audio/sentence_258.mp3"
+  },
+  {
+    "id": 259,
+    "english": "I'm trying to eat healthier these days.",
+    "chinese": "我最近在 尝试吃得更健康I'm,",
+    "audio": "audio/sentence_259.mp3"
+  },
+  {
+    "id": 260,
+    "english": "Breakfast is the most important meal of the day.",
+    "chinese": "",
+    "audio": "audio/sentence_260.mp3"
+  },
+  {
+    "id": 261,
+    "english": "Let me share this recipe with you.",
+    "chinese": "让我把这个食谱分享给你Let,",
+    "audio": "audio/sentence_261.mp3"
+  },
+  {
+    "id": 262,
+    "english": "Add a pinch of salt and some pepper.",
+    "chinese": "加一小撮盐和一些胡椒Add,",
+    "audio": "audio/sentence_262.mp3"
+  },
+  {
+    "id": 263,
+    "english": "Stir-fry the vegetables over high heat.",
+    "chinese": "用大火翻炒蔬菜Stir-fry,",
+    "audio": "audio/sentence_263.mp3"
+  },
+  {
+    "id": 264,
+    "english": "The cake tastes amazing!",
+    "chinese": "这个蛋糕味道太棒了cake,",
+    "audio": "audio/sentence_264.mp3"
+  },
+  {
+    "id": 265,
+    "english": "I can't eat gluten.",
+    "chinese": "我不能 吃含麸质的食物can't,",
+    "audio": "audio/sentence_265.mp3"
+  },
+  {
+    "id": 266,
+    "english": "Would you recommend anything from the menu?",
+    "chinese": "",
+    "audio": "audio/sentence_266.mp3"
+  },
+  {
+    "id": 267,
+    "english": "The chef's special is highly recommended.",
+    "chinese": "强烈推荐主厨特选chef's,",
+    "audio": "audio/sentence_267.mp3"
+  },
+  {
+    "id": 268,
+    "english": "I'm full, thank you.",
+    "chinese": "我吃饱了谢谢 I'm,",
+    "audio": "audio/sentence_268.mp3"
+  },
+  {
+    "id": 269,
+    "english": "Let's grab a bite to eat.",
+    "chinese": "我们去吃点东西吧Let's,",
+    "audio": "audio/sentence_269.mp3"
+  },
+  {
+    "id": 270,
+    "english": "Home-cooked meals always taste the best.",
+    "chinese": "家常菜总是最好吃的Home-cooked,",
+    "audio": "audio/sentence_270.mp3"
+  },
+  {
+    "id": 271,
+    "english": "I don't feel well today.",
+    "chinese": "我今天感 觉不舒服don't,",
+    "audio": "audio/sentence_271.mp3"
+  },
+  {
+    "id": 272,
+    "english": "I have a headache.",
+    "chinese": "我头疼 headache",
+    "audio": "audio/sentence_272.mp3"
+  },
+  {
+    "id": 273,
+    "english": "My throat is really sore.",
+    "chinese": "我喉咙很痛",
+    "audio": "audio/sentence_273.mp3"
+  },
+  {
+    "id": 274,
+    "english": "I think I'm coming down with a cold.",
+    "chinese": "我觉得我要感冒了think, I'm, coming",
+    "audio": "audio/sentence_274.mp3"
+  },
+  {
+    "id": 275,
+    "english": "I need to make a doctor's appointment.",
+    "chinese": "我需要预约看医生",
+    "audio": "audio/sentence_275.mp3"
+  },
+  {
+    "id": 276,
+    "english": "How long have you had this symptom?",
+    "chinese": "你这个症状持续多久了long, symptom",
+    "audio": "audio/sentence_276.mp3"
+  },
+  {
+    "id": 277,
+    "english": "Take this medicine three times a day after meals.",
+    "chinese": "",
+    "audio": "audio/sentence_277.mp3"
+  },
+  {
+    "id": 278,
+    "english": "You should get more rest.",
+    "chinese": "你应该多休息",
+    "audio": "audio/sentence_278.mp3"
+  },
+  {
+    "id": 279,
+    "english": "Drink plenty of water.",
+    "chinese": "多喝水",
+    "audio": "audio/sentence_279.mp3"
+  },
+  {
+    "id": 280,
+    "english": "I twisted my ankle while running.",
+    "chinese": "我跑步时扭伤了脚踝twisted,",
+    "audio": "audio/sentence_280.mp3"
+  },
+  {
+    "id": 281,
+    "english": "Do I need to take any medication?",
+    "chinese": "我需要吃药吗",
+    "audio": "audio/sentence_281.mp3"
+  },
+  {
+    "id": 282,
+    "english": "The doctor prescribed some antibiotics.",
+    "chinese": "医生开了一些抗生素doctor,",
+    "audio": "audio/sentence_282.mp3"
+  },
+  {
+    "id": 283,
+    "english": "I have a fever and a cough.",
+    "chinese": "我发烧还咳嗽fever, cough",
+    "audio": "audio/sentence_283.mp3"
+  },
+  {
+    "id": 284,
+    "english": "Regular exercise is good for your health.",
+    "chinese": "经常锻炼对健康 有益Regular,",
+    "audio": "audio/sentence_284.mp3"
+  },
+  {
+    "id": 285,
+    "english": "I go jogging every morning.",
+    "chinese": "我每天早上 慢跑jogging,",
+    "audio": "audio/sentence_285.mp3"
+  },
+  {
+    "id": 286,
+    "english": "Eating fruits and vegetables keeps you healthy.",
+    "chinese": "",
+    "audio": "audio/sentence_286.mp3"
+  },
+  {
+    "id": 287,
+    "english": "Getting enough sleep is very important.",
+    "chinese": "保证充足的睡眠非常重要Getting,",
+    "audio": "audio/sentence_287.mp3"
+  },
+  {
+    "id": 288,
+    "english": "I've been feeling stressed lately.",
+    "chinese": "我最近 压力很大I've,",
+    "audio": "audio/sentence_288.mp3"
+  },
+  {
+    "id": 289,
+    "english": "Try to reduce stress through meditation.",
+    "chinese": "试着通过冥想来减压Try,",
+    "audio": "audio/sentence_289.mp3"
+  },
+  {
+    "id": 290,
+    "english": "Smoking is bad for your lungs.",
+    "chinese": "吸烟对肺不好",
+    "audio": "audio/sentence_290.mp3"
+  },
+  {
+    "id": 291,
+    "english": "You should quit smoking for your health.",
+    "chinese": "为了健康你 应该戒烟quit,",
+    "audio": "audio/sentence_291.mp3"
+  },
+  {
+    "id": 292,
+    "english": "I got my annual checkup last week.",
+    "chinese": "我上周做了年度体检got,",
+    "audio": "audio/sentence_292.mp3"
+  },
+  {
+    "id": 293,
+    "english": "My blood pressure is a little high.",
+    "chinese": "我的血压有点高blood,",
+    "audio": "audio/sentence_293.mp3"
+  },
+  {
+    "id": 294,
+    "english": "Wash your hands frequently to prevent illness.",
+    "chinese": "",
+    "audio": "audio/sentence_294.mp3"
+  },
+  {
+    "id": 295,
+    "english": "I broke my arm playing basketball.",
+    "chinese": "我打篮球时摔断了胳膊broke,",
+    "audio": "audio/sentence_295.mp3"
+  },
+  {
+    "id": 296,
+    "english": "The wound needs to be cleaned and bandaged.",
+    "chinese": "",
+    "audio": "audio/sentence_296.mp3"
+  },
+  {
+    "id": 297,
+    "english": "Stay home if you're feeling sick.",
+    "chinese": "如果不舒服就待在家里Stay,",
+    "audio": "audio/sentence_297.mp3"
+  },
+  {
+    "id": 298,
+    "english": "A balanced diet helps boost your immune system.",
+    "chinese": "",
+    "audio": "audio/sentence_298.mp3"
+  },
+  {
+    "id": 299,
+    "english": "Don't skip breakfast; it fuels your body.",
+    "chinese": "不要不吃早餐 它为身体提供",
+    "audio": "audio/sentence_299.mp3"
+  },
+  {
+    "id": 300,
+    "english": "Prevention is better than cure.",
+    "chinese": "预防胜于治疗Prevention,",
+    "audio": "audio/sentence_300.mp3"
+  },
+  {
+    "id": 301,
+    "english": "Where is the nearest subway station?",
+    "chinese": "最近的 地铁站在哪里nearest,",
+    "audio": "audio/sentence_301.mp3"
+  },
+  {
+    "id": 302,
+    "english": "How much is a one-way ticket to downtown?",
+    "chinese": "",
+    "audio": "audio/sentence_302.mp3"
+  },
+  {
+    "id": 303,
+    "english": "The bus should arrive in about five minutes.",
+    "chinese": "",
+    "audio": "audio/sentence_303.mp3"
+  },
+  {
+    "id": 304,
+    "english": "Could you call a taxi for me, please?",
+    "chinese": "能帮我 叫一辆出租车吗call,",
+    "audio": "audio/sentence_304.mp3"
+  },
+  {
+    "id": 305,
+    "english": "I'd like to book a flight to New York for next Friday.",
+    "chinese": "",
+    "audio": "audio/sentence_305.mp3"
+  },
+  {
+    "id": 306,
+    "english": "Which platform does the train to Boston depart from?",
+    "chinese": "",
+    "audio": "audio/sentence_306.mp3"
+  },
+  {
+    "id": 307,
+    "english": "There's heavy traffic on the highway this morning.",
+    "chinese": "",
+    "audio": "audio/sentence_307.mp3"
+  },
+  {
+    "id": 308,
+    "english": "Can I pay with my transit card?",
+    "chinese": "我可以用交通 卡支付吗pay,",
+    "audio": "audio/sentence_308.mp3"
+  },
+  {
+    "id": 309,
+    "english": "Please take me to the airport terminal two.",
+    "chinese": "请送我去二号航站楼Please,",
+    "audio": "audio/sentence_309.mp3"
+  },
+  {
+    "id": 310,
+    "english": "Is there a direct flight to London?",
+    "chinese": "有直飞伦敦的航班吗direct,",
+    "audio": "audio/sentence_310.mp3"
+  },
+  {
+    "id": 311,
+    "english": "You need to transfer at Central Station.",
+    "chinese": "你需要在中央车站换乘need,",
+    "audio": "audio/sentence_311.mp3"
+  },
+  {
+    "id": 312,
+    "english": "The parking lot is full; we'll have to find another spot.",
+    "chinese": "",
+    "audio": "audio/sentence_312.mp3"
+  },
+  {
+    "id": 313,
+    "english": "How long does it take to get to the city center by bus?",
+    "chinese": "",
+    "audio": "audio/sentence_313.mp3"
+  },
+  {
+    "id": 314,
+    "english": "I missed my connecting flight because of the delay.",
+    "chinese": "",
+    "audio": "audio/sentence_314.mp3"
+  },
+  {
+    "id": 315,
+    "english": "Please fasten your seatbelt before takeoff.",
+    "chinese": "请在起飞前系好安全带Please,",
+    "audio": "audio/sentence_315.mp3"
+  },
+  {
+    "id": 316,
+    "english": "Where can I pick up my luggage after landing?",
+    "chinese": "",
+    "audio": "audio/sentence_316.mp3"
+  },
+  {
+    "id": 317,
+    "english": "The GPS says we should turn left at the next intersection.",
+    "chinese": "",
+    "audio": "audio/sentence_317.mp3"
+  },
+  {
+    "id": 318,
+    "english": "Do you have a round-trip ticket available?",
+    "chinese": "有往返票吗round-trip,",
+    "audio": "audio/sentence_318.mp3"
+  },
+  {
+    "id": 319,
+    "english": "I prefer taking the subway because it's faster during rush hour.",
+    "chinese": "",
+    "audio": "audio/sentence_319.mp3"
+  },
+  {
+    "id": 320,
+    "english": "Excuse me, does this bus go to the museum?",
+    "chinese": "",
+    "audio": "audio/sentence_320.mp3"
+  },
+  {
+    "id": 321,
+    "english": "My car broke down on the way to work this morning.",
+    "chinese": "",
+    "audio": "audio/sentence_321.mp3"
+  },
+  {
+    "id": 322,
+    "english": "Could you drop me off at the hotel entrance?",
+    "chinese": "",
+    "audio": "audio/sentence_322.mp3"
+  },
+  {
+    "id": 323,
+    "english": "The ferry departs every thirty minutes from the dock.",
+    "chinese": "",
+    "audio": "audio/sentence_323.mp3"
+  },
+  {
+    "id": 324,
+    "english": "I need to check in online before arriving at the airport.",
+    "chinese": "",
+    "audio": "audio/sentence_324.mp3"
+  },
+  {
+    "id": 325,
+    "english": "Watch out for pedestrians when you're driving through the neighborhood.",
+    "chinese": "",
+    "audio": "audio/sentence_325.mp3"
+  },
+  {
+    "id": 326,
+    "english": "Is it within walking distance from here?",
+    "chinese": "从这里走过去远吗within,",
+    "audio": "audio/sentence_326.mp3"
+  },
+  {
+    "id": 327,
+    "english": "The airline lost my suitcase and I haven't gotten it back yet.",
+    "chinese": "",
+    "audio": "audio/sentence_327.mp3"
+  },
+  {
+    "id": 328,
+    "english": "We should leave early to avoid the morning commute.",
+    "chinese": "",
+    "audio": "audio/sentence_328.mp3"
+  },
+  {
+    "id": 329,
+    "english": "Can you show me the fastest route on the map?",
+    "chinese": "",
+    "audio": "audio/sentence_329.mp3"
+  },
+  {
+    "id": 330,
+    "english": "I usually ride my bike to work when the weather is nice.",
+    "chinese": "",
+    "audio": "audio/sentence_330.mp3"
+  },
+  {
+    "id": 331,
+    "english": "I'm looking for a two-bedroom apartment to rent.",
+    "chinese": "",
+    "audio": "audio/sentence_331.mp3"
+  },
+  {
+    "id": 332,
+    "english": "How much is the monthly rent for this place?",
+    "chinese": "",
+    "audio": "audio/sentence_332.mp3"
+  },
+  {
+    "id": 333,
+    "english": "Is the deposit refundable when I move out?",
+    "chinese": "",
+    "audio": "audio/sentence_333.mp3"
+  },
+  {
+    "id": 334,
+    "english": "The landlord said utilities are included in the rent.",
+    "chinese": "",
+    "audio": "audio/sentence_334.mp3"
+  },
+  {
+    "id": 335,
+    "english": "We need to sign the lease before moving in.",
+    "chinese": "",
+    "audio": "audio/sentence_335.mp3"
+  },
+  {
+    "id": 336,
+    "english": "This neighborhood is very quiet and safe.",
+    "chinese": "这个社区非常安静安全neighborhood,",
+    "audio": "audio/sentence_336.mp3"
+  },
+  {
+    "id": 337,
+    "english": "Could you help me carry these boxes upstairs?",
+    "chinese": "",
+    "audio": "audio/sentence_337.mp3"
+  },
+  {
+    "id": 338,
+    "english": "The kitchen comes fully furnished with appliances.",
+    "chinese": "",
+    "audio": "audio/sentence_338.mp3"
+  },
+  {
+    "id": 339,
+    "english": "I need to set up electricity and internet before I move in.",
+    "chinese": "",
+    "audio": "audio/sentence_339.mp3"
+  },
+  {
+    "id": 340,
+    "english": "There's a supermarket and a pharmacy nearby.",
+    "chinese": "",
+    "audio": "audio/sentence_340.mp3"
+  },
+  {
+    "id": 341,
+    "english": "The bedroom faces south, so it gets plenty of sunlight.",
+    "chinese": "",
+    "audio": "audio/sentence_341.mp3"
+  },
+  {
+    "id": 342,
+    "english": "We're planning to move to a bigger house next month.",
+    "chinese": "",
+    "audio": "audio/sentence_342.mp3"
+  },
+  {
+    "id": 343,
+    "english": "The washing machine in the laundry room is shared by all tenants.",
+    "chinese": "",
+    "audio": "audio/sentence_343.mp3"
+  },
+  {
+    "id": 344,
+    "english": "Can I have a pet in this apartment?",
+    "chinese": "这套公寓可以养宠物吗pet, apartment",
+    "audio": "audio/sentence_344.mp3"
+  },
+  {
+    "id": 345,
+    "english": "The air conditioning doesn't seem to be working properly.",
+    "chinese": "",
+    "audio": "audio/sentence_345.mp3"
+  },
+  {
+    "id": 346,
+    "english": "I'd like to repaint the walls before we settle in.",
+    "chinese": "",
+    "audio": "audio/sentence_346.mp3"
+  },
+  {
+    "id": 347,
+    "english": "The building has a gym and a swimming pool for residents.",
+    "chinese": "",
+    "audio": "audio/sentence_347.mp3"
+  },
+  {
+    "id": 348,
+    "english": "Rent is due on the first of every month.",
+    "chinese": "房租每月一号到期Rent,",
+    "audio": "audio/sentence_348.mp3"
+  },
+  {
+    "id": 349,
+    "english": "We bought a new sofa and dining table last weekend.",
+    "chinese": "",
+    "audio": "audio/sentence_349.mp3"
+  },
+  {
+    "id": 350,
+    "english": "The previous tenant left the place in great condition.",
+    "chinese": "",
+    "audio": "audio/sentence_350.mp3"
+  },
+  {
+    "id": 351,
+    "english": "I need to notify the landlord thirty days before moving out.",
+    "chinese": "",
+    "audio": "audio/sentence_351.mp3"
+  },
+  {
+    "id": 352,
+    "english": "Is there parking available for tenants?",
+    "chinese": "租户有停车位吗parking,",
+    "audio": "audio/sentence_352.mp3"
+  },
+  {
+    "id": 353,
+    "english": "The water heater needs to be replaced as soon as possible.",
+    "chinese": "",
+    "audio": "audio/sentence_353.mp3"
+  },
+  {
+    "id": 354,
+    "english": "Our neighbors are very friendly and always say hello.",
+    "chinese": "",
+    "audio": "audio/sentence_354.mp3"
+  },
+  {
+    "id": 355,
+    "english": "I hired a moving company to handle the heavy furniture.",
+    "chinese": "",
+    "audio": "audio/sentence_355.mp3"
+  },
+  {
+    "id": 356,
+    "english": "The balcony is perfect for growing some herbs and flowers.",
+    "chinese": "",
+    "audio": "audio/sentence_356.mp3"
+  },
+  {
+    "id": 357,
+    "english": "Make sure to read the house rules carefully before signing.",
+    "chinese": "",
+    "audio": "audio/sentence_357.mp3"
+  },
+  {
+    "id": 358,
+    "english": "The garbage collection day is every Tuesday and Friday.",
+    "chinese": "",
+    "audio": "audio/sentence_358.mp3"
+  },
+  {
+    "id": 359,
+    "english": "We finally unpacked all the boxes after two weeks.",
+    "chinese": "",
+    "audio": "audio/sentence_359.mp3"
+  },
+  {
+    "id": 360,
+    "english": "It's convenient to live close to the subway station.",
+    "chinese": "",
+    "audio": "audio/sentence_360.mp3"
+  },
+  {
+    "id": 361,
+    "english": "I'm so happy to hear that you got the job!",
+    "chinese": "听到你 得到那份工作我 太开心",
+    "audio": "audio/sentence_361.mp3"
+  },
+  {
+    "id": 362,
+    "english": "She felt really sad after hearing the bad news.",
+    "chinese": "",
+    "audio": "audio/sentence_362.mp3"
+  },
+  {
+    "id": 363,
+    "english": "I'm a bit worried about the exam tomorrow.",
+    "chinese": "",
+    "audio": "audio/sentence_363.mp3"
+  },
+  {
+    "id": 364,
+    "english": "Don't be angry with him; he didn't mean it.",
+    "chinese": "",
+    "audio": "audio/sentence_364.mp3"
+  },
+  {
+    "id": 365,
+    "english": "I feel so grateful for everything you've done for me.",
+    "chinese": "",
+    "audio": "audio/sentence_365.mp3"
+  },
+  {
+    "id": 366,
+    "english": "It's okay to feel nervous before a big presentation.",
+    "chinese": "",
+    "audio": "audio/sentence_366.mp3"
+  },
+  {
+    "id": 367,
+    "english": "I was really disappointed when the concert was canceled.",
+    "chinese": "",
+    "audio": "audio/sentence_367.mp3"
+  },
+  {
+    "id": 368,
+    "english": "You look tired. Are you feeling alright?",
+    "chinese": "你看起来很累感觉还好吗look,",
+    "audio": "audio/sentence_368.mp3"
+  },
+  {
+    "id": 369,
+    "english": "I'm thrilled that we finally finished this project!",
+    "chinese": "",
+    "audio": "audio/sentence_369.mp3"
+  },
+  {
+    "id": 370,
+    "english": "Sometimes I just need some time alone to calm down.",
+    "chinese": "",
+    "audio": "audio/sentence_370.mp3"
+  },
+  {
+    "id": 371,
+    "english": "I understand how you feel; I've been through something similar.",
+    "chinese": "",
+    "audio": "audio/sentence_371.mp3"
+  },
+  {
+    "id": 372,
+    "english": "Don't give up! You're doing much better than you think.",
+    "chinese": "",
+    "audio": "audio/sentence_372.mp3"
+  },
+  {
+    "id": 373,
+    "english": "I'm really sorry for what I said earlier.",
+    "chinese": "我为我 之前说的话真的很 抱",
+    "audio": "audio/sentence_373.mp3"
+  },
+  {
+    "id": 374,
+    "english": "It makes me so proud to see you succeed.",
+    "chinese": "看到你成 功让我感到 非常自",
+    "audio": "audio/sentence_374.mp3"
+  },
+  {
+    "id": 375,
+    "english": "I was surprised but also relieved when I heard the result.",
+    "chinese": "",
+    "audio": "audio/sentence_375.mp3"
+  },
+  {
+    "id": 376,
+    "english": "Talking about your feelings can really help.",
+    "chinese": "",
+    "audio": "audio/sentence_376.mp3"
+  },
+  {
+    "id": 377,
+    "english": "I feel lonely sometimes even when I'm surrounded by people.",
+    "chinese": "",
+    "audio": "audio/sentence_377.mp3"
+  },
+  {
+    "id": 378,
+    "english": "Thank you for being there for me during a tough time.",
+    "chinese": "",
+    "audio": "audio/sentence_378.mp3"
+  },
+  {
+    "id": 379,
+    "english": "I'm feeling much more confident now that I've practiced.",
+    "chinese": "",
+    "audio": "audio/sentence_379.mp3"
+  },
+  {
+    "id": 380,
+    "english": "It's frustrating when things don't go as planned.",
+    "chinese": "",
+    "audio": "audio/sentence_380.mp3"
+  },
+  {
+    "id": 381,
+    "english": "I was deeply moved by her kindness and generosity.",
+    "chinese": "",
+    "audio": "audio/sentence_381.mp3"
+  },
+  {
+    "id": 382,
+    "english": "Cheer up! Things will get better soon.",
+    "chinese": "振作起来一切很 快就会好 起",
+    "audio": "audio/sentence_382.mp3"
+  },
+  {
+    "id": 383,
+    "english": "I regret not telling her how I truly felt.",
+    "chinese": "我后悔没有告诉她我的真 实感",
+    "audio": "audio/sentence_383.mp3"
+  },
+  {
+    "id": 384,
+    "english": "Your support means the world to me right now.",
+    "chinese": "",
+    "audio": "audio/sentence_384.mp3"
+  },
+  {
+    "id": 385,
+    "english": "I'm exhausted both physically and emotionally.",
+    "chinese": "",
+    "audio": "audio/sentence_385.mp3"
+  },
+  {
+    "id": 386,
+    "english": "It's perfectly normal to cry when you're overwhelmed.",
+    "chinese": "",
+    "audio": "audio/sentence_386.mp3"
+  },
+  {
+    "id": 387,
+    "english": "I feel at peace whenever I spend time in nature.",
+    "chinese": "",
+    "audio": "audio/sentence_387.mp3"
+  },
+  {
+    "id": 388,
+    "english": "He tried hard to hide his sadness, but everyone could tell.",
+    "chinese": "",
+    "audio": "audio/sentence_388.mp3"
+  },
+  {
+    "id": 389,
+    "english": "I'm really excited about the trip next month!",
+    "chinese": "",
+    "audio": "audio/sentence_389.mp3"
+  },
+  {
+    "id": 390,
+    "english": "Believe in yourself; you are stronger than you realize.",
+    "chinese": "",
+    "audio": "audio/sentence_390.mp3"
+  },
+  {
+    "id": 391,
+    "english": "I enjoy playing basketball with my friends on weekends.",
+    "chinese": "",
+    "audio": "audio/sentence_391.mp3"
+  },
+  {
+    "id": 392,
+    "english": "Have you seen the latest Marvel movie?",
+    "chinese": "你看过最 新的漫威电影吗seen,",
+    "audio": "audio/sentence_392.mp3"
+  },
+  {
+    "id": 393,
+    "english": "She plays the piano beautifully; she's been practicing for years.",
+    "chinese": "",
+    "audio": "audio/sentence_393.mp3"
+  },
+  {
+    "id": 394,
+    "english": "I've been reading a really interesting novel lately.",
+    "chinese": "",
+    "audio": "audio/sentence_394.mp3"
+  },
+  {
+    "id": 395,
+    "english": "Let's play a board game tonight!",
+    "chinese": "今晚我们来 玩桌游吧Let's,",
+    "audio": "audio/sentence_395.mp3"
+  },
+  {
+    "id": 396,
+    "english": "I go jogging every morning to stay fit.",
+    "chinese": "我每天早上 跑步保持健康jogging,",
+    "audio": "audio/sentence_396.mp3"
+  },
+  {
+    "id": 397,
+    "english": "My favorite genre of music is jazz.",
+    "chinese": "我最喜欢的音乐类型 是爵士",
+    "audio": "audio/sentence_397.mp3"
+  },
+  {
+    "id": 398,
+    "english": "We're planning a hiking trip to the mountains this weekend.",
+    "chinese": "",
+    "audio": "audio/sentence_398.mp3"
+  },
+  {
+    "id": 399,
+    "english": "I started learning photography last year and I love it.",
+    "chinese": "",
+    "audio": "audio/sentence_399.mp3"
+  },
+  {
+    "id": 400,
+    "english": "Do you want to go to the cinema this Saturday?",
+    "chinese": "",
+    "audio": "audio/sentence_400.mp3"
+  },
+  {
+    "id": 401,
+    "english": "I spend most of my free time playing video games.",
+    "chinese": "",
+    "audio": "audio/sentence_401.mp3"
+  },
+  {
+    "id": 402,
+    "english": "She joined a yoga class to relax after work.",
+    "chinese": "",
+    "audio": "audio/sentence_402.mp3"
+  },
+  {
+    "id": 403,
+    "english": "I like listening to podcasts while commuting.",
+    "chinese": "",
+    "audio": "audio/sentence_403.mp3"
+  },
+  {
+    "id": 404,
+    "english": "We went camping by the lake last summer.",
+    "chinese": "",
+    "audio": "audio/sentence_404.mp3"
+  },
+  {
+    "id": 405,
+    "english": "Painting helps me express my creativity.",
+    "chinese": "画画帮助我表达 创造力Painting,",
+    "audio": "audio/sentence_405.mp3"
+  },
+  {
+    "id": 406,
+    "english": "I'm a big fan of science fiction movies.",
+    "chinese": "我是科幻电影的忠实粉丝I'm,",
+    "audio": "audio/sentence_406.mp3"
+  },
+  {
+    "id": 407,
+    "english": "He collects vintage records from the seventies and eighties.",
+    "chinese": "",
+    "audio": "audio/sentence_407.mp3"
+  },
+  {
+    "id": 408,
+    "english": "Would you like to join our book club?",
+    "chinese": "你想加入我们的读 书会吗like,",
+    "audio": "audio/sentence_408.mp3"
+  },
+  {
+    "id": 409,
+    "english": "I learned how to cook Italian food from an online course.",
+    "chinese": "",
+    "audio": "audio/sentence_409.mp3"
+  },
+  {
+    "id": 410,
+    "english": "Swimming is my favorite way to cool off in summer.",
+    "chinese": "",
+    "audio": "audio/sentence_410.mp3"
+  },
+  {
+    "id": 411,
+    "english": "I attend a pottery workshop every Sunday afternoon.",
+    "chinese": "",
+    "audio": "audio/sentence_411.mp3"
+  },
+  {
+    "id": 412,
+    "english": "Watching sports live is way more exciting than on TV.",
+    "chinese": "",
+    "audio": "audio/sentence_412.mp3"
+  },
+  {
+    "id": 413,
+    "english": "I've been binge-watching a new drama series all week.",
+    "chinese": "",
+    "audio": "audio/sentence_413.mp3"
+  },
+  {
+    "id": 414,
+    "english": "Gardening has become my new hobby since retirement.",
+    "chinese": "",
+    "audio": "audio/sentence_414.mp3"
+  },
+  {
+    "id": 415,
+    "english": "We organized a karaoke night and everyone had a blast.",
+    "chinese": "",
+    "audio": "audio/sentence_415.mp3"
+  },
+  {
+    "id": 416,
+    "english": "I practice calligraphy to improve my handwriting.",
+    "chinese": "",
+    "audio": "audio/sentence_416.mp3"
+  },
+  {
+    "id": 417,
+    "english": "Playing chess requires patience and strategic thinking.",
+    "chinese": "",
+    "audio": "audio/sentence_417.mp3"
+  },
+  {
+    "id": 418,
+    "english": "I love exploring new restaurants and trying different cuisines.",
+    "chinese": "",
+    "audio": "audio/sentence_418.mp3"
+  },
+  {
+    "id": 419,
+    "english": "Cycling through the countryside is incredibly refreshing.",
+    "chinese": "",
+    "audio": "audio/sentence_419.mp3"
+  },
+  {
+    "id": 420,
+    "english": "I signed up for a dance class to try something new.",
+    "chinese": "",
+    "audio": "audio/sentence_420.mp3"
+  },
+  {
+    "id": 421,
+    "english": "Could you help me with this, please?",
+    "chinese": "你能帮我一下吗",
+    "audio": "audio/sentence_421.mp3"
+  },
+  {
+    "id": 422,
+    "english": "Would you mind opening the window for me?",
+    "chinese": "",
+    "audio": "audio/sentence_422.mp3"
+  },
+  {
+    "id": 423,
+    "english": "I really need your advice on this matter.",
+    "chinese": "这件事我真的 需要你的建议need,",
+    "audio": "audio/sentence_423.mp3"
+  },
+  {
+    "id": 424,
+    "english": "Can I borrow your pen for a moment?",
+    "chinese": "我能借你的笔用一下吗borrow,",
+    "audio": "audio/sentence_424.mp3"
+  },
+  {
+    "id": 425,
+    "english": "Let me give you a hand with those bags.",
+    "chinese": "我来帮你 拿这些袋子吧Let,",
+    "audio": "audio/sentence_425.mp3"
+  },
+  {
+    "id": 426,
+    "english": "Is there anything I can do to help?",
+    "chinese": "有什么我可 以帮忙的吗anything, help",
+    "audio": "audio/sentence_426.mp3"
+  },
+  {
+    "id": 427,
+    "english": "I'm sorry, but I won't be able to assist you today.",
+    "chinese": "",
+    "audio": "audio/sentence_427.mp3"
+  },
+  {
+    "id": 428,
+    "english": "Could you please speak a little slower?",
+    "chinese": "你能说慢一点吗please,",
+    "audio": "audio/sentence_428.mp3"
+  },
+  {
+    "id": 429,
+    "english": "Would it be possible to reschedule our meeting?",
+    "chinese": "",
+    "audio": "audio/sentence_429.mp3"
+  },
+  {
+    "id": 430,
+    "english": "I'd appreciate it if you could send me the report by Friday.",
+    "chinese": "",
+    "audio": "audio/sentence_430.mp3"
+  },
+  {
+    "id": 431,
+    "english": "Do you need any help carrying that?",
+    "chinese": "你需要帮忙搬那个吗need,",
+    "audio": "audio/sentence_431.mp3"
+  },
+  {
+    "id": 432,
+    "english": "Sorry, I'm not available right now; maybe later?",
+    "chinese": "",
+    "audio": "audio/sentence_432.mp3"
+  },
+  {
+    "id": 433,
+    "english": "Please let me know if you need anything else.",
+    "chinese": "",
+    "audio": "audio/sentence_433.mp3"
+  },
+  {
+    "id": 434,
+    "english": "Could you do me a small favor?",
+    "chinese": "你能帮我一个 小忙吗small, favor",
+    "audio": "audio/sentence_434.mp3"
+  },
+  {
+    "id": 435,
+    "english": "I'm afraid I have to decline your invitation this time.",
+    "chinese": "",
+    "audio": "audio/sentence_435.mp3"
+  },
+  {
+    "id": 436,
+    "english": "Don't hesitate to ask if you have any questions.",
+    "chinese": "",
+    "audio": "audio/sentence_436.mp3"
+  },
+  {
+    "id": 437,
+    "english": "Would you be so kind as to pass me the salt?",
+    "chinese": "",
+    "audio": "audio/sentence_437.mp3"
+  },
+  {
+    "id": 438,
+    "english": "I was wondering if you could review my essay.",
+    "chinese": "",
+    "audio": "audio/sentence_438.mp3"
+  },
+  {
+    "id": 439,
+    "english": "Allow me to help you with the dishes.",
+    "chinese": "让我来帮你 洗碗吧Allow,",
+    "audio": "audio/sentence_439.mp3"
+  },
+  {
+    "id": 440,
+    "english": "Unfortunately, I can't make it to the event tonight.",
+    "chinese": "",
+    "audio": "audio/sentence_440.mp3"
+  },
+  {
+    "id": 441,
+    "english": "May I ask you a quick question?",
+    "chinese": "我能问你一个 简短的问题吗ask,",
+    "audio": "audio/sentence_441.mp3"
+  },
+  {
+    "id": 442,
+    "english": "It would mean a lot if you could come to my graduation.",
+    "chinese": "",
+    "audio": "audio/sentence_442.mp3"
+  },
+  {
+    "id": 443,
+    "english": "I'll take care of it; don't worry about it.",
+    "chinese": "我来处理你别 担心I'll,",
+    "audio": "audio/sentence_443.mp3"
+  },
+  {
+    "id": 444,
+    "english": "Thanks for offering, but I think I can manage on my own.",
+    "chinese": "",
+    "audio": "audio/sentence_444.mp3"
+  },
+  {
+    "id": 445,
+    "english": "Could you hold the door for me, please?",
+    "chinese": "能帮我 扶一下门吗hold,",
+    "audio": "audio/sentence_445.mp3"
+  },
+  {
+    "id": 446,
+    "english": "I'd be happy to help you move this weekend.",
+    "chinese": "",
+    "audio": "audio/sentence_446.mp3"
+  },
+  {
+    "id": 447,
+    "english": "Please forgive me for being late.",
+    "chinese": "请原谅我迟到了",
+    "audio": "audio/sentence_447.mp3"
+  },
+  {
+    "id": 448,
+    "english": "If you're free, could you pick up some groceries on your way home?",
+    "chinese": "",
+    "audio": "audio/sentence_448.mp3"
+  },
+  {
+    "id": 449,
+    "english": "No problem at all; I'm glad I could help.",
+    "chinese": "完全没问题很高兴能帮到",
+    "audio": "audio/sentence_449.mp3"
+  },
+  {
+    "id": 450,
+    "english": "I wish I could say yes, but I already have plans.",
+    "chinese": "",
+    "audio": "audio/sentence_450.mp3"
+  },
+  {
+    "id": 451,
+    "english": "I completely agree with what you just said.",
+    "chinese": "",
+    "audio": "audio/sentence_451.mp3"
+  },
+  {
+    "id": 452,
+    "english": "I'm not sure I agree with that point of view.",
+    "chinese": "",
+    "audio": "audio/sentence_452.mp3"
+  },
+  {
+    "id": 453,
+    "english": "In my opinion, we should start the project earlier.",
+    "chinese": "",
+    "audio": "audio/sentence_453.mp3"
+  },
+  {
+    "id": 454,
+    "english": "That's a great idea! Let's go with it.",
+    "chinese": "好主意就 这么办吧That's,",
+    "audio": "audio/sentence_454.mp3"
+  },
+  {
+    "id": 455,
+    "english": "I'd suggest trying a different approach this time.",
+    "chinese": "",
+    "audio": "audio/sentence_455.mp3"
+  },
+  {
+    "id": 456,
+    "english": "I respectfully disagree; I think there's a better way.",
+    "chinese": "",
+    "audio": "audio/sentence_456.mp3"
+  },
+  {
+    "id": 457,
+    "english": "Have you considered hiring an intern for this role?",
+    "chinese": "",
+    "audio": "audio/sentence_457.mp3"
+  },
+  {
+    "id": 458,
+    "english": "I strongly recommend this restaurant; the food is amazing.",
+    "chinese": "",
+    "audio": "audio/sentence_458.mp3"
+  },
+  {
+    "id": 459,
+    "english": "To be honest, I don't think this plan will work.",
+    "chinese": "",
+    "audio": "audio/sentence_459.mp3"
+  },
+  {
+    "id": 460,
+    "english": "You make a valid point, but let me offer another perspective.",
+    "chinese": "",
+    "audio": "audio/sentence_460.mp3"
+  },
+  {
+    "id": 461,
+    "english": "Why don't we discuss this further in our next meeting?",
+    "chinese": "",
+    "audio": "audio/sentence_461.mp3"
+  },
+  {
+    "id": 462,
+    "english": "I think we should prioritize customer feedback.",
+    "chinese": "",
+    "audio": "audio/sentence_462.mp3"
+  },
+  {
+    "id": 463,
+    "english": "From my experience, this method tends to be more effective.",
+    "chinese": "",
+    "audio": "audio/sentence_463.mp3"
+  },
+  {
+    "id": 464,
+    "english": "I see your point, but I have some reservations.",
+    "chinese": "",
+    "audio": "audio/sentence_464.mp3"
+  },
+  {
+    "id": 465,
+    "english": "What if we split the budget between marketing and R&D?",
+    "chinese": "",
+    "audio": "audio/sentence_465.mp3"
+  },
+  {
+    "id": 466,
+    "english": "Personally, I prefer working from home when possible.",
+    "chinese": "",
+    "audio": "audio/sentence_466.mp3"
+  },
+  {
+    "id": 467,
+    "english": "I couldn't agree more; that's exactly how I feel.",
+    "chinese": "",
+    "audio": "audio/sentence_467.mp3"
+  },
+  {
+    "id": 468,
+    "english": "Let me play devil's advocate for a moment.",
+    "chinese": "",
+    "audio": "audio/sentence_468.mp3"
+  },
+  {
+    "id": 469,
+    "english": "I'd like to propose a compromise that satisfies both sides.",
+    "chinese": "",
+    "audio": "audio/sentence_469.mp3"
+  },
+  {
+    "id": 470,
+    "english": "Based on the data, I believe option B is the better choice.",
+    "chinese": "",
+    "audio": "audio/sentence_470.mp3"
+  },
+  {
+    "id": 471,
+    "english": "I understand where you're coming from, but I still disagree.",
+    "chinese": "",
+    "audio": "audio/sentence_471.mp3"
+  },
+  {
+    "id": 472,
+    "english": "Perhaps we could look at this from a different angle.",
+    "chinese": "",
+    "audio": "audio/sentence_472.mp3"
+  },
+  {
+    "id": 473,
+    "english": "My recommendation would be to wait until we have more information.",
+    "chinese": "",
+    "audio": "audio/sentence_473.mp3"
+  },
+  {
+    "id": 474,
+    "english": "That sounds reasonable to me; let's give it a try.",
+    "chinese": "",
+    "audio": "audio/sentence_474.mp3"
+  },
+  {
+    "id": 475,
+    "english": "I'm open to suggestions if anyone has other ideas.",
+    "chinese": "",
+    "audio": "audio/sentence_475.mp3"
+  },
+  {
+    "id": 476,
+    "english": "I think it's worth taking the risk on this one.",
+    "chinese": "",
+    "audio": "audio/sentence_476.mp3"
+  },
+  {
+    "id": 477,
+    "english": "While I appreciate your suggestion, I'll stick with my original plan.",
+    "chinese": "",
+    "audio": "audio/sentence_477.mp3"
+  },
+  {
+    "id": 478,
+    "english": "Let's weigh the pros and cons before making a decision.",
+    "chinese": "",
+    "audio": "audio/sentence_478.mp3"
+  },
+  {
+    "id": 479,
+    "english": "I firmly believe that teamwork is the key to success here.",
+    "chinese": "",
+    "audio": "audio/sentence_479.mp3"
+  },
+  {
+    "id": 480,
+    "english": "If you ask me, we should focus on quality over quantity.",
+    "chinese": "",
+    "audio": "audio/sentence_480.mp3"
+  },
+  {
+    "id": 481,
+    "english": "Hello, may I speak to Mr. Johnson, please?",
+    "chinese": "",
+    "audio": "audio/sentence_481.mp3"
+  },
+  {
+    "id": 482,
+    "english": "I'm calling to follow up on our last conversation.",
+    "chinese": "",
+    "audio": "audio/sentence_482.mp3"
+  },
+  {
+    "id": 483,
+    "english": "Could you leave a message? She's in a meeting right now.",
+    "chinese": "",
+    "audio": "audio/sentence_483.mp3"
+  },
+  {
+    "id": 484,
+    "english": "Sorry, the line is busy; please try again later.",
+    "chinese": "",
+    "audio": "audio/sentence_484.mp3"
+  },
+  {
+    "id": 485,
+    "english": "Can you hear me clearly? The connection seems weak.",
+    "chinese": "",
+    "audio": "audio/sentence_485.mp3"
+  },
+  {
+    "id": 486,
+    "english": "I'll text you the address in a minute.",
+    "chinese": "我马上把地址发短信给你I'll,",
+    "audio": "audio/sentence_486.mp3"
+  },
+  {
+    "id": 487,
+    "english": "Let's schedule a video call for tomorrow afternoon.",
+    "chinese": "",
+    "audio": "audio/sentence_487.mp3"
+  },
+  {
+    "id": 488,
+    "english": "Please hold on while I transfer your call.",
+    "chinese": "请稍等我帮你 转接Please,",
+    "audio": "audio/sentence_488.mp3"
+  },
+  {
+    "id": 489,
+    "english": "I sent you an email with all the details attached.",
+    "chinese": "",
+    "audio": "audio/sentence_489.mp3"
+  },
+  {
+    "id": 490,
+    "english": "Who's calling, please?",
+    "chinese": "请问您是哪位Who's,",
+    "audio": "audio/sentence_490.mp3"
+  },
+  {
+    "id": 491,
+    "english": "I'm sorry, but he's not available at the moment.",
+    "chinese": "",
+    "audio": "audio/sentence_491.mp3"
+  },
+  {
+    "id": 492,
+    "english": "Could you call me back in about thirty minutes?",
+    "chinese": "",
+    "audio": "audio/sentence_492.mp3"
+  },
+  {
+    "id": 493,
+    "english": "Thanks for reaching out; I'll get back to you soon.",
+    "chinese": "",
+    "audio": "audio/sentence_493.mp3"
+  },
+  {
+    "id": 494,
+    "english": "Did you receive the voicemail I left yesterday?",
+    "chinese": "",
+    "audio": "audio/sentence_494.mp3"
+  },
+  {
+    "id": 495,
+    "english": "I prefer communicating via email for formal matters.",
+    "chinese": "",
+    "audio": "audio/sentence_495.mp3"
+  },
+  {
+    "id": 496,
+    "english": "The signal is terrible in this area; let me step outside.",
+    "chinese": "",
+    "audio": "audio/sentence_496.mp3"
+  },
+  {
+    "id": 497,
+    "english": "Can we switch to a group chat for easier coordination?",
+    "chinese": "",
+    "audio": "audio/sentence_497.mp3"
+  },
+  {
+    "id": 498,
+    "english": "I accidentally missed your call; what did you need?",
+    "chinese": "",
+    "audio": "audio/sentence_498.mp3"
+  },
+  {
+    "id": 499,
+    "english": "Please reply to my email at your earliest convenience.",
+    "chinese": "",
+    "audio": "audio/sentence_499.mp3"
+  },
+  {
+    "id": 500,
+    "english": "Would you mind sending that information in writing?",
+    "chinese": "",
+    "audio": "audio/sentence_500.mp3"
+  },
+  {
+    "id": 501,
+    "english": "I've been trying to reach you all morning.",
+    "chinese": "我一上午都在 试着联系你I've,",
+    "audio": "audio/sentence_501.mp3"
+  },
+  {
+    "id": 502,
+    "english": "Let me put you on speakerphone so everyone can hear.",
+    "chinese": "",
+    "audio": "audio/sentence_502.mp3"
+  },
+  {
+    "id": 503,
+    "english": "My phone battery is about to die; can I call you from a landline?",
+    "chinese": "",
+    "audio": "audio/sentence_503.mp3"
+  },
+  {
+    "id": 504,
+    "english": "We should set up a conference call with the whole team.",
+    "chinese": "",
+    "audio": "audio/sentence_504.mp3"
+  },
+  {
+    "id": 505,
+    "english": "I just got a notification that you sent me a file.",
+    "chinese": "",
+    "audio": "audio/sentence_505.mp3"
+  },
+  {
+    "id": 506,
+    "english": "Sorry for the late reply; I was traveling without internet.",
+    "chinese": "",
+    "audio": "audio/sentence_506.mp3"
+  },
+  {
+    "id": 507,
+    "english": "Can you confirm receipt of the document I forwarded?",
+    "chinese": "",
+    "audio": "audio/sentence_507.mp3"
+  },
+  {
+    "id": 508,
+    "english": "I'll keep my phone on silent during the meeting.",
+    "chinese": "",
+    "audio": "audio/sentence_508.mp3"
+  },
+  {
+    "id": 509,
+    "english": "Feel free to contact me anytime if you have questions.",
+    "chinese": "",
+    "audio": "audio/sentence_509.mp3"
+  },
+  {
+    "id": 510,
+    "english": "The international roaming charges are quite expensive.",
+    "chinese": "",
+    "audio": "audio/sentence_510.mp3"
+  },
+  {
+    "id": 511,
+    "english": "I'd like to open a savings account, please.",
+    "chinese": "我想开一个储蓄账户I'd,",
+    "audio": "audio/sentence_511.mp3"
+  },
+  {
+    "id": 512,
+    "english": "What's the minimum balance required for this account?",
+    "chinese": "",
+    "audio": "audio/sentence_512.mp3"
+  },
+  {
+    "id": 513,
+    "english": "Could you transfer five hundred dollars to my checking account?",
+    "chinese": "",
+    "audio": "audio/sentence_513.mp3"
+  },
+  {
+    "id": 514,
+    "english": "I need to apply for a personal loan for home renovation.",
+    "chinese": "",
+    "audio": "audio/sentence_514.mp3"
+  },
+  {
+    "id": 515,
+    "english": "My credit card was declined at the store today.",
+    "chinese": "",
+    "audio": "audio/sentence_515.mp3"
+  },
+  {
+    "id": 516,
+    "english": "How do I set up automatic bill payments?",
+    "chinese": "怎么设置自动账单支付set,",
+    "audio": "audio/sentence_516.mp3"
+  },
+  {
+    "id": 517,
+    "english": "The interest rate on this mortgage is quite competitive.",
+    "chinese": "",
+    "audio": "audio/sentence_517.mp3"
+  },
+  {
+    "id": 518,
+    "english": "I want to check my account balance online.",
+    "chinese": "",
+    "audio": "audio/sentence_518.mp3"
+  },
+  {
+    "id": 519,
+    "english": "Can I withdraw cash from any ATM without extra fees?",
+    "chinese": "",
+    "audio": "audio/sentence_519.mp3"
+  },
+  {
+    "id": 520,
+    "english": "Please issue me a new debit card; mine was stolen.",
+    "chinese": "",
+    "audio": "audio/sentence_520.mp3"
+  },
+  {
+    "id": 521,
+    "english": "I'd like to exchange some US dollars for euros.",
+    "chinese": "",
+    "audio": "audio/sentence_521.mp3"
+  },
+  {
+    "id": 522,
+    "english": "What are the annual fees for this credit card?",
+    "chinese": "",
+    "audio": "audio/sentence_522.mp3"
+  },
+  {
+    "id": 523,
+    "english": "I've been saving up for a down payment on a house.",
+    "chinese": "",
+    "audio": "audio/sentence_523.mp3"
+  },
+  {
+    "id": 524,
+    "english": "Could you explain the terms of this investment product?",
+    "chinese": "",
+    "audio": "audio/sentence_524.mp3"
+  },
+  {
+    "id": 525,
+    "english": "I noticed an unauthorized charge on my statement.",
+    "chinese": "",
+    "audio": "audio/sentence_525.mp3"
+  },
+  {
+    "id": 526,
+    "english": "How long does an international wire transfer usually take?",
+    "chinese": "",
+    "audio": "audio/sentence_526.mp3"
+  },
+  {
+    "id": 527,
+    "english": "I want to increase my credit limit if possible.",
+    "chinese": "",
+    "audio": "audio/sentence_527.mp3"
+  },
+  {
+    "id": 528,
+    "english": "The bank offers a higher interest rate for fixed deposits.",
+    "chinese": "",
+    "audio": "audio/sentence_528.mp3"
+  },
+  {
+    "id": 529,
+    "english": "Do you provide financial planning services for retirees?",
+    "chinese": "",
+    "audio": "audio/sentence_529.mp3"
+  },
+  {
+    "id": 530,
+    "english": "I need to update my billing address in the system.",
+    "chinese": "",
+    "audio": "audio/sentence_530.mp3"
+  },
+  {
+    "id": 531,
+    "english": "My loan application was approved last week.",
+    "chinese": "",
+    "audio": "audio/sentence_531.mp3"
+  },
+  {
+    "id": 532,
+    "english": "Is there a penalty for early withdrawal from this account?",
+    "chinese": "",
+    "audio": "audio/sentence_532.mp3"
+  },
+  {
+    "id": 533,
+    "english": "I'd like to speak with a financial advisor about retirement planning.",
+    "chinese": "",
+    "audio": "audio/sentence_533.mp3"
+  },
+  {
+    "id": 534,
+    "english": "Please send me my monthly statement by email.",
+    "chinese": "",
+    "audio": "audio/sentence_534.mp3"
+  },
+  {
+    "id": 535,
+    "english": "The exchange rate has fluctuated significantly this month.",
+    "chinese": "",
+    "audio": "audio/sentence_535.mp3"
+  },
+  {
+    "id": 536,
+    "english": "I'm considering refinancing my mortgage to get a lower rate.",
+    "chinese": "",
+    "audio": "audio/sentence_536.mp3"
+  },
+  {
+    "id": 537,
+    "english": "Make sure to pay your credit card bill before the due date.",
+    "chinese": "",
+    "audio": "audio/sentence_537.mp3"
+  },
+  {
+    "id": 538,
+    "english": "This bank has branches all over the country.",
+    "chinese": "",
+    "audio": "audio/sentence_538.mp3"
+  },
+  {
+    "id": 539,
+    "english": "I opened a joint account with my spouse for household expenses.",
+    "chinese": "",
+    "audio": "audio/sentence_539.mp3"
+  },
+  {
+    "id": 540,
+    "english": "Online banking makes it easy to manage finances from home.",
+    "chinese": "",
+    "audio": "audio/sentence_540.mp3"
+  },
+  {
+    "id": 541,
+    "english": "In China, people celebrate the Spring Festival with family reunions.",
+    "chinese": "",
+    "audio": "audio/sentence_541.mp3"
+  },
+  {
+    "id": 542,
+    "english": "It's customary to bring a small gift when visiting someone's home.",
+    "chinese": "",
+    "audio": "audio/sentence_542.mp3"
+  },
+  {
+    "id": 543,
+    "english": "Different cultures have different ways of greeting each other.",
+    "chinese": "",
+    "audio": "audio/sentence_543.mp3"
+  },
+  {
+    "id": 544,
+    "english": "In Japan, bowing is a traditional form of showing respect.",
+    "chinese": "",
+    "audio": "audio/sentence_544.mp3"
+  },
+  {
+    "id": 545,
+    "english": "Thanksgiving is one of the most important holidays in America.",
+    "chinese": "",
+    "audio": "audio/sentence_545.mp3"
+  },
+  {
+    "id": 546,
+    "english": "You should take off your shoes before entering a Japanese home.",
+    "chinese": "",
+    "audio": "audio/sentence_546.mp3"
+  },
+  {
+    "id": 547,
+    "english": "Red envelopes are given during Chinese New Year as a symbol of good luck.",
+    "chinese": "",
+    "audio": "audio/sentence_547.mp3"
+  },
+  {
+    "id": 548,
+    "english": "In many Western countries, Christmas is celebrated on December 25th.",
+    "chinese": "",
+    "audio": "audio/sentence_548.mp3"
+  },
+  {
+    "id": 549,
+    "english": "It's considered rude to point at people with chopsticks in Asian cultures.",
+    "chinese": "",
+    "audio": "audio/sentence_549.mp3"
+  },
+  {
+    "id": 550,
+    "english": "Learning about local customs helps you connect with people more easily.",
+    "chinese": "",
+    "audio": "audio/sentence_550.mp3"
+  },
+  {
+    "id": 551,
+    "english": "In India, it's common to eat with your right hand.",
+    "chinese": "",
+    "audio": "audio/sentence_551.mp3"
+  },
+  {
+    "id": 552,
+    "english": "Gift-giving etiquette varies greatly from country to country.",
+    "chinese": "",
+    "audio": "audio/sentence_552.mp3"
+  },
+  {
+    "id": 553,
+    "english": "The Mid-Autumn Festival is a time for mooncakes and family gatherings.",
+    "chinese": "",
+    "audio": "audio/sentence_553.mp3"
+  },
+  {
+    "id": 554,
+    "english": "In France, it's polite to greet people with a kiss on both cheeks.",
+    "chinese": "",
+    "audio": "audio/sentence_554.mp3"
+  },
+  {
+    "id": 555,
+    "english": "Respecting cultural differences is essential in a globalized world.",
+    "chinese": "",
+    "audio": "audio/sentence_555.mp3"
+  },
+  {
+    "id": 556,
+    "english": "Dragon boat racing is a popular tradition during the Dragon Boat Festival.",
+    "chinese": "",
+    "audio": "audio/sentence_556.mp3"
+  },
+  {
+    "id": 557,
+    "english": "In some cultures, making direct eye contact can be seen as disrespectful.",
+    "chinese": "",
+    "audio": "audio/sentence_557.mp3"
+  },
+  {
+    "id": 558,
+    "english": "Halloween is widely celebrated by children dressing up in costumes.",
+    "chinese": "",
+    "audio": "audio/sentence_558.mp3"
+  },
+  {
+    "id": 559,
+    "english": "Traditional tea ceremonies are an important part of Chinese culture.",
+    "chinese": "",
+    "audio": "audio/sentence_559.mp3"
+  },
+  {
+    "id": 560,
+    "english": "When traveling abroad, it's wise to research local taboos beforehand.",
+    "chinese": "",
+    "audio": "audio/sentence_560.mp3"
+  },
+  {
+    "id": 561,
+    "english": "In Korea, elders are always served food first at the table.",
+    "chinese": "",
+    "audio": "audio/sentence_561.mp3"
+  },
+  {
+    "id": 562,
+    "english": "Wedding traditions differ significantly across various cultures.",
+    "chinese": "",
+    "audio": "audio/sentence_562.mp3"
+  },
+  {
+    "id": 563,
+    "english": "The Lantern Festival marks the end of the Chinese New Year celebrations.",
+    "chinese": "",
+    "audio": "audio/sentence_563.mp3"
+  },
+  {
+    "id": 564,
+    "english": "In Muslim countries, Ramadan is a month of fasting and reflection.",
+    "chinese": "",
+    "audio": "audio/sentence_564.mp3"
+  },
+  {
+    "id": 565,
+    "english": "Understanding body language across cultures can prevent misunderstandings.",
+    "chinese": "",
+    "audio": "audio/sentence_565.mp3"
+  },
+  {
+    "id": 566,
+    "english": "Giving clocks as gifts is taboo in Chinese culture because it sounds like attending a funeral.",
+    "chinese": "",
+    "audio": "audio/sentence_566.mp3"
+  },
+  {
+    "id": 567,
+    "english": "Oktoberfest is a famous beer festival held annually in Germany.",
+    "chinese": "",
+    "audio": "audio/sentence_567.mp3"
+  },
+  {
+    "id": 568,
+    "english": "In Thailand, touching someone's head is considered very impolite.",
+    "chinese": "",
+    "audio": "audio/sentence_568.mp3"
+  },
+  {
+    "id": 569,
+    "english": "Cultural exchange programs help promote mutual understanding between nations.",
+    "chinese": "",
+    "audio": "audio/sentence_569.mp3"
+  },
+  {
+    "id": 570,
+    "english": "Every culture has its own unique way of celebrating the new year.",
+    "chinese": "",
+    "audio": "audio/sentence_570.mp3"
+  },
+  {
+    "id": 571,
+    "english": "My smartphone battery drains really fast these days.",
+    "chinese": "",
+    "audio": "audio/sentence_571.mp3"
+  },
+  {
+    "id": 572,
+    "english": "Could you help me set up my new laptop?",
+    "chinese": "你能帮我 设置一下新笔记本电",
+    "audio": "audio/sentence_572.mp3"
+  },
+  {
+    "id": 573,
+    "english": "I downloaded a great app for tracking my daily expenses.",
+    "chinese": "",
+    "audio": "audio/sentence_573.mp3"
+  },
+  {
+    "id": 574,
+    "english": "Social media has changed the way we communicate with each other.",
+    "chinese": "",
+    "audio": "audio/sentence_574.mp3"
+  },
+  {
+    "id": 575,
+    "english": "Artificial intelligence is transforming many industries rapidly.",
+    "chinese": "",
+    "audio": "audio/sentence_575.mp3"
+  },
+  {
+    "id": 576,
+    "english": "The Wi-Fi signal is too weak in this room.",
+    "chinese": "这个房间的Wi-Fi信号太弱",
+    "audio": "audio/sentence_576.mp3"
+  },
+  {
+    "id": 577,
+    "english": "I need to update my operating system to the latest version.",
+    "chinese": "",
+    "audio": "audio/sentence_577.mp3"
+  },
+  {
+    "id": 578,
+    "english": "Online shopping has become incredibly convenient nowadays.",
+    "chinese": "",
+    "audio": "audio/sentence_578.mp3"
+  },
+  {
+    "id": 579,
+    "english": "Can you share the document through cloud storage?",
+    "chinese": "",
+    "audio": "audio/sentence_579.mp3"
+  },
+  {
+    "id": 580,
+    "english": "I accidentally deleted some important files from my computer.",
+    "chinese": "",
+    "audio": "audio/sentence_580.mp3"
+  },
+  {
+    "id": 581,
+    "english": "This software has a free trial period of thirty days.",
+    "chinese": "",
+    "audio": "audio/sentence_581.mp3"
+  },
+  {
+    "id": 582,
+    "english": "Make sure to use a strong password for your online accounts.",
+    "chinese": "",
+    "audio": "audio/sentence_582.mp3"
+  },
+  {
+    "id": 583,
+    "english": "Video conferencing tools have made remote work much easier.",
+    "chinese": "",
+    "audio": "audio/sentence_583.mp3"
+  },
+  {
+    "id": 584,
+    "english": "I subscribed to a streaming service to watch movies at home.",
+    "chinese": "",
+    "audio": "audio/sentence_584.mp3"
+  },
+  {
+    "id": 585,
+    "english": "Cloud computing allows businesses to scale their operations quickly.",
+    "chinese": "",
+    "audio": "audio/sentence_585.mp3"
+  },
+  {
+    "id": 586,
+    "english": "My printer isn't connecting to the network for some reason.",
+    "chinese": "",
+    "audio": "audio/sentence_586.mp3"
+  },
+  {
+    "id": 587,
+    "english": "Be careful about sharing personal information on social media.",
+    "chinese": "",
+    "audio": "audio/sentence_587.mp3"
+  },
+  {
+    "id": 588,
+    "english": "I use a password manager to keep track of all my logins.",
+    "chinese": "",
+    "audio": "audio/sentence_588.mp3"
+  },
+  {
+    "id": 589,
+    "english": "The new phone has an amazing camera and long battery life.",
+    "chinese": "",
+    "audio": "audio/sentence_589.mp3"
+  },
+  {
+    "id": 590,
+    "english": "Machine learning algorithms can analyze data much faster than humans.",
+    "chinese": "",
+    "audio": "audio/sentence_590.mp3"
+  },
+  {
+    "id": 591,
+    "english": "I backed up all my photos to an external hard drive.",
+    "chinese": "",
+    "audio": "audio/sentence_591.mp3"
+  },
+  {
+    "id": 592,
+    "english": "Two-factor authentication adds an extra layer of security.",
+    "chinese": "",
+    "audio": "audio/sentence_592.mp3"
+  },
+  {
+    "id": 593,
+    "english": "The website is down for maintenance until further notice.",
+    "chinese": "",
+    "audio": "audio/sentence_593.mp3"
+  },
+  {
+    "id": 594,
+    "english": "Smart home devices can make your life more convenient.",
+    "chinese": "",
+    "audio": "audio/sentence_594.mp3"
+  },
+  {
+    "id": 595,
+    "english": "I switched to a faster internet plan for better streaming quality.",
+    "chinese": "",
+    "audio": "audio/sentence_595.mp3"
+  },
+  {
+    "id": 596,
+    "english": "Data privacy has become a major concern in the digital age.",
+    "chinese": "",
+    "audio": "audio/sentence_596.mp3"
+  },
+  {
+    "id": 597,
+    "english": "Chatbots are increasingly being used for customer service.",
+    "chinese": "",
+    "audio": "audio/sentence_597.mp3"
+  },
+  {
+    "id": 598,
+    "english": "I cleared my browser cache because the page wasn't loading correctly.",
+    "chinese": "",
+    "audio": "audio/sentence_598.mp3"
+  },
+  {
+    "id": 599,
+    "english": "Wearable technology like smartwatches is gaining popularity.",
+    "chinese": "",
+    "audio": "audio/sentence_599.mp3"
+  },
+  {
+    "id": 600,
+    "english": "Open-source software gives developers the freedom to customize and improve code.",
+    "chinese": "",
+    "audio": "audio/sentence_600.mp3"
+  },
+  {
+    "id": 601,
+    "english": "We should reduce plastic waste to protect the ocean.",
+    "chinese": "",
+    "audio": "audio/sentence_601.mp3"
+  },
+  {
+    "id": 602,
+    "english": "Recycling helps conserve natural resources.",
+    "chinese": "",
+    "audio": "audio/sentence_602.mp3"
+  },
+  {
+    "id": 603,
+    "english": "Air pollution is a serious problem in many cities.",
+    "chinese": "",
+    "audio": "audio/sentence_603.mp3"
+  },
+  {
+    "id": 604,
+    "english": "Climate change is causing more extreme weather events.",
+    "chinese": "",
+    "audio": "audio/sentence_604.mp3"
+  },
+  {
+    "id": 605,
+    "english": "Planting trees can help absorb carbon dioxide.",
+    "chinese": "",
+    "audio": "audio/sentence_605.mp3"
+  },
+  {
+    "id": 606,
+    "english": "The government has introduced new environmental regulations.",
+    "chinese": "",
+    "audio": "audio/sentence_606.mp3"
+  },
+  {
+    "id": 607,
+    "english": "We need to switch to renewable energy sources.",
+    "chinese": "",
+    "audio": "audio/sentence_607.mp3"
+  },
+  {
+    "id": 608,
+    "english": "Wild animals are losing their habitats due to deforestation.",
+    "chinese": "",
+    "audio": "audio/sentence_608.mp3"
+  },
+  {
+    "id": 609,
+    "english": "Please sort your garbage into recyclables and non-recyclables.",
+    "chinese": "",
+    "audio": "audio/sentence_609.mp3"
+  },
+  {
+    "id": 610,
+    "english": "The river was contaminated by industrial waste.",
+    "chinese": "",
+    "audio": "audio/sentence_610.mp3"
+  },
+  {
+    "id": 611,
+    "english": "Global warming is raising sea levels around the world.",
+    "chinese": "",
+    "audio": "audio/sentence_611.mp3"
+  },
+  {
+    "id": 612,
+    "english": "Solar panels are becoming more affordable for households.",
+    "chinese": "",
+    "audio": "audio/sentence_612.mp3"
+  },
+  {
+    "id": 613,
+    "english": "Many species are at risk of extinction.",
+    "chinese": "许多物种面临灭绝的风险Many,",
+    "audio": "audio/sentence_613.mp3"
+  },
+  {
+    "id": 614,
+    "english": "Water conservation is essential during droughts.",
+    "chinese": "",
+    "audio": "audio/sentence_614.mp3"
+  },
+  {
+    "id": 615,
+    "english": "The factory was fined for illegal dumping.",
+    "chinese": "该工厂因非法倾倒废物而被罚",
+    "audio": "audio/sentence_615.mp3"
+  },
+  {
+    "id": 616,
+    "english": "Organic farming avoids the use of chemical pesticides.",
+    "chinese": "",
+    "audio": "audio/sentence_616.mp3"
+  },
+  {
+    "id": 617,
+    "english": "Noise pollution affects both humans and wildlife.",
+    "chinese": "",
+    "audio": "audio/sentence_617.mp3"
+  },
+  {
+    "id": 618,
+    "english": "The earthquake caused widespread damage to the region.",
+    "chinese": "",
+    "audio": "audio/sentence_618.mp3"
+  },
+  {
+    "id": 619,
+    "english": "Floods are becoming more frequent due to climate change.",
+    "chinese": "",
+    "audio": "audio/sentence_619.mp3"
+  },
+  {
+    "id": 620,
+    "english": "We should use public transportation to reduce emissions.",
+    "chinese": "",
+    "audio": "audio/sentence_620.mp3"
+  },
+  {
+    "id": 621,
+    "english": "The national park protects endangered plant species.",
+    "chinese": "",
+    "audio": "audio/sentence_621.mp3"
+  },
+  {
+    "id": 622,
+    "english": "Composting kitchen waste reduces landfill usage.",
+    "chinese": "",
+    "audio": "audio/sentence_622.mp3"
+  },
+  {
+    "id": 623,
+    "english": "Electric cars produce zero tailpipe emissions.",
+    "chinese": "",
+    "audio": "audio/sentence_623.mp3"
+  },
+  {
+    "id": 624,
+    "english": "The coral reefs are dying because of rising ocean temperatures.",
+    "chinese": "",
+    "audio": "audio/sentence_624.mp3"
+  },
+  {
+    "id": 625,
+    "english": "Sustainable development balances economic growth and ecology.",
+    "chinese": "",
+    "audio": "audio/sentence_625.mp3"
+  },
+  {
+    "id": 626,
+    "english": "Bees play a vital role in pollinating crops.",
+    "chinese": "蜜蜂在农作物授粉中起着至关",
+    "audio": "audio/sentence_626.mp3"
+  },
+  {
+    "id": 627,
+    "english": "The wildfire destroyed thousands of acres of forest.",
+    "chinese": "",
+    "audio": "audio/sentence_627.mp3"
+  },
+  {
+    "id": 628,
+    "english": "Reducing food waste is an easy way to help the environment.",
+    "chinese": "",
+    "audio": "audio/sentence_628.mp3"
+  },
+  {
+    "id": 629,
+    "english": "Clean water is a basic human right.",
+    "chinese": "清洁的水是一项基本人权Clean,",
+    "audio": "audio/sentence_629.mp3"
+  },
+  {
+    "id": 630,
+    "english": "Everyone can make a difference by living a greener lifestyle.",
+    "chinese": "",
+    "audio": "audio/sentence_630.mp3"
+  },
+  {
+    "id": 631,
+    "english": "You have the right to remain silent.",
+    "chinese": "你有权保持沉默right,",
+    "audio": "audio/sentence_631.mp3"
+  },
+  {
+    "id": 632,
+    "english": "Please read the contract carefully before signing.",
+    "chinese": "",
+    "audio": "audio/sentence_632.mp3"
+  },
+  {
+    "id": 633,
+    "english": "Ignorance of the law is no excuse.",
+    "chinese": "不知法不能作为 免责的理由Ignorance,",
+    "audio": "audio/sentence_633.mp3"
+  },
+  {
+    "id": 634,
+    "english": "The defendant pleaded not guilty to all charges.",
+    "chinese": "",
+    "audio": "audio/sentence_634.mp3"
+  },
+  {
+    "id": 635,
+    "english": "You must comply with local regulations.",
+    "chinese": "你必须遵守当地法规comply,",
+    "audio": "audio/sentence_635.mp3"
+  },
+  {
+    "id": 636,
+    "english": "The lawyer advised her client to settle out of court.",
+    "chinese": "",
+    "audio": "audio/sentence_636.mp3"
+  },
+  {
+    "id": 637,
+    "english": "Breach of contract can result in financial penalties.",
+    "chinese": "",
+    "audio": "audio/sentence_637.mp3"
+  },
+  {
+    "id": 638,
+    "english": "Everyone is equal before the law.",
+    "chinese": "法律面 前人人平等Everyone,",
+    "audio": "audio/sentence_638.mp3"
+  },
+  {
+    "id": 639,
+    "english": "The witness gave testimony under oath.",
+    "chinese": "证人在宣誓后作证witness,",
+    "audio": "audio/sentence_639.mp3"
+  },
+  {
+    "id": 640,
+    "english": "You are entitled to legal representation.",
+    "chinese": "你有权获得法律代理entitled,",
+    "audio": "audio/sentence_640.mp3"
+  },
+  {
+    "id": 641,
+    "english": "The new regulation takes effect next month.",
+    "chinese": "",
+    "audio": "audio/sentence_641.mp3"
+  },
+  {
+    "id": 642,
+    "english": "Intellectual property rights must be respected.",
+    "chinese": "",
+    "audio": "audio/sentence_642.mp3"
+  },
+  {
+    "id": 643,
+    "english": "The judge sentenced him to five years in prison.",
+    "chinese": "",
+    "audio": "audio/sentence_643.mp3"
+  },
+  {
+    "id": 644,
+    "english": "Both parties agreed to the terms of the settlement.",
+    "chinese": "",
+    "audio": "audio/sentence_644.mp3"
+  },
+  {
+    "id": 645,
+    "english": "Discrimination in the workplace is strictly prohibited.",
+    "chinese": "",
+    "audio": "audio/sentence_645.mp3"
+  },
+  {
+    "id": 646,
+    "english": "The company was sued for patent infringement.",
+    "chinese": "",
+    "audio": "audio/sentence_646.mp3"
+  },
+  {
+    "id": 647,
+    "english": "You should consult a lawyer before making any decisions.",
+    "chinese": "",
+    "audio": "audio/sentence_647.mp3"
+  },
+  {
+    "id": 648,
+    "english": "The evidence was insufficient to convict the suspect.",
+    "chinese": "",
+    "audio": "audio/sentence_648.mp3"
+  },
+  {
+    "id": 649,
+    "english": "Non-disclosure agreements protect confidential information.",
+    "chinese": "",
+    "audio": "audio/sentence_649.mp3"
+  },
+  {
+    "id": 650,
+    "english": "Traffic violations carry fines and possible license suspension.",
+    "chinese": "",
+    "audio": "audio/sentence_650.mp3"
+  },
+  {
+    "id": 651,
+    "english": "The arbitration process is faster than going to trial.",
+    "chinese": "",
+    "audio": "audio/sentence_651.mp3"
+  },
+  {
+    "id": 652,
+    "english": "Employees have the right to a safe working environment.",
+    "chinese": "",
+    "audio": "audio/sentence_652.mp3"
+  },
+  {
+    "id": 653,
+    "english": "The appeal was denied by the higher court.",
+    "chinese": "",
+    "audio": "audio/sentence_653.mp3"
+  },
+  {
+    "id": 654,
+    "english": "Tax evasion is a criminal offense.",
+    "chinese": "逃税是刑事犯罪Tax,",
+    "audio": "audio/sentence_654.mp3"
+  },
+  {
+    "id": 655,
+    "english": "The landlord must provide habitable living conditions.",
+    "chinese": "",
+    "audio": "audio/sentence_655.mp3"
+  },
+  {
+    "id": 656,
+    "english": "Consumer protection laws safeguard buyers from fraud.",
+    "chinese": "",
+    "audio": "audio/sentence_656.mp3"
+  },
+  {
+    "id": 657,
+    "english": "The jury reached a unanimous verdict.",
+    "chinese": "陪审团达成了一 致裁决jury,",
+    "audio": "audio/sentence_657.mp3"
+  },
+  {
+    "id": 658,
+    "english": "Force majeure clauses cover unforeseeable events.",
+    "chinese": "",
+    "audio": "audio/sentence_658.mp3"
+  },
+  {
+    "id": 659,
+    "english": "You may file a complaint with the regulatory authority.",
+    "chinese": "",
+    "audio": "audio/sentence_659.mp3"
+  },
+  {
+    "id": 660,
+    "english": "Compliance training is mandatory for all employees.",
+    "chinese": "",
+    "audio": "audio/sentence_660.mp3"
+  },
+  {
+    "id": 661,
+    "english": "I go to the gym three times a week.",
+    "chinese": "我每周去三次健身房",
+    "audio": "audio/sentence_661.mp3"
+  },
+  {
+    "id": 662,
+    "english": "Running is a great way to stay in shape.",
+    "chinese": "跑步是保持身材的好方法Running,",
+    "audio": "audio/sentence_662.mp3"
+  },
+  {
+    "id": 663,
+    "english": "She broke the school record in the 100-meter dash.",
+    "chinese": "",
+    "audio": "audio/sentence_663.mp3"
+  },
+  {
+    "id": 664,
+    "english": "Swimming works out your entire body.",
+    "chinese": "游泳可以锻炼全身Swimming,",
+    "audio": "audio/sentence_664.mp3"
+  },
+  {
+    "id": 665,
+    "english": "The team won the championship last year.",
+    "chinese": "这支队伍去年赢得了冠军team,",
+    "audio": "audio/sentence_665.mp3"
+  },
+  {
+    "id": 666,
+    "english": "You should warm up before exercising.",
+    "chinese": "运动前你应该热身warm,",
+    "audio": "audio/sentence_666.mp3"
+  },
+  {
+    "id": 667,
+    "english": "My fitness goal is to lose ten pounds this month.",
+    "chinese": "",
+    "audio": "audio/sentence_667.mp3"
+  },
+  {
+    "id": 668,
+    "english": "He practices basketball every afternoon after school.",
+    "chinese": "",
+    "audio": "audio/sentence_668.mp3"
+  },
+  {
+    "id": 669,
+    "english": "Yoga helps improve flexibility and reduce stress.",
+    "chinese": "",
+    "audio": "audio/sentence_669.mp3"
+  },
+  {
+    "id": 670,
+    "english": "The marathon starts at six in the morning.",
+    "chinese": "马拉松比赛早上六点开始marathon,",
+    "audio": "audio/sentence_670.mp3"
+  },
+  {
+    "id": 671,
+    "english": "Don't forget to stretch after your workout.",
+    "chinese": "锻炼后别忘了拉伸Don't,",
+    "audio": "audio/sentence_671.mp3"
+  },
+  {
+    "id": 672,
+    "english": "Our soccer team made it to the finals.",
+    "chinese": "我们的 足球队打进了决赛soccer,",
+    "audio": "audio/sentence_672.mp3"
+  },
+  {
+    "id": 673,
+    "english": "Personal trainers can help you reach your goals faster.",
+    "chinese": "",
+    "audio": "audio/sentence_673.mp3"
+  },
+  {
+    "id": 674,
+    "english": "Cycling is both fun and good for the environment.",
+    "chinese": "",
+    "audio": "audio/sentence_674.mp3"
+  },
+  {
+    "id": 675,
+    "english": "The coach gave us a pep talk before the game.",
+    "chinese": "",
+    "audio": "audio/sentence_675.mp3"
+  },
+  {
+    "id": 676,
+    "english": "Proper hydration is essential during exercise.",
+    "chinese": "",
+    "audio": "audio/sentence_676.mp3"
+  },
+  {
+    "id": 677,
+    "english": "She signed up for a Pilates class at the community center.",
+    "chinese": "",
+    "audio": "audio/sentence_677.mp3"
+  },
+  {
+    "id": 678,
+    "english": "Weight training builds muscle strength and endurance.",
+    "chinese": "",
+    "audio": "audio/sentence_678.mp3"
+  },
+  {
+    "id": 679,
+    "english": "The tennis match was postponed due to rain.",
+    "chinese": "",
+    "audio": "audio/sentence_679.mp3"
+  },
+  {
+    "id": 680,
+    "english": "I prefer outdoor activities to indoor ones.",
+    "chinese": "比起室内活动我 更喜欢户外",
+    "audio": "audio/sentence_680.mp3"
+  },
+  {
+    "id": 681,
+    "english": "Rest days are just as important as training days.",
+    "chinese": "",
+    "audio": "audio/sentence_681.mp3"
+  },
+  {
+    "id": 682,
+    "english": "The swimming pool opens at seven every morning.",
+    "chinese": "",
+    "audio": "audio/sentence_682.mp3"
+  },
+  {
+    "id": 683,
+    "english": "Competing in tournaments motivates me to train harder.",
+    "chinese": "",
+    "audio": "audio/sentence_683.mp3"
+  },
+  {
+    "id": 684,
+    "english": "A balanced diet supports athletic performance.",
+    "chinese": "",
+    "audio": "audio/sentence_684.mp3"
+  },
+  {
+    "id": 685,
+    "english": "The referee called a foul on the opposing player.",
+    "chinese": "",
+    "audio": "audio/sentence_685.mp3"
+  },
+  {
+    "id": 686,
+    "english": "Hiking is a wonderful way to enjoy nature.",
+    "chinese": "",
+    "audio": "audio/sentence_686.mp3"
+  },
+  {
+    "id": 687,
+    "english": "Overtraining can lead to injuries and burnout.",
+    "chinese": "",
+    "audio": "audio/sentence_687.mp3"
+  },
+  {
+    "id": 688,
+    "english": "We organized a friendly volleyball match for the weekend.",
+    "chinese": "",
+    "audio": "audio/sentence_688.mp3"
+  },
+  {
+    "id": 689,
+    "english": "Tracking your progress helps maintain motivation.",
+    "chinese": "",
+    "audio": "audio/sentence_689.mp3"
+  },
+  {
+    "id": 690,
+    "english": "Good sportsmanship means respecting your opponents.",
+    "chinese": "",
+    "audio": "audio/sentence_690.mp3"
+  },
+  {
+    "id": 691,
+    "english": "Let's schedule a meeting to discuss the proposal.",
+    "chinese": "",
+    "audio": "audio/sentence_691.mp3"
+  },
+  {
+    "id": 692,
+    "english": "We need to finalize the deal by Friday.",
+    "chinese": "我们需要在周五前敲定这笔交",
+    "audio": "audio/sentence_692.mp3"
+  },
+  {
+    "id": 693,
+    "english": "The partnership will benefit both companies.",
+    "chinese": "",
+    "audio": "audio/sentence_693.mp3"
+  },
+  {
+    "id": 694,
+    "english": "Could you send me the revised contract?",
+    "chinese": "你能把修改后的合同发给我",
+    "audio": "audio/sentence_694.mp3"
+  },
+  {
+    "id": 695,
+    "english": "Our quarterly revenue exceeded expectations.",
+    "chinese": "",
+    "audio": "audio/sentence_695.mp3"
+  },
+  {
+    "id": 696,
+    "english": "I'd like to present our new marketing strategy.",
+    "chinese": "",
+    "audio": "audio/sentence_696.mp3"
+  },
+  {
+    "id": 697,
+    "english": "The negotiation went better than expected.",
+    "chinese": "谈判进展比预期的要好negotiation,",
+    "audio": "audio/sentence_697.mp3"
+  },
+  {
+    "id": 698,
+    "english": "We're looking for potential investors for this project.",
+    "chinese": "",
+    "audio": "audio/sentence_698.mp3"
+  },
+  {
+    "id": 699,
+    "english": "Please review the terms and conditions carefully.",
+    "chinese": "",
+    "audio": "audio/sentence_699.mp3"
+  },
+  {
+    "id": 700,
+    "english": "The merger was completed successfully last month.",
+    "chinese": "",
+    "audio": "audio/sentence_700.mp3"
+  },
+  {
+    "id": 701,
+    "english": "Can we negotiate a better price?",
+    "chinese": "我们能谈一个 更好的价格吗negotiate,",
+    "audio": "audio/sentence_701.mp3"
+  },
+  {
+    "id": 702,
+    "english": "The board approved the budget for next fiscal year.",
+    "chinese": "",
+    "audio": "audio/sentence_702.mp3"
+  },
+  {
+    "id": 703,
+    "english": "We value long-term relationships over short-term gains.",
+    "chinese": "",
+    "audio": "audio/sentence_703.mp3"
+  },
+  {
+    "id": 704,
+    "english": "The presentation impressed the client greatly.",
+    "chinese": "",
+    "audio": "audio/sentence_704.mp3"
+  },
+  {
+    "id": 705,
+    "english": "Let me walk you through the financial projections.",
+    "chinese": "",
+    "audio": "audio/sentence_705.mp3"
+  },
+  {
+    "id": 706,
+    "english": "We offer competitive pricing and excellent service.",
+    "chinese": "",
+    "audio": "audio/sentence_706.mp3"
+  },
+  {
+    "id": 707,
+    "english": "The supply chain disruption affected our delivery schedule.",
+    "chinese": "",
+    "audio": "audio/sentence_707.mp3"
+  },
+  {
+    "id": 708,
+    "english": "What is your bottom line on this deal?",
+    "chinese": "这笔交易你的底线是什么bottom,",
+    "audio": "audio/sentence_708.mp3"
+  },
+  {
+    "id": 709,
+    "english": "We should explore new market opportunities overseas.",
+    "chinese": "",
+    "audio": "audio/sentence_709.mp3"
+  },
+  {
+    "id": 710,
+    "english": "The CEO announced a restructuring plan.",
+    "chinese": "首席执行官宣布了一项重组计",
+    "audio": "audio/sentence_710.mp3"
+  },
+  {
+    "id": 711,
+    "english": "Sign here to confirm your agreement.",
+    "chinese": "请在这里签字以确认您的同",
+    "audio": "audio/sentence_711.mp3"
+  },
+  {
+    "id": 712,
+    "english": "Our profit margin has improved significantly.",
+    "chinese": "",
+    "audio": "audio/sentence_712.mp3"
+  },
+  {
+    "id": 713,
+    "english": "I'll follow up with an email summarizing our discussion.",
+    "chinese": "",
+    "audio": "audio/sentence_713.mp3"
+  },
+  {
+    "id": 714,
+    "english": "The vendor offered a ten percent discount for bulk orders.",
+    "chinese": "",
+    "audio": "audio/sentence_714.mp3"
+  },
+  {
+    "id": 715,
+    "english": "Risk assessment is a key part of business planning.",
+    "chinese": "",
+    "audio": "audio/sentence_715.mp3"
+  },
+  {
+    "id": 716,
+    "english": "We reached a mutually beneficial agreement.",
+    "chinese": "",
+    "audio": "audio/sentence_716.mp3"
+  },
+  {
+    "id": 717,
+    "english": "Customer feedback drives our product development.",
+    "chinese": "",
+    "audio": "audio/sentence_717.mp3"
+  },
+  {
+    "id": 718,
+    "english": "The startup secured funding in its Series A round.",
+    "chinese": "",
+    "audio": "audio/sentence_718.mp3"
+  },
+  {
+    "id": 719,
+    "english": "Effective communication is crucial in business negotiations.",
+    "chinese": "",
+    "audio": "audio/sentence_719.mp3"
+  },
+  {
+    "id": 720,
+    "english": "Let's set up a call to align on next steps.",
+    "chinese": "我们安排个电话会议来对 齐下",
+    "audio": "audio/sentence_720.mp3"
+  },
+  {
+    "id": 721,
+    "english": "I'd like to book a double room for three nights.",
+    "chinese": "",
+    "audio": "audio/sentence_721.mp3"
+  },
+  {
+    "id": 722,
+    "english": "What time is check-in?",
+    "chinese": "入住时间 是几点time, check-in",
+    "audio": "audio/sentence_722.mp3"
+  },
+  {
+    "id": 723,
+    "english": "Could I have an extra towel, please?",
+    "chinese": "请给我一条额外的毛巾好吗extra,",
+    "audio": "audio/sentence_723.mp3"
+  },
+  {
+    "id": 724,
+    "english": "The air conditioning in my room isn't working.",
+    "chinese": "",
+    "audio": "audio/sentence_724.mp3"
+  },
+  {
+    "id": 725,
+    "english": "Is breakfast included in the room rate?",
+    "chinese": "房价包含早餐吗breakfast,",
+    "audio": "audio/sentence_725.mp3"
+  },
+  {
+    "id": 726,
+    "english": "I need to change my reservation date.",
+    "chinese": "我需要更改预订日期need,",
+    "audio": "audio/sentence_726.mp3"
+  },
+  {
+    "id": 727,
+    "english": "Do you have any rooms with an ocean view?",
+    "chinese": "",
+    "audio": "audio/sentence_727.mp3"
+  },
+  {
+    "id": 728,
+    "english": "Check-out is at eleven in the morning.",
+    "chinese": "退房时间 是上午十一点Check-out,",
+    "audio": "audio/sentence_728.mp3"
+  },
+  {
+    "id": 729,
+    "english": "Could you arrange airport pickup for me?",
+    "chinese": "你能帮我 安排接机服务吗arrange,",
+    "audio": "audio/sentence_729.mp3"
+  },
+  {
+    "id": 730,
+    "english": "The Wi-Fi password is on the card in your room.",
+    "chinese": "",
+    "audio": "audio/sentence_730.mp3"
+  },
+  {
+    "id": 731,
+    "english": "I'd like to request a late check-out.",
+    "chinese": "我想申请延迟退房I'd,",
+    "audio": "audio/sentence_731.mp3"
+  },
+  {
+    "id": 732,
+    "english": "Room service is available twenty-four hours a day.",
+    "chinese": "",
+    "audio": "audio/sentence_732.mp3"
+  },
+  {
+    "id": 733,
+    "english": "There's a swimming pool and fitness center on site.",
+    "chinese": "",
+    "audio": "audio/sentence_733.mp3"
+  },
+  {
+    "id": 734,
+    "english": "My room hasn't been cleaned yet.",
+    "chinese": "我的房间还没 有打扫room, hasn't,",
+    "audio": "audio/sentence_734.mp3"
+  },
+  {
+    "id": 735,
+    "english": "Can I get a wake-up call at six thirty?",
+    "chinese": "能在六点半给我打个 叫醒电话",
+    "audio": "audio/sentence_735.mp3"
+  },
+  {
+    "id": 736,
+    "english": "The hotel offers complimentary parking for guests.",
+    "chinese": "",
+    "audio": "audio/sentence_736.mp3"
+  },
+  {
+    "id": 737,
+    "english": "I have a reservation under the name Johnson.",
+    "chinese": "",
+    "audio": "audio/sentence_737.mp3"
+  },
+  {
+    "id": 738,
+    "english": "Could you recommend a good restaurant nearby?",
+    "chinese": "",
+    "audio": "audio/sentence_738.mp3"
+  },
+  {
+    "id": 739,
+    "english": "The minibar charges are listed on the price sheet.",
+    "chinese": "",
+    "audio": "audio/sentence_739.mp3"
+  },
+  {
+    "id": 740,
+    "english": "We're fully booked for this weekend.",
+    "chinese": "我们这个周末已经客满了We're,",
+    "audio": "audio/sentence_740.mp3"
+  },
+  {
+    "id": 741,
+    "english": "Is there a non-smoking room available?",
+    "chinese": "有无烟房吗non-smoking,",
+    "audio": "audio/sentence_741.mp3"
+  },
+  {
+    "id": 742,
+    "english": "The elevator is out of order; please use the stairs.",
+    "chinese": "",
+    "audio": "audio/sentence_742.mp3"
+  },
+  {
+    "id": 743,
+    "english": "I'd like to leave my luggage here until check-in.",
+    "chinese": "",
+    "audio": "audio/sentence_743.mp3"
+  },
+  {
+    "id": 744,
+    "english": "The concierge can help you book tour tickets.",
+    "chinese": "",
+    "audio": "audio/sentence_744.mp3"
+  },
+  {
+    "id": 745,
+    "english": "Your room has been upgraded to a suite.",
+    "chinese": "您的房间已升 级为套房room,",
+    "audio": "audio/sentence_745.mp3"
+  },
+  {
+    "id": 746,
+    "english": "Please fill out this registration form.",
+    "chinese": "请填写 这张登记表Please,",
+    "audio": "audio/sentence_746.mp3"
+  },
+  {
+    "id": 747,
+    "english": "The spa is open from nine AM to nine PM.",
+    "chinese": "",
+    "audio": "audio/sentence_747.mp3"
+  },
+  {
+    "id": 748,
+    "english": "I found a stain on the bedsheets.",
+    "chinese": "我发现床单上有污渍found,",
+    "audio": "audio/sentence_748.mp3"
+  },
+  {
+    "id": 749,
+    "english": "Do you accept credit cards for payment?",
+    "chinese": "你们接受信用 卡付款吗accept,",
+    "audio": "audio/sentence_749.mp3"
+  },
+  {
+    "id": 750,
+    "english": "Thank you for choosing our hotel. Have a pleasant stay!",
+    "chinese": "",
+    "audio": "audio/sentence_750.mp3"
+  },
+  {
+    "id": 751,
+    "english": "Please have your boarding pass and ID ready.",
+    "chinese": "",
+    "audio": "audio/sentence_751.mp3"
+  },
+  {
+    "id": 752,
+    "english": "The flight to London departs from Gate B12.",
+    "chinese": "",
+    "audio": "audio/sentence_752.mp3"
+  },
+  {
+    "id": 753,
+    "english": "How many bags am I allowed to check in?",
+    "chinese": "我可以托运几件行李many,",
+    "audio": "audio/sentence_753.mp3"
+  },
+  {
+    "id": 754,
+    "english": "Your carry-on luggage exceeds the size limit.",
+    "chinese": "",
+    "audio": "audio/sentence_754.mp3"
+  },
+  {
+    "id": 755,
+    "english": "Please remove your shoes and belt for security screening.",
+    "chinese": "",
+    "audio": "audio/sentence_755.mp3"
+  },
+  {
+    "id": 756,
+    "english": "The flight has been delayed by two hours.",
+    "chinese": "航班延误了两个 小时flight,",
+    "audio": "audio/sentence_756.mp3"
+  },
+  {
+    "id": 757,
+    "english": "Do you have anything to declare?",
+    "chinese": "你有什么需要申报的吗anything, declare",
+    "audio": "audio/sentence_757.mp3"
+  },
+  {
+    "id": 758,
+    "english": "Where is the immigration counter?",
+    "chinese": "入境检查 柜台在哪里immigration,",
+    "audio": "audio/sentence_758.mp3"
+  },
+  {
+    "id": 759,
+    "english": "I'm here on a tourist visa for two weeks.",
+    "chinese": "我持旅游签证来待两周I'm,",
+    "audio": "audio/sentence_759.mp3"
+  },
+  {
+    "id": 760,
+    "english": "Please place your liquids in a clear plastic bag.",
+    "chinese": "",
+    "audio": "audio/sentence_760.mp3"
+  },
+  {
+    "id": 761,
+    "english": "The baggage claim area is on the lower level.",
+    "chinese": "",
+    "audio": "audio/sentence_761.mp3"
+  },
+  {
+    "id": 762,
+    "english": "My suitcase didn't arrive with my flight.",
+    "chinese": "我的行 李箱没有随航班到达suitcase, didn't,",
+    "audio": "audio/sentence_762.mp3"
+  },
+  {
+    "id": 763,
+    "english": "Boarding will begin in fifteen minutes.",
+    "chinese": "十五分钟后开始登机Boarding,",
+    "audio": "audio/sentence_763.mp3"
+  },
+  {
+    "id": 764,
+    "english": "You need to fill out a customs declaration form.",
+    "chinese": "",
+    "audio": "audio/sentence_764.mp3"
+  },
+  {
+    "id": 765,
+    "english": "Is this a direct flight or does it have a layover?",
+    "chinese": "",
+    "audio": "audio/sentence_765.mp3"
+  },
+  {
+    "id": 766,
+    "english": "The duty-free shop is past security.",
+    "chinese": "免税店在安检之后duty-free,",
+    "audio": "audio/sentence_766.mp3"
+  },
+  {
+    "id": 767,
+    "english": "Please keep your seatbelt fastened during turbulence.",
+    "chinese": "",
+    "audio": "audio/sentence_767.mp3"
+  },
+  {
+    "id": 768,
+    "english": "What is the purpose of your visit?",
+    "chinese": "您来访的目的 是什么purpose, visit",
+    "audio": "audio/sentence_768.mp3"
+  },
+  {
+    "id": 769,
+    "english": "I'd like to request a window seat, please.",
+    "chinese": "我想要一个靠窗的座位I'd,",
+    "audio": "audio/sentence_769.mp3"
+  },
+  {
+    "id": 770,
+    "english": "The connecting flight leaves from Terminal 2.",
+    "chinese": "",
+    "audio": "audio/sentence_770.mp3"
+  },
+  {
+    "id": 771,
+    "english": "All electronic devices must be turned off during takeoff.",
+    "chinese": "",
+    "audio": "audio/sentence_771.mp3"
+  },
+  {
+    "id": 772,
+    "english": "Your passport expires in less than six months.",
+    "chinese": "",
+    "audio": "audio/sentence_772.mp3"
+  },
+  {
+    "id": 773,
+    "english": "We are now beginning final boarding for Flight 308.",
+    "chinese": "",
+    "audio": "audio/sentence_773.mp3"
+  },
+  {
+    "id": 774,
+    "english": "Customs officers may inspect your luggage.",
+    "chinese": "",
+    "audio": "audio/sentence_774.mp3"
+  },
+  {
+    "id": 775,
+    "english": "The airline provides meals on international flights.",
+    "chinese": "",
+    "audio": "audio/sentence_775.mp3"
+  },
+  {
+    "id": 776,
+    "english": "Please proceed to the gate immediately.",
+    "chinese": "请立即前往登机口Please,",
+    "audio": "audio/sentence_776.mp3"
+  },
+  {
+    "id": 777,
+    "english": "I need to change my return flight date.",
+    "chinese": "我需要更改返程航班日期need,",
+    "audio": "audio/sentence_777.mp3"
+  },
+  {
+    "id": 778,
+    "english": "There is no smoking anywhere in the airport.",
+    "chinese": "",
+    "audio": "audio/sentence_778.mp3"
+  },
+  {
+    "id": 779,
+    "english": "Lost and found is located near the information desk.",
+    "chinese": "",
+    "audio": "audio/sentence_779.mp3"
+  },
+  {
+    "id": 780,
+    "english": "Welcome to our country. Enjoy your stay!",
+    "chinese": "欢迎来到我 国祝您旅途愉",
+    "audio": "audio/sentence_780.mp3"
+  },
+  {
+    "id": 781,
+    "english": "It's raining cats and dogs outside.",
+    "chinese": "外面正下 着倾盆大雨It's,",
+    "audio": "audio/sentence_781.mp3"
+  },
+  {
+    "id": 782,
+    "english": "Don't put all your eggs in one basket.",
+    "chinese": "不要把所有鸡蛋放在一个 篮子",
+    "audio": "audio/sentence_782.mp3"
+  },
+  {
+    "id": 783,
+    "english": "She hit the nail on the head with that answer.",
+    "chinese": "",
+    "audio": "audio/sentence_783.mp3"
+  },
+  {
+    "id": 784,
+    "english": "I'm feeling under the weather today.",
+    "chinese": "我今天感 觉不太舒服I'm,",
+    "audio": "audio/sentence_784.mp3"
+  },
+  {
+    "id": 785,
+    "english": "Let's call it a day and continue tomorrow.",
+    "chinese": "今天就到 此为止明天再继续",
+    "audio": "audio/sentence_785.mp3"
+  },
+  {
+    "id": 786,
+    "english": "He let the cat out of the bag about the surprise party.",
+    "chinese": "",
+    "audio": "audio/sentence_786.mp3"
+  },
+  {
+    "id": 787,
+    "english": "Actions speak louder than words.",
+    "chinese": "行动胜于言语Actions,",
+    "audio": "audio/sentence_787.mp3"
+  },
+  {
+    "id": 788,
+    "english": "We need to get to the bottom of this issue.",
+    "chinese": "我们需要彻底弄清这个问题need,",
+    "audio": "audio/sentence_788.mp3"
+  },
+  {
+    "id": 789,
+    "english": "That project is a piece of cake for her.",
+    "chinese": "那个项目对她来说轻而易举project,",
+    "audio": "audio/sentence_789.mp3"
+  },
+  {
+    "id": 790,
+    "english": "Don't count your chickens before they hatch.",
+    "chinese": "",
+    "audio": "audio/sentence_790.mp3"
+  },
+  {
+    "id": 791,
+    "english": "He burned the midnight oil to finish the report.",
+    "chinese": "",
+    "audio": "audio/sentence_791.mp3"
+  },
+  {
+    "id": 792,
+    "english": "Every cloud has a silver lining.",
+    "chinese": "黑暗中总有一线光明Every,",
+    "audio": "audio/sentence_792.mp3"
+  },
+  {
+    "id": 793,
+    "english": "She's been pulling my leg all afternoon.",
+    "chinese": "她整个下午都在 开我玩笑She's,",
+    "audio": "audio/sentence_793.mp3"
+  },
+  {
+    "id": 794,
+    "english": "It takes two to tango.",
+    "chinese": "一个巴掌拍不响takes,",
+    "audio": "audio/sentence_794.mp3"
+  },
+  {
+    "id": 795,
+    "english": "I'll keep my fingers crossed for you.",
+    "chinese": "我会为你 祈祷好运I'll,",
+    "audio": "audio/sentence_795.mp3"
+  },
+  {
+    "id": 796,
+    "english": "He spilled the beans about the secret plan.",
+    "chinese": "他说漏了嘴泄露了秘密计",
+    "audio": "audio/sentence_796.mp3"
+  },
+  {
+    "id": 797,
+    "english": "Better late than never.",
+    "chinese": "迟做总比不做好Better,",
+    "audio": "audio/sentence_797.mp3"
+  },
+  {
+    "id": 798,
+    "english": "She's always up to date with the latest trends.",
+    "chinese": "",
+    "audio": "audio/sentence_798.mp3"
+  },
+  {
+    "id": 799,
+    "english": "Don't bite off more than you can chew.",
+    "chinese": "不要贪多嚼不烂Don't,",
+    "audio": "audio/sentence_799.mp3"
+  },
+  {
+    "id": 800,
+    "english": "The ball is in your court now.",
+    "chinese": "现在轮到你了",
+    "audio": "audio/sentence_800.mp3"
+  },
+  {
+    "id": 801,
+    "english": "I'm going to turn over a new leaf this year.",
+    "chinese": "今年我要改过自新I'm,",
+    "audio": "audio/sentence_801.mp3"
+  },
+  {
+    "id": 802,
+    "english": "They see eye to eye on most issues.",
+    "chinese": "他们在大 多数问题上看法一",
+    "audio": "audio/sentence_802.mp3"
+  },
+  {
+    "id": 803,
+    "english": "Hang in there; things will get better.",
+    "chinese": "坚持住事情会好 起来的Hang,",
+    "audio": "audio/sentence_803.mp3"
+  },
+  {
+    "id": 804,
+    "english": "He got cold feet before the wedding.",
+    "chinese": "他在婚礼前临阵退缩了got,",
+    "audio": "audio/sentence_804.mp3"
+  },
+  {
+    "id": 805,
+    "english": "Once in a blue moon, I treat myself to a fancy dinner.",
+    "chinese": "",
+    "audio": "audio/sentence_805.mp3"
+  },
+  {
+    "id": 806,
+    "english": "Break a leg on your performance tonight!",
+    "chinese": "祝你今晚 演出成功Break,",
+    "audio": "audio/sentence_806.mp3"
+  },
+  {
+    "id": 807,
+    "english": "She cost an arm and a leg for that handbag.",
+    "chinese": "",
+    "audio": "audio/sentence_807.mp3"
+  },
+  {
+    "id": 808,
+    "english": "When pigs fly, he'll apologize.",
+    "chinese": "除非太阳从西边出来 他才会",
+    "audio": "audio/sentence_808.mp3"
+  },
+  {
+    "id": 809,
+    "english": "I'm all ears; tell me what happened.",
+    "chinese": "我洗耳恭听告 诉我发生了什",
+    "audio": "audio/sentence_809.mp3"
+  },
+  {
+    "id": 810,
+    "english": "Kill two birds with one stone by combining the trips.",
+    "chinese": "",
+    "audio": "audio/sentence_810.mp3"
+  },
+  {
+    "id": 811,
+    "english": "Could you send me the meeting agenda beforehand?",
+    "chinese": "",
+    "audio": "audio/sentence_811.mp3"
+  },
+  {
+    "id": 812,
+    "english": "Let's circle back on this topic next week.",
+    "chinese": "我们下 周再回到这个话题Let's,",
+    "audio": "audio/sentence_812.mp3"
+  },
+  {
+    "id": 813,
+    "english": "I appreciate your constructive feedback.",
+    "chinese": "我很感谢你的建 设性反馈appreciate,",
+    "audio": "audio/sentence_813.mp3"
+  },
+  {
+    "id": 814,
+    "english": "Please CC me on that email.",
+    "chinese": "请把那封邮件抄送给我Please, email",
+    "audio": "audio/sentence_814.mp3"
+  },
+  {
+    "id": 815,
+    "english": "We need to align on the project timeline.",
+    "chinese": "我们需要在项目时间线上达成",
+    "audio": "audio/sentence_815.mp3"
+  },
+  {
+    "id": 816,
+    "english": "Great job on the presentation today!",
+    "chinese": "今天的 演示做得很棒Great,",
+    "audio": "audio/sentence_816.mp3"
+  },
+  {
+    "id": 817,
+    "english": "Can we reschedule our one-on-one meeting?",
+    "chinese": "",
+    "audio": "audio/sentence_817.mp3"
+  },
+  {
+    "id": 818,
+    "english": "I'll take notes during the meeting and share them later.",
+    "chinese": "",
+    "audio": "audio/sentence_818.mp3"
+  },
+  {
+    "id": 819,
+    "english": "Let's brainstorm some ideas for the new campaign.",
+    "chinese": "",
+    "audio": "audio/sentence_819.mp3"
+  },
+  {
+    "id": 820,
+    "english": "The deadline has been moved up by two days.",
+    "chinese": "",
+    "audio": "audio/sentence_820.mp3"
+  },
+  {
+    "id": 821,
+    "english": "Could you clarify what you mean by that?",
+    "chinese": "你能澄清一下你的意 思吗clarify, mean",
+    "audio": "audio/sentence_821.mp3"
+  },
+  {
+    "id": 822,
+    "english": "Teamwork makes the dream work.",
+    "chinese": "团队合作成就 梦想Teamwork,",
+    "audio": "audio/sentence_822.mp3"
+  },
+  {
+    "id": 823,
+    "english": "I'd like to raise a concern about the current process.",
+    "chinese": "",
+    "audio": "audio/sentence_823.mp3"
+  },
+  {
+    "id": 824,
+    "english": "Please keep this information confidential.",
+    "chinese": "请对此信息保密Please,",
+    "audio": "audio/sentence_824.mp3"
+  },
+  {
+    "id": 825,
+    "english": "Who is the point of contact for this project?",
+    "chinese": "",
+    "audio": "audio/sentence_825.mp3"
+  },
+  {
+    "id": 826,
+    "english": "Let's wrap up the meeting in five minutes.",
+    "chinese": "我们五分钟内结束会议吧Let's,",
+    "audio": "audio/sentence_826.mp3"
+  },
+  {
+    "id": 827,
+    "english": "I think we should approach this from a different angle.",
+    "chinese": "",
+    "audio": "audio/sentence_827.mp3"
+  },
+  {
+    "id": 828,
+    "english": "Thank you for stepping up to lead this initiative.",
+    "chinese": "",
+    "audio": "audio/sentence_828.mp3"
+  },
+  {
+    "id": 829,
+    "english": "Can you give me a quick status update?",
+    "chinese": "你能给我一个 简短的进度更新",
+    "audio": "audio/sentence_829.mp3"
+  },
+  {
+    "id": 830,
+    "english": "Conflict resolution requires open and honest dialogue.",
+    "chinese": "",
+    "audio": "audio/sentence_830.mp3"
+  },
+  {
+    "id": 831,
+    "english": "I've attached the report for your review.",
+    "chinese": "我已附上报告供您审阅I've,",
+    "audio": "audio/sentence_831.mp3"
+  },
+  {
+    "id": 832,
+    "english": "Let's delegate tasks based on everyone's strengths.",
+    "chinese": "",
+    "audio": "audio/sentence_832.mp3"
+  },
+  {
+    "id": 833,
+    "english": "Your input is valuable to this discussion.",
+    "chinese": "你的意见对 这个讨论很有价",
+    "audio": "audio/sentence_833.mp3"
+  },
+  {
+    "id": 834,
+    "english": "We should set clear expectations from the start.",
+    "chinese": "",
+    "audio": "audio/sentence_834.mp3"
+  },
+  {
+    "id": 835,
+    "english": "I'm available for a quick chat after lunch.",
+    "chinese": "午饭后我有空可以简单聊聊I'm,",
+    "audio": "audio/sentence_835.mp3"
+  },
+  {
+    "id": 836,
+    "english": "Please don't hesitate to reach out if you have questions.",
+    "chinese": "",
+    "audio": "audio/sentence_836.mp3"
+  },
+  {
+    "id": 837,
+    "english": "The team did an outstanding job meeting the deadline.",
+    "chinese": "",
+    "audio": "audio/sentence_837.mp3"
+  },
+  {
+    "id": 838,
+    "english": "Let's schedule a follow-up meeting to track progress.",
+    "chinese": "",
+    "audio": "audio/sentence_838.mp3"
+  },
+  {
+    "id": 839,
+    "english": "Effective communication prevents misunderstandings.",
+    "chinese": "",
+    "audio": "audio/sentence_839.mp3"
+  },
+  {
+    "id": 840,
+    "english": "I look forward to collaborating with you on this.",
+    "chinese": "",
+    "audio": "audio/sentence_840.mp3"
+  },
+  {
+    "id": 841,
+    "english": "You're invited to our annual company gala.",
+    "chinese": "",
+    "audio": "audio/sentence_841.mp3"
+  },
+  {
+    "id": 842,
+    "english": "It's so nice to finally meet you in person!",
+    "chinese": "终于见到你本人了真高兴 It's,",
+    "audio": "audio/sentence_842.mp3"
+  },
+  {
+    "id": 843,
+    "english": "Would you like something to drink?",
+    "chinese": "你想喝点什么吗like,",
+    "audio": "audio/sentence_843.mp3"
+  },
+  {
+    "id": 844,
+    "english": "Let me introduce you to my colleague, Sarah.",
+    "chinese": "",
+    "audio": "audio/sentence_844.mp3"
+  },
+  {
+    "id": 845,
+    "english": "Cheers! Here's to a wonderful evening!",
+    "chinese": "干杯祝今晚愉快Cheers, Here's,",
+    "audio": "audio/sentence_845.mp3"
+  },
+  {
+    "id": 846,
+    "english": "What do you do for a living?",
+    "chinese": "你是做什么工作的 living",
+    "audio": "audio/sentence_846.mp3"
+  },
+  {
+    "id": 847,
+    "english": "The party starts at eight, but feel free to come early.",
+    "chinese": "",
+    "audio": "audio/sentence_847.mp3"
+  },
+  {
+    "id": 848,
+    "english": "I heard you just got promoted. Congratulations!",
+    "chinese": "",
+    "audio": "audio/sentence_848.mp3"
+  },
+  {
+    "id": 849,
+    "english": "Could you pass the appetizers, please?",
+    "chinese": "能把开胃菜递给我吗pass,",
+    "audio": "audio/sentence_849.mp3"
+  },
+  {
+    "id": 850,
+    "english": "We're hosting a barbecue this Saturday if you'd like to join.",
+    "chinese": "",
+    "audio": "audio/sentence_850.mp3"
+  },
+  {
+    "id": 851,
+    "english": "How do you know the host?",
+    "chinese": "你是怎么认识 主人的know, host",
+    "audio": "audio/sentence_851.mp3"
+  },
+  {
+    "id": 852,
+    "english": "Please RSVP by Friday so we can plan accordingly.",
+    "chinese": "",
+    "audio": "audio/sentence_852.mp3"
+  },
+  {
+    "id": 853,
+    "english": "The music is great; who picked the playlist?",
+    "chinese": "",
+    "audio": "audio/sentence_853.mp3"
+  },
+  {
+    "id": 854,
+    "english": "It was lovely catching up with you.",
+    "chinese": "和你叙旧真开心lovely, catching",
+    "audio": "audio/sentence_854.mp3"
+  },
+  {
+    "id": 855,
+    "english": "Don't be shy; come join the conversation!",
+    "chinese": "别害羞过来一 起聊吧Don't,",
+    "audio": "audio/sentence_855.mp3"
+  },
+  {
+    "id": 856,
+    "english": "May I have everyone's attention for a toast?",
+    "chinese": "",
+    "audio": "audio/sentence_856.mp3"
+  },
+  {
+    "id": 857,
+    "english": "This is my first time attending this kind of event.",
+    "chinese": "",
+    "audio": "audio/sentence_857.mp3"
+  },
+  {
+    "id": 858,
+    "english": "Do you mind if I bring a plus one?",
+    "chinese": "我可以带个伴来吗mind,",
+    "audio": "audio/sentence_858.mp3"
+  },
+  {
+    "id": 859,
+    "english": "The dress code is smart casual.",
+    "chinese": "着装要求是商务休闲dress,",
+    "audio": "audio/sentence_859.mp3"
+  },
+  {
+    "id": 860,
+    "english": "I really enjoyed meeting new people tonight.",
+    "chinese": "",
+    "audio": "audio/sentence_860.mp3"
+  },
+  {
+    "id": 861,
+    "english": "Shall we grab a table over there?",
+    "chinese": "我们去那边找个位子坐好吗grab,",
+    "audio": "audio/sentence_861.mp3"
+  },
+  {
+    "id": 862,
+    "english": "Thank you for hosting such a wonderful party!",
+    "chinese": "",
+    "audio": "audio/sentence_862.mp3"
+  },
+  {
+    "id": 863,
+    "english": "Here's my card; let's stay in touch.",
+    "chinese": "这是我的名片保持联系Here's,",
+    "audio": "audio/sentence_863.mp3"
+  },
+  {
+    "id": 864,
+    "english": "The food looks amazing; I can't wait to try it.",
+    "chinese": "",
+    "audio": "audio/sentence_864.mp3"
+  },
+  {
+    "id": 865,
+    "english": "Sorry I'm late; traffic was terrible.",
+    "chinese": "抱歉我迟到了 路上堵车太严Sorry, I'm, late",
+    "audio": "audio/sentence_865.mp3"
+  },
+  {
+    "id": 866,
+    "english": "Are you enjoying the party so far?",
+    "chinese": "到目前为止你觉得派对怎么",
+    "audio": "audio/sentence_866.mp3"
+  },
+  {
+    "id": 867,
+    "english": "Let's take a group photo before everyone leaves.",
+    "chinese": "",
+    "audio": "audio/sentence_867.mp3"
+  },
+  {
+    "id": 868,
+    "english": "I need to head out early tomorrow, so I'll leave soon.",
+    "chinese": "",
+    "audio": "audio/sentence_868.mp3"
+  },
+  {
+    "id": 869,
+    "english": "Wishing you all the best on your special day!",
+    "chinese": "",
+    "audio": "audio/sentence_869.mp3"
+  },
+  {
+    "id": 870,
+    "english": "It was a pleasure meeting you; hope to see you again soon.",
+    "chinese": "",
+    "audio": "audio/sentence_870.mp3"
+  },
+  {
+    "id": 871,
+    "english": "I usually wake up at seven in the morning.",
+    "chinese": "我通常早上 七点起床usually,",
+    "audio": "audio/sentence_871.mp3"
+  },
+  {
+    "id": 872,
+    "english": "Don't forget to brush your teeth before bed.",
+    "chinese": "",
+    "audio": "audio/sentence_872.mp3"
+  },
+  {
+    "id": 873,
+    "english": "I need to pick up groceries on my way home.",
+    "chinese": "",
+    "audio": "audio/sentence_873.mp3"
+  },
+  {
+    "id": 874,
+    "english": "My morning routine includes a short meditation session.",
+    "chinese": "",
+    "audio": "audio/sentence_874.mp3"
+  },
+  {
+    "id": 875,
+    "english": "Could you take out the trash, please?",
+    "chinese": "你能把垃圾倒了吗take,",
+    "audio": "audio/sentence_875.mp3"
+  },
+  {
+    "id": 876,
+    "english": "I'm running errands this afternoon.",
+    "chinese": "我今天下午 要出去办事I'm,",
+    "audio": "audio/sentence_876.mp3"
+  },
+  {
+    "id": 877,
+    "english": "We have dinner together as a family every evening.",
+    "chinese": "",
+    "audio": "audio/sentence_877.mp3"
+  },
+  {
+    "id": 878,
+    "english": "I like to read for thirty minutes before sleeping.",
+    "chinese": "",
+    "audio": "audio/sentence_878.mp3"
+  },
+  {
+    "id": 879,
+    "english": "The laundry needs to be done today.",
+    "chinese": "今天需要洗衣服laundry,",
+    "audio": "audio/sentence_879.mp3"
+  },
+  {
+    "id": 880,
+    "english": "What are your plans for the weekend?",
+    "chinese": "你周末有什么计划plans, weekend",
+    "audio": "audio/sentence_880.mp3"
+  },
+  {
+    "id": 881,
+    "english": "I make my bed as soon as I get up.",
+    "chinese": "我一起床就整理 床铺make,",
+    "audio": "audio/sentence_881.mp3"
+  },
+  {
+    "id": 882,
+    "english": "Walking the dog is part of my daily routine.",
+    "chinese": "",
+    "audio": "audio/sentence_882.mp3"
+  },
+  {
+    "id": 883,
+    "english": "I usually pack my lunch the night before.",
+    "chinese": "我通常在 前一天晚上 准备好午",
+    "audio": "audio/sentence_883.mp3"
+  },
+  {
+    "id": 884,
+    "english": "Can you water the plants while I'm away?",
+    "chinese": "我不在的时候你能帮 忙浇花",
+    "audio": "audio/sentence_884.mp3"
+  },
+  {
+    "id": 885,
+    "english": "I check my emails first thing in the morning.",
+    "chinese": "",
+    "audio": "audio/sentence_885.mp3"
+  },
+  {
+    "id": 886,
+    "english": "Doing dishes is my least favorite chore.",
+    "chinese": "洗碗是我最不 喜欢的家务Doing,",
+    "audio": "audio/sentence_886.mp3"
+  },
+  {
+    "id": 887,
+    "english": "We go grocery shopping every Sunday morning.",
+    "chinese": "",
+    "audio": "audio/sentence_887.mp3"
+  },
+  {
+    "id": 888,
+    "english": "Setting an alarm helps me stay on schedule.",
+    "chinese": "",
+    "audio": "audio/sentence_888.mp3"
+  },
+  {
+    "id": 889,
+    "english": "I try to exercise for at least thirty minutes a day.",
+    "chinese": "",
+    "audio": "audio/sentence_889.mp3"
+  },
+  {
+    "id": 890,
+    "english": "Vacuuming the house takes about an hour.",
+    "chinese": "打扫房间大 约需要一个小时Vacuuming,",
+    "audio": "audio/sentence_890.mp3"
+  },
+  {
+    "id": 891,
+    "english": "I always prepare my clothes the night before work.",
+    "chinese": "",
+    "audio": "audio/sentence_891.mp3"
+  },
+  {
+    "id": 892,
+    "english": "Drinking enough water throughout the day is important.",
+    "chinese": "",
+    "audio": "audio/sentence_892.mp3"
+  },
+  {
+    "id": 893,
+    "english": "On weekends, I like to sleep in a bit later.",
+    "chinese": "周末我喜欢多睡一会儿weekends,",
+    "audio": "audio/sentence_893.mp3"
+  },
+  {
+    "id": 894,
+    "english": "Paying bills online saves a lot of time.",
+    "chinese": "在线缴费节省很多时间Paying,",
+    "audio": "audio/sentence_894.mp3"
+  },
+  {
+    "id": 895,
+    "english": "I commute to work by subway every day.",
+    "chinese": "我每天 坐地铁上班commute,",
+    "audio": "audio/sentence_895.mp3"
+  },
+  {
+    "id": 896,
+    "english": "Meal prepping on Sundays makes weekdays easier.",
+    "chinese": "",
+    "audio": "audio/sentence_896.mp3"
+  },
+  {
+    "id": 897,
+    "english": "Taking a short nap can boost your energy.",
+    "chinese": "小睡片刻可以提升精力Taking,",
+    "audio": "audio/sentence_897.mp3"
+  },
+  {
+    "id": 898,
+    "english": "I keep a to-do list to stay organized.",
+    "chinese": "我列待办清单来保持条理keep, to-do, list",
+    "audio": "audio/sentence_898.mp3"
+  },
+  {
+    "id": 899,
+    "english": "Spending quality time with family matters most.",
+    "chinese": "",
+    "audio": "audio/sentence_899.mp3"
+  },
+  {
+    "id": 900,
+    "english": "A good night's sleep sets the tone for the next day.",
+    "chinese": "",
+    "audio": "audio/sentence_900.mp3"
+  }
+]

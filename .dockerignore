@@ -1,0 +1,45 @@
+# Python文件
+*.py
+*.pyc
+__pycache__/
+
+# 文本文档
+*.txt
+*.md
+
+# 原始数据文件
+sentences.txt
+english_900_sentences.txt
+english_sentences_clean.txt
+english_sentences_only.txt
+sentences_with_translation.json
+sentences_data_with_cn.json
+英语常用语句900句.txt
+
+# 批处理和脚本
+*.bat
+*.sh
+
+# 备份文件
+english-listening-practice.html
+app.js
+
+# PDF文件
+*.pdf
+
+# 临时文件
+test_audio.mp3
+server.log
+
+# Git相关
+.git/
+.gitignore
+
+# IDE相关
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 其他
+node_modules/

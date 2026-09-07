@@ -1,0 +1,982 @@
+[
+  {
+    "id": 1,
+    "english": "Greetings and Farewells",
+    "chinese": "问候与告别 1 - 30"
+  },
+  {
+    "id": 2,
+    "english": "Personal Information",
+    "chinese": "个人信息与自我介绍 31 - 60"
+  },
+  {
+    "id": 3,
+    "english": "Time and Dates",
+    "chinese": "时间与日期 61 - 90"
+  },
+  {
+    "id": 4,
+    "english": "Weather and Seasons",
+    "chinese": "天气与季节 91 - 120"
+  },
+  {
+    "id": 5,
+    "english": "Family and Friends",
+    "chinese": "家庭与朋友 121 - 150"
+  },
+  {
+    "id": 6,
+    "english": "Work and Career",
+    "chinese": "工作与职业 151 - 180"
+  },
+  {
+    "id": 7,
+    "english": "Study and Education",
+    "chinese": "学习与教育 181 - 210"
+  },
+  {
+    "id": 8,
+    "english": "Shopping and Consumer",
+    "chinese": "购物与消费 211 - 240"
+  },
+  {
+    "id": 9,
+    "english": "Food and Dining",
+    "chinese": "饮食与就餐 241 - 270"
+  },
+  {
+    "id": 10,
+    "english": "Health and Medical",
+    "chinese": "健康与医疗 271 - 300"
+  },
+  {
+    "id": 11,
+    "english": "Transportation and Travel",
+    "chinese": "交通与出行 301 - 330"
+  },
+  {
+    "id": 12,
+    "english": "Housing and Living",
+    "chinese": "住房与生活 331 - 360"
+  },
+  {
+    "id": 13,
+    "english": "Emotions and Feelings",
+    "chinese": "情感与感受 361 - 390"
+  },
+  {
+    "id": 14,
+    "english": "Hobbies and Entertainment",
+    "chinese": "爱好与娱乐 391 - 420"
+  },
+  {
+    "id": 15,
+    "english": "Requests and Help",
+    "chinese": "请求与帮助 421 - 450"
+  },
+  {
+    "id": 16,
+    "english": "Opinions and Suggestions",
+    "chinese": "意见与建议 451 - 480"
+  },
+  {
+    "id": 18,
+    "english": "Banking and Finance",
+    "chinese": "银行与金融 511 - 540"
+  },
+  {
+    "id": 19,
+    "english": "Culture and Customs",
+    "chinese": "文化与习俗 541 - 570"
+  },
+  {
+    "id": 20,
+    "english": "Technology and Internet",
+    "chinese": "科技与网络 571 - 600"
+  },
+  {
+    "id": 21,
+    "english": "Environment and Nature",
+    "chinese": "环境与自然 601 - 630"
+  },
+  {
+    "id": 22,
+    "english": "Law and Rules",
+    "chinese": "法律与规则 631 - 660"
+  },
+  {
+    "id": 23,
+    "english": "Sports and Fitness",
+    "chinese": "运动与健身 661 - 690"
+  },
+  {
+    "id": 24,
+    "english": "Business and Negotiations",
+    "chinese": "商务与谈判 691 - 720"
+  },
+  {
+    "id": 25,
+    "english": "Hotel and Accommodation",
+    "chinese": "酒店与住宿 721 - 750"
+  },
+  {
+    "id": 26,
+    "english": "Airport and Customs",
+    "chinese": "机场与海关 751 - 780"
+  },
+  {
+    "id": 27,
+    "english": "Idioms and Expressions",
+    "chinese": "常用习语与表达 781 - 810"
+  },
+  {
+    "id": 28,
+    "english": "Workplace Communication",
+    "chinese": "职场沟通 811 - 840"
+  },
+  {
+    "id": 29,
+    "english": "Social Events and Parties",
+    "chinese": "社交与聚会 841 - 870"
+  },
+  {
+    "id": 30,
+    "english": "Daily Routines and Life",
+    "chinese": "日常生活 871 - 900"
+  },
+  {
+    "id": 2,
+    "english": "Hello, how are you doing?",
+    "chinese": "你好你最近怎么样"
+  },
+  {
+    "id": 3,
+    "english": "Good morning!",
+    "chinese": "早上好"
+  },
+  {
+    "id": 5,
+    "english": "Good evening, sir.",
+    "chinese": "晚上好先生"
+  },
+  {
+    "id": 9,
+    "english": "How have you been?",
+    "chinese": "你近来如何"
+  },
+  {
+    "id": 10,
+    "english": "Long time no see!",
+    "chinese": "好久不见"
+  },
+  {
+    "id": 11,
+    "english": "It's been a while since we last met.",
+    "chinese": "我们上次见面已经过了一段时"
+  },
+  {
+    "id": 12,
+    "english": "Nice to meet you.",
+    "chinese": "很高兴认识你"
+  },
+  {
+    "id": 13,
+    "english": "Pleased to meet you, too.",
+    "chinese": "我也很高兴认识你"
+  },
+  {
+    "id": 14,
+    "english": "Great to see you again!",
+    "chinese": "再次见到你真高兴"
+  },
+  {
+    "id": 17,
+    "english": "Not bad, thanks for asking.",
+    "chinese": "还不错谢谢关心"
+  },
+  {
+    "id": 21,
+    "english": "See you later.",
+    "chinese": "回头见"
+  },
+  {
+    "id": 22,
+    "english": "See you tomorrow.",
+    "chinese": "明天见"
+  },
+  {
+    "id": 23,
+    "english": "Take care!",
+    "chinese": "保重"
+  },
+  {
+    "id": 24,
+    "english": "Have a nice day!",
+    "chinese": "祝你有美好的一天"
+  },
+  {
+    "id": 25,
+    "english": "Have a great weekend!",
+    "chinese": "周末愉快"
+  },
+  {
+    "id": 26,
+    "english": "Talk to you soon.",
+    "chinese": "很快再聊"
+  },
+  {
+    "id": 29,
+    "english": "Catch you later!",
+    "chinese": "待会儿见"
+  },
+  {
+    "id": 31,
+    "english": "My name is Li Wei.",
+    "chinese": "我叫李伟"
+  },
+  {
+    "id": 34,
+    "english": "Where are you from?",
+    "chinese": "你从哪里来"
+  },
+  {
+    "id": 39,
+    "english": "My phone number is 138-0000-1234.",
+    "chinese": "我的电话 号码是138-0000-"
+  },
+  {
+    "id": 59,
+    "english": "Feel free to call me anytime.",
+    "chinese": "随时可以给我打电话"
+  },
+  {
+    "id": 10,
+    "english": "Dictation",
+    "chinese": "你可以通过邮箱"
+  },
+  {
+    "id": 64,
+    "english": "What day is today?",
+    "chinese": "今天星期几"
+  },
+  {
+    "id": 65,
+    "english": "Today is Monday.",
+    "chinese": "今天是星期一"
+  },
+  {
+    "id": 71,
+    "english": "We need to finish this by Friday.",
+    "chinese": "我们需要在周五之前完成这件"
+  },
+  {
+    "id": 76,
+    "english": "How long will it take?",
+    "chinese": "这需要多长时间"
+  },
+  {
+    "id": 99,
+    "english": "What a beautiful day!",
+    "chinese": "多么美好的一天"
+  },
+  {
+    "id": 108,
+    "english": "The wind is blowing really hard.",
+    "chinese": "风刮得很猛"
+  },
+  {
+    "id": 112,
+    "english": "I prefer cool weather to hot weather.",
+    "chinese": "比起热天我更喜欢凉爽的天"
+  },
+  {
+    "id": 122,
+    "english": "My father works at a bank.",
+    "chinese": "我爸爸在银行工作"
+  },
+  {
+    "id": 128,
+    "english": "How is your family doing?",
+    "chinese": "你家人最近怎么样"
+  },
+  {
+    "id": 139,
+    "english": "He's always there when I need help.",
+    "chinese": "我需要帮助的时候 他总是在身"
+  },
+  {
+    "id": 143,
+    "english": "I'd like you to meet my friend Tom.",
+    "chinese": "我想让你认识一下我的朋友 汤"
+  },
+  {
+    "id": 148,
+    "english": "My nephew is such a cute little boy.",
+    "chinese": "我侄子是个非常可爱的 小男"
+  },
+  {
+    "id": 19,
+    "english": "Dictation",
+    "chinese": "我需要帮助的时候 他总是在身"
+  },
+  {
+    "id": 21,
+    "english": "Dictation",
+    "chinese": "去年夏天我们全家 去海边旅行"
+  },
+  {
+    "id": 22,
+    "english": "Dictation",
+    "chinese": "我阿姨做的饺子是我吃过最好 吃"
+  },
+  {
+    "id": 23,
+    "english": "Dictation",
+    "chinese": "我想让你认识一下我的朋友 汤"
+  },
+  {
+    "id": 30,
+    "english": "Dictation",
+    "chinese": "我很感 激生命中有这么多美好的"
+  },
+  {
+    "id": 155,
+    "english": "Could you send me the report by email?",
+    "chinese": "你能把报告通过 邮件发给我"
+  },
+  {
+    "id": 179,
+    "english": "We achieved our sales target this quarter.",
+    "chinese": "我们这个季度完成了 销售目"
+  },
+  {
+    "id": 209,
+    "english": "Never stop learning, no matter your age.",
+    "chinese": "无论多大年纪都不 要停止学"
+  },
+  {
+    "id": 211,
+    "english": "How much does this cost?",
+    "chinese": "这个多少钱"
+  },
+  {
+    "id": 215,
+    "english": "Is there any discount?",
+    "chinese": "有折扣吗"
+  },
+  {
+    "id": 216,
+    "english": "This is on sale for twenty percent off.",
+    "chinese": "这件打八折"
+  },
+  {
+    "id": 220,
+    "english": "Could I get a refund?",
+    "chinese": "我能退款吗"
+  },
+  {
+    "id": 224,
+    "english": "Can you give me a better price?",
+    "chinese": "能便宜点吗"
+  },
+  {
+    "id": 227,
+    "english": "The quality is really good.",
+    "chinese": "质量真的很好"
+  },
+  {
+    "id": 230,
+    "english": "When will my package arrive?",
+    "chinese": "我的包 裹什么时候到"
+  },
+  {
+    "id": 235,
+    "english": "Would you like a bag?",
+    "chinese": "您需要袋子吗"
+  },
+  {
+    "id": 241,
+    "english": "What would you like to order?",
+    "chinese": "您想点些什么"
+  },
+  {
+    "id": 248,
+    "english": "Can I have the check, please?",
+    "chinese": "请结账"
+  },
+  {
+    "id": 254,
+    "english": "Just water, please.",
+    "chinese": "白水就好谢谢"
+  },
+  {
+    "id": 273,
+    "english": "My throat is really sore.",
+    "chinese": "我喉咙很痛"
+  },
+  {
+    "id": 275,
+    "english": "I need to make a doctor's appointment.",
+    "chinese": "我需要预约看医生"
+  },
+  {
+    "id": 278,
+    "english": "You should get more rest.",
+    "chinese": "你应该多休息"
+  },
+  {
+    "id": 279,
+    "english": "Drink plenty of water.",
+    "chinese": "多喝水"
+  },
+  {
+    "id": 281,
+    "english": "Do I need to take any medication?",
+    "chinese": "我需要吃药吗"
+  },
+  {
+    "id": 290,
+    "english": "Smoking is bad for your lungs.",
+    "chinese": "吸烟对肺不好"
+  },
+  {
+    "id": 299,
+    "english": "Don't skip breakfast; it fuels your body.",
+    "chinese": "不要不吃早餐 它为身体提供"
+  },
+  {
+    "id": 5,
+    "english": "Dictation",
+    "chinese": "我想订一张下周五去纽约的机"
+  },
+  {
+    "id": 6,
+    "english": "Dictation",
+    "chinese": "去波士顿的火车从哪个站台出"
+  },
+  {
+    "id": 7,
+    "english": "Dictation",
+    "chinese": "今天早上高 速公路上堵车很严"
+  },
+  {
+    "id": 19,
+    "english": "Dictation",
+    "chinese": "我更喜欢坐地铁因为高峰期更"
+  },
+  {
+    "id": 21,
+    "english": "Dictation",
+    "chinese": "我的车今天早上上 班途中抛锚"
+  },
+  {
+    "id": 27,
+    "english": "Dictation",
+    "chinese": "航空公司弄丢了我的行 李箱到"
+  },
+  {
+    "id": 28,
+    "english": "Dictation",
+    "chinese": "我们应该早点出发以避开早高"
+  },
+  {
+    "id": 29,
+    "english": "Dictation",
+    "chinese": "你能在 地图上给我指一条最快的"
+  },
+  {
+    "id": 30,
+    "english": "Dictation",
+    "chinese": "天气好的时候我通常 骑自行车上"
+  },
+  {
+    "id": 361,
+    "english": "I'm so happy to hear that you got the job!",
+    "chinese": "听到你 得到那份工作我 太开心"
+  },
+  {
+    "id": 373,
+    "english": "I'm really sorry for what I said earlier.",
+    "chinese": "我为我 之前说的话真的很 抱"
+  },
+  {
+    "id": 374,
+    "english": "It makes me so proud to see you succeed.",
+    "chinese": "看到你成 功让我感到 非常自"
+  },
+  {
+    "id": 382,
+    "english": "Cheer up! Things will get better soon.",
+    "chinese": "振作起来一切很 快就会好 起"
+  },
+  {
+    "id": 383,
+    "english": "I regret not telling her how I truly felt.",
+    "chinese": "我后悔没有告诉她我的真 实感"
+  },
+  {
+    "id": 397,
+    "english": "My favorite genre of music is jazz.",
+    "chinese": "我最喜欢的音乐类型 是爵士"
+  },
+  {
+    "id": 3,
+    "english": "Dictation",
+    "chinese": "她钢琴弹得很美已经练了好 多"
+  },
+  {
+    "id": 4,
+    "english": "Dictation",
+    "chinese": "我最近在读一本 非常有趣的小"
+  },
+  {
+    "id": 12,
+    "english": "Dictation",
+    "chinese": "她报了瑜伽课来放松下班后的身"
+  },
+  {
+    "id": 22,
+    "english": "Dictation",
+    "chinese": "现场看比赛比在电视上看刺激多"
+  },
+  {
+    "id": 28,
+    "english": "Dictation",
+    "chinese": "我喜欢探索新餐厅尝试不同的"
+  },
+  {
+    "id": 30,
+    "english": "Dictation",
+    "chinese": "我报名了舞蹈课想尝试点新鲜事"
+  },
+  {
+    "id": 421,
+    "english": "Could you help me with this, please?",
+    "chinese": "你能帮我一下吗"
+  },
+  {
+    "id": 447,
+    "english": "Please forgive me for being late.",
+    "chinese": "请原谅我迟到了"
+  },
+  {
+    "id": 449,
+    "english": "No problem at all; I'm glad I could help.",
+    "chinese": "完全没问题很高兴能帮到"
+  },
+  {
+    "id": 502,
+    "english": "Let me put you on speakerphone so",
+    "chinese": "我开免提让大家都能听到"
+  },
+  {
+    "id": 2,
+    "english": "Dictation",
+    "chinese": "我打电话 是想跟进一下我们上次"
+  },
+  {
+    "id": 5,
+    "english": "Dictation",
+    "chinese": "你能听 清我说话吗信 号好像不"
+  },
+  {
+    "id": 9,
+    "english": "Dictation",
+    "chinese": "我给你发了封邮件附件里有所"
+  },
+  {
+    "id": 12,
+    "english": "Dictation",
+    "chinese": "你能大 约三十分钟后回我电话"
+  },
+  {
+    "id": 13,
+    "english": "Dictation",
+    "chinese": "谢谢你的 联系我会 尽快回复"
+  },
+  {
+    "id": 15,
+    "english": "Dictation",
+    "chinese": "正式事务我更倾向于用邮件沟"
+  },
+  {
+    "id": 16,
+    "english": "Dictation",
+    "chinese": "这里信号太差了我到 外面去"
+  },
+  {
+    "id": 18,
+    "english": "Dictation",
+    "chinese": "我不小心错过了你的电话你 有"
+  },
+  {
+    "id": 23,
+    "english": "Dictation",
+    "chinese": "我手机 快没电了能用 座机打给"
+  },
+  {
+    "id": 24,
+    "english": "Dictation",
+    "chinese": "我们应该跟整个团队开个电话会"
+  },
+  {
+    "id": 25,
+    "english": "Dictation",
+    "chinese": "我刚收到通 知说你给我发了个文"
+  },
+  {
+    "id": 26,
+    "english": "Dictation",
+    "chinese": "抱歉回复晚了我在 旅途中没有"
+  },
+  {
+    "id": 572,
+    "english": "Could you help me set up my new laptop?",
+    "chinese": "你能帮我 设置一下新笔记本电"
+  },
+  {
+    "id": 2,
+    "english": "Dictation",
+    "chinese": "你能帮我 设置一下新笔记本电脑"
+  },
+  {
+    "id": 3,
+    "english": "Dictation",
+    "chinese": "我下载了一个很好用的 记账应"
+  },
+  {
+    "id": 4,
+    "english": "Dictation",
+    "chinese": "社交媒体改变了我们 彼此的沟通"
+  },
+  {
+    "id": 5,
+    "english": "Dictation",
+    "chinese": "人工智能正在 迅速改变许多行"
+  },
+  {
+    "id": 7,
+    "english": "Dictation",
+    "chinese": "我需要把操作系统更新到最新版"
+  },
+  {
+    "id": 9,
+    "english": "Dictation",
+    "chinese": "你能通过 云存储分享那个文件"
+  },
+  {
+    "id": 10,
+    "english": "Dictation",
+    "chinese": "我不小心从电脑上 删了一些重要"
+  },
+  {
+    "id": 11,
+    "english": "Dictation",
+    "chinese": "这个软件有三十天的免费试用"
+  },
+  {
+    "id": 13,
+    "english": "Dictation",
+    "chinese": "视频会议工 具让远程办公容易多"
+  },
+  {
+    "id": 14,
+    "english": "Dictation",
+    "chinese": "我订阅了一个 流媒体服务在家看"
+  },
+  {
+    "id": 15,
+    "english": "Dictation",
+    "chinese": "云计算使企业能够快速扩展业"
+  },
+  {
+    "id": 16,
+    "english": "Dictation",
+    "chinese": "我的打 印机不知为何连不上网"
+  },
+  {
+    "id": 17,
+    "english": "Dictation",
+    "chinese": "在社交 媒体上分享个人信息时 要"
+  },
+  {
+    "id": 18,
+    "english": "Dictation",
+    "chinese": "我用密码管理器来管理所有登录"
+  },
+  {
+    "id": 19,
+    "english": "Dictation",
+    "chinese": "这款新手机拍照效果很棒续航"
+  },
+  {
+    "id": 20,
+    "english": "Dictation",
+    "chinese": "机器学习算法分析数据比人类快"
+  },
+  {
+    "id": 21,
+    "english": "Dictation",
+    "chinese": "我把所有照片备份到了外置硬盘"
+  },
+  {
+    "id": 23,
+    "english": "Dictation",
+    "chinese": "网站正在维护中恢复时间待"
+  },
+  {
+    "id": 24,
+    "english": "Dictation",
+    "chinese": "智能家居设备能让你的生活 更便"
+  },
+  {
+    "id": 25,
+    "english": "Dictation",
+    "chinese": "我换了 更快的网速套餐以获得更"
+  },
+  {
+    "id": 26,
+    "english": "Dictation",
+    "chinese": "数据隐私已成为 数字时代的重大"
+  },
+  {
+    "id": 27,
+    "english": "Dictation",
+    "chinese": "聊天机器人越来越多地被用于客"
+  },
+  {
+    "id": 28,
+    "english": "Dictation",
+    "chinese": "页面加载不正常 所以我清了浏览"
+  },
+  {
+    "id": 29,
+    "english": "Dictation",
+    "chinese": "智能手表 等可穿戴技术越来越受"
+  },
+  {
+    "id": 30,
+    "english": "Dictation",
+    "chinese": "开源软件让开发者可以自由定制"
+  },
+  {
+    "id": 615,
+    "english": "The factory was fined for illegal dumping.",
+    "chinese": "该工厂因非法倾倒废物而被罚"
+  },
+  {
+    "id": 626,
+    "english": "Bees play a vital role in pollinating crops.",
+    "chinese": "蜜蜂在农作物授粉中起着至关"
+  },
+  {
+    "id": 661,
+    "english": "I go to the gym three times a week.",
+    "chinese": "我每周去三次健身房"
+  },
+  {
+    "id": 680,
+    "english": "I prefer outdoor activities to indoor ones.",
+    "chinese": "比起室内活动我 更喜欢户外"
+  },
+  {
+    "id": 9,
+    "english": "Dictation",
+    "chinese": "瑜伽有助于提高柔韧性和减轻压"
+  },
+  {
+    "id": 13,
+    "english": "Dictation",
+    "chinese": "私人教练可 以帮助你 更快达到目"
+  },
+  {
+    "id": 17,
+    "english": "Dictation",
+    "chinese": "她在社区中心报名了普拉提课"
+  },
+  {
+    "id": 20,
+    "english": "Dictation",
+    "chinese": "比起室内活动我 更喜欢户外活"
+  },
+  {
+    "id": 26,
+    "english": "Dictation",
+    "chinese": "徒步旅行是享受大自然的 绝佳方"
+  },
+  {
+    "id": 28,
+    "english": "Dictation",
+    "chinese": "我们周末组织了一场友 谊排球"
+  },
+  {
+    "id": 30,
+    "english": "Dictation",
+    "chinese": "良好的体育精神意味着尊重对"
+  },
+  {
+    "id": 692,
+    "english": "We need to finalize the deal by Friday.",
+    "chinese": "我们需要在周五前敲定这笔交"
+  },
+  {
+    "id": 694,
+    "english": "Could you send me the revised contract?",
+    "chinese": "你能把修改后的合同发给我"
+  },
+  {
+    "id": 710,
+    "english": "The CEO announced a restructuring plan.",
+    "chinese": "首席执行官宣布了一项重组计"
+  },
+  {
+    "id": 711,
+    "english": "Sign here to confirm your agreement.",
+    "chinese": "请在这里签字以确认您的同"
+  },
+  {
+    "id": 720,
+    "english": "Let's set up a call to align on next steps.",
+    "chinese": "我们安排个电话会议来对 齐下"
+  },
+  {
+    "id": 735,
+    "english": "Can I get a wake-up call at six thirty?",
+    "chinese": "能在六点半给我打个 叫醒电话"
+  },
+  {
+    "id": 774,
+    "english": "Customs officers may inspect your",
+    "chinese": "海关官员可能会检查你的行"
+  },
+  {
+    "id": 780,
+    "english": "Welcome to our country. Enjoy your stay!",
+    "chinese": "欢迎来到我 国祝您旅途愉"
+  },
+  {
+    "id": 10,
+    "english": "Dictation",
+    "chinese": "请将液体物品放入透明塑料袋"
+  },
+  {
+    "id": 23,
+    "english": "Dictation",
+    "chinese": "我们现在开始308航班的最后 登"
+  },
+  {
+    "id": 25,
+    "english": "Dictation",
+    "chinese": "航空公司在国际航班上提供餐"
+  },
+  {
+    "id": 782,
+    "english": "Don't put all your eggs in one basket.",
+    "chinese": "不要把所有鸡蛋放在一个 篮子"
+  },
+  {
+    "id": 785,
+    "english": "Let's call it a day and continue tomorrow.",
+    "chinese": "今天就到 此为止明天再继续"
+  },
+  {
+    "id": 796,
+    "english": "He spilled the beans about the secret plan.",
+    "chinese": "他说漏了嘴泄露了秘密计"
+  },
+  {
+    "id": 800,
+    "english": "The ball is in your court now.",
+    "chinese": "现在轮到你了"
+  },
+  {
+    "id": 802,
+    "english": "They see eye to eye on most issues.",
+    "chinese": "他们在大 多数问题上看法一"
+  },
+  {
+    "id": 808,
+    "english": "When pigs fly, he'll apologize.",
+    "chinese": "除非太阳从西边出来 他才会"
+  },
+  {
+    "id": 809,
+    "english": "I'm all ears; tell me what happened.",
+    "chinese": "我洗耳恭听告 诉我发生了什"
+  },
+  {
+    "id": 815,
+    "english": "We need to align on the project timeline.",
+    "chinese": "我们需要在项目时间线上达成"
+  },
+  {
+    "id": 829,
+    "english": "Can you give me a quick status update?",
+    "chinese": "你能给我一个 简短的进度更新"
+  },
+  {
+    "id": 833,
+    "english": "Your input is valuable to this discussion.",
+    "chinese": "你的意见对 这个讨论很有价"
+  },
+  {
+    "id": 866,
+    "english": "Are you enjoying the party so far?",
+    "chinese": "到目前为止你觉得派对怎么"
+  },
+  {
+    "id": 1,
+    "english": "Dictation",
+    "chinese": "诚邀您参加我们的 年度公司晚"
+  },
+  {
+    "id": 4,
+    "english": "Dictation",
+    "chinese": "让我给你介绍一下我的 同事莎"
+  },
+  {
+    "id": 7,
+    "english": "Dictation",
+    "chinese": "派对八点开始不过 欢迎早点"
+  },
+  {
+    "id": 10,
+    "english": "Dictation",
+    "chinese": "我们这个周六办烧烤聚会 欢迎"
+  },
+  {
+    "id": 12,
+    "english": "Dictation",
+    "chinese": "请在周五前回复以便我们安"
+  },
+  {
+    "id": 24,
+    "english": "Dictation",
+    "chinese": "食物看 起来太棒了我 迫不及待"
+  },
+  {
+    "id": 25,
+    "english": "Dictation",
+    "chinese": "抱歉我迟到了 路上堵车太严重"
+  },
+  {
+    "id": 27,
+    "english": "Dictation",
+    "chinese": "大家走之前我们一 起拍张合影"
+  },
+  {
+    "id": 29,
+    "english": "Dictation",
+    "chinese": "祝你在这个特别的日子 里一切顺"
+  },
+  {
+    "id": 883,
+    "english": "I usually pack my lunch the night before.",
+    "chinese": "我通常在 前一天晚上 准备好午"
+  },
+  {
+    "id": 884,
+    "english": "Can you water the plants while I'm away?",
+    "chinese": "我不在的时候你能帮 忙浇花"
+  }
+]
