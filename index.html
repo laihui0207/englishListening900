@@ -159,6 +159,18 @@
             background: #F44336;
         }
 
+        .btn-understood {
+            background: #4CAF50;
+            color: white;
+            width: 100%;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .btn-understood.show {
+            display: block;
+        }
+
         .navigation {
             display: flex;
             gap: 15px;
@@ -476,6 +488,8 @@
             <button class="btn-toggle" id="btnToggle">👁️ 显示原文</button>
 
             <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂</button>
+
+            <button class="btn-understood" id="btnUnderstood">✅ 已听懂（从列表移除）</button>
 
             <div class="navigation">
                 <button class="btn-nav" id="btnPrev">⬅️ 上一句</button>

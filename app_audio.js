@@ -78,6 +78,7 @@ class ListeningPractice {
 
         // 未听懂功能相关元素
         this.btnMisunderstood = document.getElementById('btnMisunderstood');
+        this.btnUnderstood = document.getElementById('btnUnderstood');
         this.misunderstoodCount = document.getElementById('misunderstoodCount');
         this.misunderstoodModeCount = document.getElementById('misunderstoodModeCount');
         this.totalCount = document.getElementById('totalCount');
@@ -201,6 +202,9 @@ class ListeningPractice {
 
         // 未听懂按钮
         this.btnMisunderstood.addEventListener('click', () => this.toggleMisunderstood());
+
+        // 已听懂按钮
+        this.btnUnderstood.addEventListener('click', () => this.markAsUnderstood());
 
         // 模式切换按钮
         this.modeNormal.addEventListener('click', () => this.switchPracticeMode('normal'));
@@ -504,13 +508,27 @@ class ListeningPractice {
         const marker = isMisunderstood ? '<span class="misunderstood-marker">😕</span>' : '';
         this.sentenceNumber.innerHTML = `句子 ${this.currentIndex + 1}${marker}`;
 
-        // 更新未听懂按钮状态
-        if (isMisunderstood) {
-            this.btnMisunderstood.textContent = '✓ 已标记为未听懂';
-            this.btnMisunderstood.classList.add('marked');
+        // 更新未听懂按钮状态和显示
+        if (this.practiceMode === 'misunderstood-only') {
+            // 在未听懂模式下隐藏"我没有听懂"按钮
+            this.btnMisunderstood.style.display = 'none';
         } else {
-            this.btnMisunderstood.textContent = '😕 我没有听懂';
-            this.btnMisunderstood.classList.remove('marked');
+            // 在正常模式下显示"我没有听懂"按钮
+            this.btnMisunderstood.style.display = 'block';
+            if (isMisunderstood) {
+                this.btnMisunderstood.textContent = '✓ 已标记为未听懂';
+                this.btnMisunderstood.classList.add('marked');
+            } else {
+                this.btnMisunderstood.textContent = '😕 我没有听懂';
+                this.btnMisunderstood.classList.remove('marked');
+            }
+        }
+
+        // 更新"已听懂"按钮显示（只在未听懂模式下显示）
+        if (this.practiceMode === 'misunderstood-only') {
+            this.btnUnderstood.classList.add('show');
+        } else {
+            this.btnUnderstood.classList.remove('show');
         }
 
         // 更新句子显示
@@ -692,6 +710,60 @@ class ListeningPractice {
         this.saveMisunderstoodSentences();
         this.updateDisplay();
         this.updateMisunderstoodStats();
+    }
+
+    // 标记当前句子为已听懂（从未听懂列表中移除）
+    markAsUnderstood() {
+        if (this.sentences.length === 0) {
+            return;
+        }
+
+        // 只在未听懂模式下可用
+        if (this.practiceMode !== 'misunderstood-only') {
+            return;
+        }
+
+        const actualIndex = this.getCurrentActualIndex();
+
+        // 从未听懂列表中移除
+        this.misunderstoodSentences.delete(actualIndex);
+        this.saveMisunderstoodSentences();
+
+        // 更新统计
+        this.updateMisunderstoodStats();
+
+        this.showStatus('✓ 已从未听懂列表移除', 'success');
+
+        // 从当前句子列表中移除
+        const misunderstoodIndices = Array.from(this.misunderstoodSentences).sort((a, b) => a - b);
+        this.sentences = misunderstoodIndices.map(idx => this.allSentences[idx]);
+
+        // 检查是否还有未听懂的句子
+        if (this.sentences.length === 0) {
+            this.showStatus('🎉 太棒了！所有句子都已听懂', 'success');
+            // 切换回全部句子模式
+            setTimeout(() => {
+                this.switchPracticeMode('normal');
+            }, 2000);
+            return;
+        }
+
+        // 调整当前索引
+        if (this.currentIndex >= this.sentences.length) {
+            this.currentIndex = this.sentences.length - 1;
+        }
+
+        // 保存进度
+        this.savedProgress.misunderstood = this.currentIndex;
+        this.saveModeProgress();
+
+        // 更新显示
+        this.updateDisplay();
+
+        // 自动播放下一句
+        setTimeout(() => {
+            this.playCurrentSentence();
+        }, 500);
     }
 
     // 切换练习模式
