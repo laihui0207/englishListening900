@@ -148,6 +148,17 @@
             background: #2196F3;
         }
 
+        .btn-misunderstood {
+            background: #FF9800;
+            color: white;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-misunderstood.marked {
+            background: #F44336;
+        }
+
         .navigation {
             display: flex;
             gap: 15px;
@@ -315,6 +326,76 @@
             font-size: 0.9em;
         }
 
+        .misunderstood-section {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #FF9800;
+        }
+
+        .misunderstood-section h3 {
+            color: #FF9800;
+            margin-bottom: 15px;
+        }
+
+        .misunderstood-stats {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .misunderstood-stats strong {
+            color: #FF9800;
+            font-size: 1.3em;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .mode-btn:hover {
+            border-color: #FF9800;
+        }
+
+        .mode-btn.active {
+            background: #FF9800;
+            color: white;
+            border-color: #FF9800;
+        }
+
+        .btn-clear-marks {
+            background: #f44336;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            font-size: 0.95em;
+        }
+
+        .misunderstood-marker {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+
         .import-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -394,6 +475,8 @@
 
             <button class="btn-toggle" id="btnToggle">👁️ 显示原文</button>
 
+            <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂</button>
+
             <div class="navigation">
                 <button class="btn-nav" id="btnPrev">⬅️ 上一句</button>
                 <button class="btn-nav" id="btnNext">下一句 ➡️</button>
@@ -413,6 +496,25 @@
                     <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
                     <span id="volumeValue">100%</span>
                 </div>
+            </div>
+
+            <div class="misunderstood-section">
+                <h3>📊 未听懂句子管理</h3>
+
+                <div class="misunderstood-stats" id="misunderstoodStats">
+                    已标记 <strong id="misunderstoodCount">0</strong> 个未听懂的句子
+                </div>
+
+                <div class="mode-selector">
+                    <button class="mode-btn active" id="modeNormal">
+                        📚 全部句子 (<span id="totalCount">0</span>)
+                    </button>
+                    <button class="mode-btn" id="modeMisunderstood">
+                        🎯 仅练习未听懂 (<span id="misunderstoodModeCount">0</span>)
+                    </button>
+                </div>
+
+                <button class="btn-clear-marks" id="btnClearMarks">🗑️ 清空所有标记</button>
             </div>
 
             <div class="jump-section">
@@ -446,6 +548,7 @@
                     <strong>空格</strong> - 播放/暂停 |
                     <strong>R</strong> - 重播 |
                     <strong>S</strong> - 显示/隐藏原文 |
+                    <strong>M</strong> - 标记/取消未听懂 |
                     <strong>←</strong> - 上一句 |
                     <strong>→</strong> - 下一句
                 </p>
@@ -453,6 +556,6 @@
         </div>
     </div>
 
-    <script src="app_audio.js?v=20240907-2"></script>
+    <script src="app_audio.js?v=20240909-3"></script>
 </body>
 </html>

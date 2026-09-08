@@ -3,6 +3,7 @@
 class ListeningPractice {
     constructor() {
         this.sentences = [];
+        this.allSentences = []; // 保存完整句子列表
         this.currentIndex = 0;
         this.isTextVisible = false;
         this.isPlaying = false;
@@ -17,6 +18,14 @@ class ListeningPractice {
         // 播放类型追踪
         this.currentPlaybackType = null; // 'audio' 或 'tts'
         this.ttsUtterance = null;
+
+        // 未听懂句子管理
+        this.misunderstoodSentences = new Set(); // 存储未听懂句子的实际索引
+        this.practiceMode = 'normal'; // 'normal' 或 'misunderstood-only'
+        this.savedProgress = {
+            normal: 0, // 全部句子模式的进度
+            misunderstood: 0 // 未听懂模式的进度
+        };
 
         // 音频对象
         this.audio = new Audio();
@@ -66,6 +75,15 @@ class ListeningPractice {
         this.jumpInput = document.getElementById('jumpInput');
         this.btnJump = document.getElementById('btnJump');
         this.autoSaveToggle = document.getElementById('autoSaveToggle');
+
+        // 未听懂功能相关元素
+        this.btnMisunderstood = document.getElementById('btnMisunderstood');
+        this.misunderstoodCount = document.getElementById('misunderstoodCount');
+        this.misunderstoodModeCount = document.getElementById('misunderstoodModeCount');
+        this.totalCount = document.getElementById('totalCount');
+        this.modeNormal = document.getElementById('modeNormal');
+        this.modeMisunderstood = document.getElementById('modeMisunderstood');
+        this.btnClearMarks = document.getElementById('btnClearMarks');
     }
 
     async loadSentences() {
@@ -79,11 +97,13 @@ class ListeningPractice {
 
             const data = await response.json();
             this.sentences = data;
+            this.allSentences = [...data]; // 保存完整列表
 
             // 加载并追加自定义句子
             const customSentences = this.loadCustomSentences();
             if (customSentences.length > 0) {
                 this.sentences = this.sentences.concat(customSentences);
+                this.allSentences = [...this.sentences]; // 更新完整列表
                 this.loadingStatus.textContent = `✓ 已加载 ${data.length} 个句子（高质量音频） + ${customSentences.length} 个自定义句子`;
             } else {
                 this.loadingStatus.textContent = `✓ 已加载 ${this.sentences.length} 个句子（高质量音频）`;
@@ -93,10 +113,17 @@ class ListeningPractice {
                 this.loadingStatus.textContent = '';
             }, 3000);
 
+            // 加载未听懂的句子标记
+            this.loadMisunderstoodSentences();
+
+            // 加载模式进度
+            this.loadModeProgress();
+
             // 恢复上次的进度
             this.restoreProgress();
 
             this.updateDisplay();
+            this.updateMisunderstoodStats();
 
         } catch (error) {
             console.error('Error loading sentences:', error);
@@ -172,6 +199,16 @@ class ListeningPractice {
         // 清除自定义句子按钮
         this.btnClearCustom.addEventListener('click', () => this.clearCustomSentences());
 
+        // 未听懂按钮
+        this.btnMisunderstood.addEventListener('click', () => this.toggleMisunderstood());
+
+        // 模式切换按钮
+        this.modeNormal.addEventListener('click', () => this.switchPracticeMode('normal'));
+        this.modeMisunderstood.addEventListener('click', () => this.switchPracticeMode('misunderstood-only'));
+
+        // 清空标记按钮
+        this.btnClearMarks.addEventListener('click', () => this.clearAllMarks());
+
         // 键盘快捷键
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
     }
@@ -194,6 +231,10 @@ class ListeningPractice {
             case 's':
                 e.preventDefault();
                 this.toggleText();
+                break;
+            case 'm':
+                e.preventDefault();
+                this.toggleMisunderstood();
                 break;
             case 'arrowleft':
                 e.preventDefault();
@@ -324,6 +365,7 @@ class ListeningPractice {
             this.isPlaying = false;
             this.updateDisplay();
             this.saveProgress();
+            this.saveModeProgress(); // 保存模式进度
             // 自动播放下一句
             this.playCurrentSentence();
         }
@@ -337,6 +379,7 @@ class ListeningPractice {
             this.isPlaying = false;
             this.updateDisplay();
             this.saveProgress();
+            this.saveModeProgress(); // 保存模式进度
             // 自动播放上一句
             this.playCurrentSentence();
         }
@@ -362,6 +405,7 @@ class ListeningPractice {
         this.isPlaying = false;
         this.updateDisplay();
         this.saveProgress();
+        this.saveModeProgress(); // 保存模式进度
         this.jumpInput.value = '';
 
         this.showStatus(`✓ 已跳转到第 ${targetIndex} 句`, 'success');
@@ -425,6 +469,8 @@ class ListeningPractice {
                 const progress = JSON.parse(saved);
                 if (progress.currentIndex >= 0 && progress.currentIndex < this.sentences.length) {
                     this.currentIndex = progress.currentIndex;
+                    // 同时更新 savedProgress.normal
+                    this.savedProgress.normal = progress.currentIndex;
                     const date = new Date(progress.timestamp);
                     const timeStr = date.toLocaleString('zh-CN');
                     this.showStatus(`✓ 已恢复上次进度（${timeStr}）- 第 ${this.currentIndex + 1} 句`, 'success');
@@ -450,8 +496,22 @@ class ListeningPractice {
         this.progressFill.style.width = progress + '%';
         this.progressText.textContent = `进度: ${this.currentIndex + 1} / ${this.sentences.length}`;
 
-        // 更新句子编号
-        this.sentenceNumber.textContent = `句子 ${this.currentIndex + 1}`;
+        // 获取当前句子在完整列表中的实际索引
+        const actualIndex = this.getCurrentActualIndex();
+        const isMisunderstood = this.misunderstoodSentences.has(actualIndex);
+
+        // 更新句子编号（带标记）
+        const marker = isMisunderstood ? '<span class="misunderstood-marker">😕</span>' : '';
+        this.sentenceNumber.innerHTML = `句子 ${this.currentIndex + 1}${marker}`;
+
+        // 更新未听懂按钮状态
+        if (isMisunderstood) {
+            this.btnMisunderstood.textContent = '✓ 已标记为未听懂';
+            this.btnMisunderstood.classList.add('marked');
+        } else {
+            this.btnMisunderstood.textContent = '😕 我没有听懂';
+            this.btnMisunderstood.classList.remove('marked');
+        }
 
         // 更新句子显示
         if (this.isTextVisible) {
@@ -605,6 +665,211 @@ class ListeningPractice {
         setTimeout(() => {
             this.importStatus.textContent = '';
         }, 3000);
+    }
+
+    // 获取当前句子在完整列表中的实际索引
+    getCurrentActualIndex() {
+        const currentSentence = this.sentences[this.currentIndex];
+        return this.allSentences.findIndex(s => s.id === currentSentence.id);
+    }
+
+    // 切换当前句子的未听懂标记
+    toggleMisunderstood() {
+        if (this.sentences.length === 0) {
+            return;
+        }
+
+        const actualIndex = this.getCurrentActualIndex();
+
+        if (this.misunderstoodSentences.has(actualIndex)) {
+            this.misunderstoodSentences.delete(actualIndex);
+            this.showStatus('✓ 已取消标记', 'success');
+        } else {
+            this.misunderstoodSentences.add(actualIndex);
+            this.showStatus('✓ 已标记为未听懂', 'success');
+        }
+
+        this.saveMisunderstoodSentences();
+        this.updateDisplay();
+        this.updateMisunderstoodStats();
+    }
+
+    // 切换练习模式
+    switchPracticeMode(mode) {
+        if (mode === 'misunderstood-only') {
+            if (this.misunderstoodSentences.size === 0) {
+                this.showStatus('还没有标记未听懂的句子', 'error');
+                return;
+            }
+
+            // 保存当前模式的进度（使用统一的键名 'normal'）
+            this.savedProgress.normal = this.currentIndex;
+
+            // 过滤出未听懂的句子
+            const misunderstoodIndices = Array.from(this.misunderstoodSentences).sort((a, b) => a - b);
+            this.sentences = misunderstoodIndices.map(idx => this.allSentences[idx]);
+            this.practiceMode = 'misunderstood-only';
+
+            // 恢复未听懂模式的进度（使用统一的键名 'misunderstood'）
+            this.currentIndex = this.savedProgress.misunderstood || 0;
+
+            // 确保索引有效
+            if (this.currentIndex >= this.sentences.length) {
+                this.currentIndex = 0;
+            }
+
+            this.showStatus(`✓ 已切换到专项练习模式（${this.sentences.length} 个句子）`, 'success');
+        } else {
+            // 保存当前模式的进度（使用统一的键名 'misunderstood'）
+            this.savedProgress.misunderstood = this.currentIndex;
+
+            // 恢复所有句子
+            this.sentences = [...this.allSentences];
+            this.practiceMode = 'normal';
+
+            // 恢复全部句子模式的进度（使用统一的键名 'normal'）
+            this.currentIndex = this.savedProgress.normal || 0;
+
+            // 确保索引有效
+            if (this.currentIndex >= this.sentences.length) {
+                this.currentIndex = 0;
+            }
+
+            this.showStatus('✓ 已切换到全部句子模式', 'success');
+        }
+
+        // 保存模式进度到 localStorage
+        this.saveModeProgress();
+
+        // 停止当前播放
+        this.audio.pause();
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+        this.isPlaying = false;
+        this.isTextVisible = false;
+
+        // 更新UI
+        this.updateDisplay();
+        this.updateModeButtons();
+
+        // 自动播放当前句子
+        setTimeout(() => {
+            this.playCurrentSentence();
+        }, 500);
+    }
+
+    // 更新模式按钮状态
+    updateModeButtons() {
+        if (this.practiceMode === 'normal') {
+            this.modeNormal.classList.add('active');
+            this.modeMisunderstood.classList.remove('active');
+        } else {
+            this.modeNormal.classList.remove('active');
+            this.modeMisunderstood.classList.add('active');
+        }
+    }
+
+    // 更新未听懂统计信息
+    updateMisunderstoodStats() {
+        const count = this.misunderstoodSentences.size;
+        this.misunderstoodCount.textContent = count;
+        this.misunderstoodModeCount.textContent = count;
+        this.totalCount.textContent = this.allSentences.length;
+    }
+
+    // 清空所有未听懂标记
+    clearAllMarks() {
+        if (this.misunderstoodSentences.size === 0) {
+            this.showStatus('没有需要清除的标记', 'error');
+            return;
+        }
+
+        if (!confirm(`确定要清除所有 ${this.misunderstoodSentences.size} 个未听懂标记吗？此操作不可恢复。`)) {
+            return;
+        }
+
+        this.misunderstoodSentences.clear();
+        this.saveMisunderstoodSentences();
+
+        // 如果当前在专项模式，切换回普通模式
+        if (this.practiceMode === 'misunderstood-only') {
+            this.switchPracticeMode('normal');
+        } else {
+            this.updateDisplay();
+            this.updateMisunderstoodStats();
+        }
+
+        this.showStatus('✓ 已清除所有标记', 'success');
+    }
+
+    // 保存未听懂的句子到 localStorage
+    saveMisunderstoodSentences() {
+        try {
+            const data = Array.from(this.misunderstoodSentences);
+            localStorage.setItem('misunderstoodSentences', JSON.stringify(data));
+        } catch (error) {
+            console.error('Error saving misunderstood sentences:', error);
+        }
+    }
+
+    // 从 localStorage 加载未听懂的句子
+    loadMisunderstoodSentences() {
+        try {
+            const saved = localStorage.getItem('misunderstoodSentences');
+            if (saved) {
+                const data = JSON.parse(saved);
+                this.misunderstoodSentences = new Set(data);
+                console.log(`加载了 ${this.misunderstoodSentences.size} 个未听懂标记`);
+            }
+        } catch (error) {
+            console.error('Error loading misunderstood sentences:', error);
+        }
+    }
+
+    // 保存模式进度
+    saveModeProgress() {
+        try {
+            // 只更新当前模式的进度，保留其他模式的进度
+            this.savedProgress[this.practiceMode] = this.currentIndex;
+
+            // 从 localStorage 读取已保存的进度
+            const saved = localStorage.getItem('practiceModeProgress');
+            let allProgress = { normal: 0, misunderstood: 0 };
+
+            if (saved) {
+                allProgress = JSON.parse(saved);
+            }
+
+            // 更新当前模式的进度
+            allProgress[this.practiceMode] = this.currentIndex;
+
+            // 保留 savedProgress 中其他模式的值
+            if (this.practiceMode === 'normal' && this.savedProgress.misunderstood !== undefined) {
+                allProgress.misunderstood = this.savedProgress.misunderstood;
+            } else if (this.practiceMode === 'misunderstood-only' && this.savedProgress.normal !== undefined) {
+                allProgress.normal = this.savedProgress.normal;
+            }
+
+            // 保存到 localStorage
+            localStorage.setItem('practiceModeProgress', JSON.stringify(allProgress));
+            console.log('保存模式进度到localStorage:', JSON.stringify(allProgress));
+        } catch (error) {
+            console.error('Error saving mode progress:', error);
+        }
+    }
+
+    // 加载模式进度
+    loadModeProgress() {
+        try {
+            const saved = localStorage.getItem('practiceModeProgress');
+            if (saved) {
+                this.savedProgress = JSON.parse(saved);
+                console.log('加载了模式进度:', this.savedProgress);
+            }
+        } catch (error) {
+            console.error('Error loading mode progress:', error);
+        }
     }
 }
 
