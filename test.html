@@ -95,6 +95,15 @@ h1 { font-size: 26px; color: #333; margin-bottom: 8px; text-align: center; }
 .stat-num { font-size: 24px; font-weight: 700; color: #444; }
 .stat-label { font-size: 12px; color: #999; margin-top: 2px; }
 .footer-note { text-align: center; font-size: 12px; color: #bbb; margin-top: 20px; }
+.back-link {
+  display: inline-block; text-align: center; padding: 12px 24px; margin-top: 16px;
+  background: #fff; color: #667eea; border: 2px solid #667eea; border-radius: 10px;
+  text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.3s ease;
+}
+.back-link:hover {
+  background: #667eea; color: #fff; transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
 </style>
 </head>
 <body>
@@ -117,6 +126,9 @@ h1 { font-size: 26px; color: #333; margin-bottom: 8px; text-align: center; }
       </div>
     </div>
     <button class="primary-btn" onclick="startTest()">开始测试</button>
+    <div style="text-align: center;">
+      <a href="index.html" class="back-link">🎧 返回听力练习</a>
+    </div>
     <div class="footer-note">内置词库：3373 词 · A1-C2 六级覆盖 · 离线可用</div>
   </div>
 
