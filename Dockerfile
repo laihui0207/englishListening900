@@ -1,27 +1,30 @@
-FROM nginx:alpine
+FROM node:24-alpine
 
-# 设置工作目录
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
 
-# 删除nginx默认页面
-RUN rm -rf /usr/share/nginx/html/*
+# 安装 Python 与 edge-tts（用于自定义句子语音生成，与本地脚本同一引擎）
+RUN apk add --no-cache python3 py3-pip \
+    && pip3 install --break-system-packages --no-cache-dir edge-tts
 
-# 复制网站文件
-COPY index.html /usr/share/nginx/html/
-COPY test.html /usr/share/nginx/html/
-COPY app_audio.js /usr/share/nginx/html/
-COPY sentences_data.json /usr/share/nginx/html/
-COPY audio /usr/share/nginx/html/audio/
+# 先装 Node 依赖（利用层缓存）
+COPY package.json package-lock.json* ./
+RUN npm install --omit=dev
 
-# 复制nginx配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 复制后端与前端文件
+COPY server.js db.js audio-gen.js ./
+COPY index.html test.html app_audio.js auth.js auth-ui.js sentences_data.json favicon.svg ./
+COPY audio ./audio/
 
-# 暴露端口
-EXPOSE 80
+# 数据库与用户音频目录（挂载卷可持久化）
+RUN mkdir -p /app/data/audio
 
-# 健康检查
+EXPOSE 3000
+
+ENV PORT=3000 \
+    DB_PATH=/app/data/app.db \
+    TZ=Asia/Shanghai
+
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
 
-# 启动nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]

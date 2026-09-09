@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#667eea"/>
+      <stop offset="1" stop-color="#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <!-- 耳机头梁 -->
+  <path d="M16 36 v-4 a16 16 0 0 1 32 0 v4"
+        fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <!-- 左右耳罩 -->
+  <rect x="12" y="34" width="10" height="16" rx="5" fill="#fff"/>
+  <rect x="42" y="34" width="10" height="16" rx="5" fill="#fff"/>
+</svg>

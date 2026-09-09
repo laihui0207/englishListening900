@@ -23,14 +23,15 @@
 
 ### 方法1：本地运行（最简单）
 
-1. **双击启动**
-   ```
-   启动服务器.bat
+1. **安装依赖并启动**
+   ```bash
+   npm install
+   npm start
    ```
 
-2. **浏览器自动打开**
+2. **浏览器打开**
    ```
-   http://localhost:8888
+   http://localhost:3000
    ```
 
 ### 方法2：Docker部署（推荐生产环境）
@@ -64,16 +65,19 @@ docker-deploy.bat      # Windows
 
 ```
 demo/
-├── index.html              # 网站主页
-├── app_audio.js            # 应用逻辑
+├── index.html              # 听力练习主页
+├── test.html               # 词汇量测试页
+├── app_audio.js            # 听力练习逻辑
+├── auth.js / auth-ui.js    # 前端登录/注册与进度同步
+├── server.js               # 后端服务（Express）
+├── db.js                   # 数据库层（SQLite）
+├── audio-gen.js            # 自定义句子语音生成（edge-tts）
 ├── sentences_data.json     # 句子数据
+├── favicon.svg             # 站点图标
 ├── audio/                  # 音频文件夹（900个MP3）
 │
-├── 启动服务器.bat           # 快速启动脚本
-│
-├── Dockerfile              # Docker镜像构建
+├── Dockerfile              # Docker镜像构建（Node）
 ├── docker-compose.yml      # Docker Compose配置
-├── nginx.conf              # Nginx配置
 ├── docker-deploy.bat       # Docker部署工具（Windows）
 ├── docker-deploy.sh        # Docker部署工具（Linux/Mac）
 │
@@ -291,10 +295,10 @@ MIT License
 
 ```bash
 # 1. 启动服务
-双击 启动服务器.bat
+npm install && npm start
 
 # 2. 打开浏览器
-访问 http://localhost:8888
+访问 http://localhost:3000
 
 # 3. 开始练习
 点击播放，享受学习！

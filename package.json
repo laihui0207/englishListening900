@@ -1,5 +1,14 @@
 {
+  "name": "english-listening",
+  "version": "3.3.0",
+  "description": "英语听力练习 - 后端服务（用户注册/登录/进度同步）",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/auth.test.js"
+  },
   "dependencies": {
-    "pptxgenjs": "^4.0.1"
+    "express": "^4.22.2"
   }
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <title>英语900句听力练习 - 高质量音频版</title>
     <style>
         * {
@@ -394,10 +395,27 @@
             border-color: #FF9800;
         }
 
+        .marks-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-export-marks {
+            background: #4CAF50;
+            color: white;
+            flex: 1;
+            padding: 10px;
+            font-size: 0.95em;
+        }
+
+        .btn-export-marks:disabled {
+            background: #a5d6a7;
+        }
+
         .btn-clear-marks {
             background: #f44336;
             color: white;
-            width: 100%;
+            flex: 1;
             padding: 10px;
             font-size: 0.95em;
         }
@@ -406,6 +424,210 @@
             display: inline-block;
             margin-left: 10px;
             font-size: 1.2em;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
+            padding: 10px 18px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-right: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 18px;
+            border-radius: 8px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .nav-auth {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 0.95em;
+        }
+
+        .nav-auth button {
+            padding: 8px 18px;
+            font-size: 0.9em;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .nav-auth button:hover:not(:disabled) {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-menu {
+                justify-content: center;
+            }
+            .nav-auth {
+                justify-content: center;
+            }
+        }
+
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal.show {
+            display: flex;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .auth-box h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .auth-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .auth-box .primary {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .auth-error {
+            color: #f44336;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+            min-height: 20px;
+            text-align: center;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .auth-switch a {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-modal.show {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .confirm-box p {
+            color: #333;
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-actions button {
+            flex: 1;
+            padding: 12px;
+            font-size: 1em;
+        }
+
+        .confirm-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .confirm-ok {
+            background: #f44336;
+            color: white;
         }
 
         .import-section {
@@ -441,23 +663,118 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
             .card {
                 padding: 20px;
+                border-radius: 14px;
             }
 
             .header h1 {
                 font-size: 1.8em;
             }
 
-            button {
-                padding: 12px 20px;
+            .header p {
                 font-size: 1em;
+            }
+
+            button {
+                padding: 12px 18px;
+                font-size: 1em;
+            }
+
+            /* 播放/重播、上一句/下一句在窄屏保持一行但收紧间距 */
+            .audio-controls,
+            .navigation {
+                gap: 10px;
+            }
+
+            .btn-repeat {
+                padding: 12px 16px;
+            }
+
+            /* 设置项滑块自适应宽度，避免溢出 */
+            input[type="range"] {
+                width: 40%;
+                min-width: 100px;
+            }
+
+            .sentence-display {
+                padding: 20px;
+                min-height: 90px;
+            }
+
+            .jump-controls {
+                flex-wrap: wrap;
+            }
+
+            .jump-input {
+                min-width: 0;
+            }
+        }
+
+        /* 超小屏（老款手机） */
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .nav-brand {
+                display: none;
+            }
+
+            .audio-controls {
+                flex-direction: column;
+            }
+
+            .btn-repeat {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <div class="confirm-modal" id="confirmModal">
+        <div class="confirm-box">
+            <p id="confirmMessage"></p>
+            <div class="confirm-actions">
+                <button class="confirm-cancel" id="confirmCancel">取消</button>
+                <button class="confirm-ok" id="confirmOk">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="authModal">
+        <div class="auth-box">
+            <h2 id="authTitle">登录</h2>
+            <div class="auth-error" id="authError"></div>
+            <input type="text" id="authUsername" placeholder="用户名（3-32位字母数字下划线）" autocomplete="username">
+            <input type="password" id="authPassword" placeholder="密码（至少6位）" autocomplete="current-password">
+            <button class="primary" id="btnAuthSubmit">登录</button>
+            <div class="auth-switch">
+                <span id="authSwitchText">还没有账号？</span>
+                <a id="authSwitchLink">立即注册</a>
+            </div>
+            <div class="auth-switch">
+                <a id="authClose">关闭</a>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
+        <nav class="navbar">
+            <div class="nav-menu">
+                <span class="nav-brand">📚 英语学习</span>
+                <a href="index.html" class="nav-link active">🎧 听力练习</a>
+                <a href="test.html" class="nav-link">📖 词汇量测试</a>
+            </div>
+            <div class="nav-auth" id="authBar">
+                <span id="authUser"></span>
+                <button id="btnAuthAction">登录 / 注册</button>
+            </div>
+        </nav>
         <div class="header">
             <h1>🎧 英语900句听力练习</h1>
             <p>Listen, Learn, Master</p>
@@ -528,7 +845,10 @@
                     </button>
                 </div>
 
-                <button class="btn-clear-marks" id="btnClearMarks">🗑️ 清空所有标记</button>
+                <div class="marks-actions">
+                    <button class="btn-export-marks" id="btnExportMarks">📤 导出未听懂句子</button>
+                    <button class="btn-clear-marks" id="btnClearMarks">🗑️ 清空所有标记</button>
+                </div>
             </div>
 
             <div class="jump-section">
@@ -583,6 +903,8 @@
         </div>
     </div>
 
-    <script src="app_audio.js?v=20240909-3"></script>
+    <script src="auth.js?v=20240909-5"></script>
+    <script src="auth-ui.js?v=20240909-5"></script>
+    <script src="app_audio.js?v=20240909-8"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 # 🎧 英语900句听力练习网站 - Docker部署
 
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
-[![Nginx](https://img.shields.io/badge/nginx-alpine-green.svg)](https://nginx.org/)
+[![Node.js](https://img.shields.io/badge/node-24--alpine-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 完整的英语听力学习系统，支持Docker一键部署。
@@ -94,8 +94,8 @@ chmod +x docker-deploy.sh
 
 ### 镜像信息
 
-- **基础镜像**: nginx:alpine
-- **镜像大小**: 约45MB
+- **基础镜像**: node:24-alpine
+- **服务方式**: Express 托管静态前端 + REST API
 - **暴露端口**: 80
 - **健康检查**: 已配置
 
@@ -129,30 +129,33 @@ ports:
   - "8080:80"  # 改为其他端口，如 "9999:80"
 ```
 
-### 性能优化
+### 特性
 
-nginx配置已优化：
-- ✅ Gzip压缩
-- ✅ 缓存策略
-- ✅ 安全头设置
+- ✅ 用户注册/登录（scrypt 哈希 + 会话令牌）
+- ✅ 学习进度云同步
+- ✅ 自定义句子入库，后台异步生成语音（edge-tts）
 - ✅ 健康检查
 
 ## 📁 文件结构
 
 ```
 demo/
-├── Dockerfile              # Docker镜像构建文件
+├── Dockerfile              # Docker镜像构建文件（Node）
 ├── docker-compose.yml      # Docker Compose配置
 ├── .dockerignore           # 排除文件列表
-├── nginx.conf              # Nginx配置文件
 ├── docker-deploy.bat       # Windows部署脚本
 ├── docker-deploy.sh        # Linux/Mac部署脚本
-├── index.html              # 网站主页
-├── app_audio.js            # 应用逻辑
+├── index.html              # 听力练习主页
+├── test.html               # 词汇量测试页
+├── app_audio.js            # 听力练习逻辑
+├── auth.js / auth-ui.js    # 登录/注册与进度同步
+├── server.js               # 后端服务（Express）
+├── db.js                   # 数据库层（SQLite）
+├── audio-gen.js            # 自定义句子语音生成
 ├── sentences_data.json     # 句子数据
+├── favicon.svg             # 站点图标
 └── audio/                  # 音频文件夹
     ├── sentence_001.mp3
-    ├── sentence_002.mp3
     └── ...
 ```
 

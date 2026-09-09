@@ -5,16 +5,14 @@ services:
     image: docker.huivip.com.cn:8580/english-listening:v3.3
     container_name: english-listening-practice
     ports:
-      - "8888:80"
+      - "8888:3000"
     restart: unless-stopped
-    # 如果需要持久化或动态更新内容，取消下面的注释
-    # volumes:
-    #   - ./index.html:/usr/share/nginx/html/index.html:ro
-    #   - ./app_audio.js:/usr/share/nginx/html/app_audio.js:ro
-    #   - ./sentences_data.json:/usr/share/nginx/html/sentences_data.json:ro
-    #   - ./audio:/usr/share/nginx/html/audio:ro
+    # 持久化数据库（用户账号与学习进度）
+    volumes:
+      - ./data:/app/data
     environment:
       - TZ=Asia/Shanghai
+      - DB_PATH=/app/data/app.db
     labels:
       - "com.example.description=英语900句听力练习网站"
       - "com.example.version=3.3"

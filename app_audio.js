@@ -85,6 +85,7 @@ class ListeningPractice {
         this.modeNormal = document.getElementById('modeNormal');
         this.modeMisunderstood = document.getElementById('modeMisunderstood');
         this.btnClearMarks = document.getElementById('btnClearMarks');
+        this.btnExportMarks = document.getElementById('btnExportMarks');
     }
 
     async loadSentences() {
@@ -100,8 +101,8 @@ class ListeningPractice {
             this.sentences = data;
             this.allSentences = [...data]; // 保存完整列表
 
-            // 加载并追加自定义句子
-            const customSentences = this.loadCustomSentences();
+            // 加载并追加自定义句子：登录用户从服务器取，否则用本地
+            const customSentences = await this.loadCustomSentences();
             if (customSentences.length > 0) {
                 this.sentences = this.sentences.concat(customSentences);
                 this.allSentences = [...this.sentences]; // 更新完整列表
@@ -109,6 +110,9 @@ class ListeningPractice {
             } else {
                 this.loadingStatus.textContent = `✓ 已加载 ${this.sentences.length} 个句子（高质量音频）`;
             }
+
+            // 若有句子语音仍在生成中，启动轮询刷新
+            this.schedulePendingAudioPoll();
 
             setTimeout(() => {
                 this.loadingStatus.textContent = '';
@@ -212,6 +216,7 @@ class ListeningPractice {
 
         // 清空标记按钮
         this.btnClearMarks.addEventListener('click', () => this.clearAllMarks());
+        this.btnExportMarks.addEventListener('click', () => this.exportMisunderstood());
 
         // 键盘快捷键
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -570,7 +575,7 @@ class ListeningPractice {
         }
     }
 
-    importSentences() {
+    async importSentences() {
         const text = this.importText.value.trim();
 
         if (!text) {
@@ -589,67 +594,146 @@ class ListeningPractice {
             return;
         }
 
-        // 追加到现有句子列表
-        const startId = this.sentences.length + 1;
+        this.btnImport.disabled = true;
+        try {
+            if (this.isLoggedIn()) {
+                // 登录：提交后台异步生成语音
+                await this.importSentencesToServer(newSentences);
+            } else {
+                // 未登录：本地保存 + TTS 播放
+                this.importSentencesLocally(newSentences);
+            }
+            this.importText.value = '';
+        } catch (error) {
+            console.error('导入失败:', error);
+            this.showStatus('❌ 导入失败：' + error.message, 'error');
+        } finally {
+            this.btnImport.disabled = false;
+        }
+    }
+
+    async importSentencesToServer(newSentences) {
+        const token = window.Auth.getToken();
+        const res = await fetch('/api/sentences', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ sentences: newSentences })
+        });
+        const result = await res.json();
+        if (!res.ok || !result.success) {
+            throw new Error(result.error || '服务器错误');
+        }
+
+        // 把新句子加入列表（此时 audio 为 null，语音正在后台生成）
+        const startIndex = this.sentences.length;
+        const mapped = result.data.map(row => this.mapServerSentence(row));
+        this.sentences = this.sentences.concat(mapped);
+        this.allSentences = [...this.sentences];
+
+        this.currentIndex = startIndex;
+        this.resetPlaybackState();
+        this.updateDisplay();
+        this.updateMisunderstoodStats();
+
+        // 开始轮询语音生成状态
+        this.schedulePendingAudioPoll();
+
+        this.showStatus(`✓ 已导入 ${mapped.length} 句，语音正在后台生成（暂用TTS播放，完成后自动切换）`, 'success');
+    }
+
+    importSentencesLocally(newSentences) {
+        const startIndex = this.sentences.length;
         const importedSentences = newSentences.map((text, index) => ({
-            id: startId + index,
+            id: 'local-' + (Date.now() + index),
             english: text,
             text: text,
             chinese: '',
-            audio: null,  // 导入的句子没有音频，将使用TTS
-            isCustom: true  // 标记为自定义句子
+            audio: null,
+            isCustom: true
         }));
 
-        // 追加到句子列表
         this.sentences = this.sentences.concat(importedSentences);
-
-        // 保存自定义句子到localStorage
+        this.allSentences = [...this.sentences];
         this.saveCustomSentences(importedSentences);
 
-        // 跳转到第一个新导入的句子
-        this.currentIndex = startId - 1;
+        this.currentIndex = startIndex;
+        this.resetPlaybackState();
+        this.updateDisplay();
+        this.updateMisunderstoodStats();
+
+        this.showStatus(`成功导入 ${newSentences.length} 个句子（未登录，使用TTS播放。登录后可生成真人语音）`, 'success');
+    }
+
+    resetPlaybackState() {
         this.isTextVisible = false;
         this.audio.pause();
         if (window.speechSynthesis) {
             window.speechSynthesis.cancel();
         }
         this.isPlaying = false;
-        this.updateDisplay();
+    }
 
-        // 清空输入框
-        this.importText.value = '';
+    // 判断是否已登录（auth.js 提供 window.Auth）
+    isLoggedIn() {
+        return typeof window.Auth !== 'undefined' && window.Auth.isLoggedIn();
+    }
 
-        // 显示成功消息
-        this.showStatus(`成功导入 ${newSentences.length} 个句子（追加到第 ${startId} 句，将使用TTS播放）`, 'success');
+    // 把服务器返回的句子行映射成前端句子对象
+    // ready 的句子用后端音频（token 走查询参数），否则 audio=null 回退 TTS
+    mapServerSentence(row) {
+        const token = window.Auth.getToken();
+        return {
+            id: 'custom-' + row.id,
+            customId: row.id,
+            english: row.text,
+            text: row.text,
+            chinese: '',
+            audio: row.audio_status === 'ready'
+                ? `/api/sentences/${row.id}/audio?token=${encodeURIComponent(token)}`
+                : null,
+            audioStatus: row.audio_status,
+            isCustom: true
+        };
     }
 
     saveCustomSentences(newSentences) {
+        // 仅未登录时用 localStorage 保存；登录用户走服务器
         try {
-            // 获取已保存的自定义句子
             const saved = localStorage.getItem('customSentences');
             let customSentences = saved ? JSON.parse(saved) : [];
-
-            // 追加新句子
             customSentences = customSentences.concat(newSentences);
-
-            // 保存到localStorage
             localStorage.setItem('customSentences', JSON.stringify(customSentences));
-
-            console.log(`已保存 ${customSentences.length} 个自定义句子到localStorage`);
         } catch (error) {
             console.error('Error saving custom sentences:', error);
         }
     }
 
-    loadCustomSentences() {
+    async loadCustomSentences() {
+        // 登录用户：从服务器加载（含语音生成状态）
+        if (this.isLoggedIn()) {
+            try {
+                const token = window.Auth.getToken();
+                const res = await fetch('/api/sentences', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const { data } = await res.json();
+                    return (data || []).map(row => this.mapServerSentence(row));
+                }
+            } catch (error) {
+                console.error('从服务器加载自定义句子失败:', error);
+            }
+            return [];
+        }
+        // 未登录：localStorage
         try {
             const saved = localStorage.getItem('customSentences');
             if (saved) {
                 const customSentences = JSON.parse(saved);
-                if (customSentences.length > 0) {
-                    console.log(`从localStorage加载了 ${customSentences.length} 个自定义句子`);
-                    return customSentences;
-                }
+                if (customSentences.length > 0) return customSentences;
             }
         } catch (error) {
             console.error('Error loading custom sentences:', error);
@@ -657,23 +741,70 @@ class ListeningPractice {
         return [];
     }
 
-    clearCustomSentences() {
-        if (!confirm('确定要清除所有自定义句子吗？此操作不可恢复。')) {
+    async clearCustomSentences() {
+        if (!await this.confirmDialog('确定要清除所有自定义句子吗？此操作不可恢复。')) {
             return;
         }
-
         try {
-            // 清除localStorage中的自定义句子
-            localStorage.removeItem('customSentences');
-
-            // 重新加载原始句子（不包含自定义句子）
-            this.loadSentences();
-
+            if (this.isLoggedIn()) {
+                const token = window.Auth.getToken();
+                await fetch('/api/sentences', {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+            } else {
+                localStorage.removeItem('customSentences');
+            }
+            // 重新加载句子列表
+            this.currentIndex = 0;
+            await this.loadSentences();
             this.showStatus('✓ 已清除所有自定义句子', 'success');
         } catch (error) {
             console.error('Error clearing custom sentences:', error);
             this.showStatus('❌ 清除失败', 'error');
         }
+    }
+
+    // 轮询未生成完成的语音，就绪后热更新音频地址
+    schedulePendingAudioPoll() {
+        if (this._audioPollTimer) {
+            clearInterval(this._audioPollTimer);
+            this._audioPollTimer = null;
+        }
+        if (!this.isLoggedIn()) return;
+        const hasPending = this.allSentences.some(
+            s => s.isCustom && s.audioStatus && s.audioStatus !== 'ready'
+        );
+        if (!hasPending) return;
+
+        this._audioPollTimer = setInterval(async () => {
+            try {
+                const token = window.Auth.getToken();
+                const res = await fetch('/api/sentences', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!res.ok) return;
+                const { data } = await res.json();
+                let stillPending = false;
+                (data || []).forEach(row => {
+                    const target = this.allSentences.find(s => s.customId === row.id);
+                    if (target && target.audioStatus !== row.audio_status) {
+                        target.audioStatus = row.audio_status;
+                        target.audio = row.audio_status === 'ready'
+                            ? `/api/sentences/${row.id}/audio?token=${encodeURIComponent(token)}`
+                            : null;
+                    }
+                    if (row.audio_status !== 'ready') stillPending = true;
+                });
+                if (!stillPending) {
+                    clearInterval(this._audioPollTimer);
+                    this._audioPollTimer = null;
+                    this.showStatus('✓ 自定义句子语音已全部生成', 'success');
+                }
+            } catch (e) {
+                // 网络波动忽略，下次继续
+            }
+        }, 5000);
     }
 
     showStatus(message, type = 'success') {
@@ -683,6 +814,38 @@ class ListeningPractice {
         setTimeout(() => {
             this.importStatus.textContent = '';
         }, 3000);
+    }
+
+    // 应用内确认弹窗，返回 Promise<boolean>（比原生 confirm 在内嵌浏览器更可靠）
+    confirmDialog(message) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('confirmModal');
+            const msgEl = document.getElementById('confirmMessage');
+            const okBtn = document.getElementById('confirmOk');
+            const cancelBtn = document.getElementById('confirmCancel');
+            if (!modal) {
+                // 兜底：元素缺失时退回原生 confirm
+                resolve(window.confirm(message));
+                return;
+            }
+            msgEl.textContent = message;
+            modal.classList.add('show');
+
+            const cleanup = (result) => {
+                modal.classList.remove('show');
+                okBtn.removeEventListener('click', onOk);
+                cancelBtn.removeEventListener('click', onCancel);
+                modal.removeEventListener('click', onBackdrop);
+                resolve(result);
+            };
+            const onOk = () => cleanup(true);
+            const onCancel = () => cleanup(false);
+            const onBackdrop = (e) => { if (e.target === modal) cleanup(false); };
+
+            okBtn.addEventListener('click', onOk);
+            cancelBtn.addEventListener('click', onCancel);
+            modal.addEventListener('click', onBackdrop);
+        });
     }
 
     // 获取当前句子在完整列表中的实际索引
@@ -848,16 +1011,18 @@ class ListeningPractice {
         this.misunderstoodCount.textContent = count;
         this.misunderstoodModeCount.textContent = count;
         this.totalCount.textContent = this.allSentences.length;
+        // 无未听懂句子时禁用导出
+        this.btnExportMarks.disabled = count === 0;
     }
 
     // 清空所有未听懂标记
-    clearAllMarks() {
+    async clearAllMarks() {
         if (this.misunderstoodSentences.size === 0) {
             this.showStatus('没有需要清除的标记', 'error');
             return;
         }
 
-        if (!confirm(`确定要清除所有 ${this.misunderstoodSentences.size} 个未听懂标记吗？此操作不可恢复。`)) {
+        if (!await this.confirmDialog(`确定要清除所有 ${this.misunderstoodSentences.size} 个未听懂标记吗？此操作不可恢复。`)) {
             return;
         }
 
@@ -873,6 +1038,37 @@ class ListeningPractice {
         }
 
         this.showStatus('✓ 已清除所有标记', 'success');
+    }
+
+    // 导出全部未听懂的句子为文本文件
+    exportMisunderstood() {
+        if (this.misunderstoodSentences.size === 0) {
+            this.showStatus('还没有标记未听懂的句子', 'error');
+            return;
+        }
+
+        // 按索引排序，只导出英文句子，一句一行
+        const indices = Array.from(this.misunderstoodSentences).sort((a, b) => a - b);
+        const lines = indices.map((idx) => {
+            const s = this.allSentences[idx];
+            if (!s) return null;
+            return s.english || s.text || '';
+        }).filter(Boolean);
+
+        const content = lines.join('\n') + '\n';
+
+        // 触发浏览器下载
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `未听懂句子_${new Date().toISOString().slice(0, 10)}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        this.showStatus(`✓ 已导出 ${lines.length} 个未听懂句子`, 'success');
     }
 
     // 保存未听懂的句子到 localStorage
