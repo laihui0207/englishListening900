@@ -17,11 +17,101 @@
   function refreshBar() {
     if (window.Auth.isLoggedIn()) {
       authUser.textContent = `👤 ${window.Auth.getUsername()}`;
+      authUser.title = '点击打开设置';
       btnAuthAction.textContent = '退出登录';
     } else {
       authUser.textContent = '未登录（进度仅保存在本机）';
+      authUser.title = '';
       btnAuthAction.textContent = '登录 / 注册';
     }
+  }
+
+  // ===== 设置弹窗（DeepSeek API Key）=====
+  const settingsModal = $('settingsModal');
+  const settingsError = $('settingsError');
+  const settingsApiKey = $('settingsApiKey');
+  const settingsCurrent = $('settingsCurrent');
+  const settingsMasked = $('settingsMasked');
+
+  async function settingsApi(path, method, body) {
+    const headers = {};
+    const token = window.Auth.getToken();
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (body) headers['Content-Type'] = 'application/json';
+    const res = await fetch(`/api${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || '请求失败');
+    return data;
+  }
+
+  async function openSettings() {
+    if (!window.Auth.isLoggedIn()) {
+      openModal();
+      return;
+    }
+    settingsError.textContent = '';
+    settingsApiKey.value = '';
+    settingsModal.classList.add('show');
+    try {
+      const { data } = await settingsApi('/settings', 'GET');
+      if (data.hasApiKey) {
+        settingsMasked.textContent = data.maskedApiKey;
+        settingsCurrent.style.display = 'flex';
+      } else {
+        settingsCurrent.style.display = 'none';
+      }
+    } catch (e) {
+      settingsError.textContent = e.message;
+    }
+  }
+
+  async function saveKey() {
+    const key = settingsApiKey.value.trim();
+    settingsError.textContent = '';
+    if (!key) {
+      settingsError.textContent = '请输入 API Key';
+      return;
+    }
+    try {
+      await settingsApi('/settings/apikey', 'PUT', { apiKey: key });
+      settingsModal.classList.remove('show');
+    } catch (e) {
+      settingsError.textContent = e.message;
+    }
+  }
+
+  async function deleteKey() {
+    settingsError.textContent = '';
+    try {
+      await settingsApi('/settings/apikey', 'DELETE');
+      settingsApiKey.value = '';
+      settingsCurrent.style.display = 'none';
+    } catch (e) {
+      settingsError.textContent = e.message;
+    }
+  }
+
+  if (settingsModal) {
+    authUser.addEventListener('click', () => {
+      if (window.Auth.isLoggedIn()) openSettings();
+    });
+    $('btnSaveKey').addEventListener('click', saveKey);
+    $('btnDeleteKey').addEventListener('click', deleteKey);
+    $('settingsClose').addEventListener('click', () =>
+      settingsModal.classList.remove('show')
+    );
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) settingsModal.classList.remove('show');
+    });
+    settingsApiKey.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') saveKey();
+    });
+    // 暴露给 app_audio.js：无 key 时点 AI 分析可直接打开设置
+    window.Settings = { open: openSettings };
   }
 
   function setMode(next) {

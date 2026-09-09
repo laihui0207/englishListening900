@@ -11,7 +11,7 @@ COPY package.json package-lock.json* ./
 RUN npm install --omit=dev
 
 # 复制后端与前端文件
-COPY server.js db.js audio-gen.js ./
+COPY server.js db.js audio-gen.js ai-analyze.js ./
 COPY index.html test.html app_audio.js auth.js auth-ui.js sentences_data.json favicon.svg ./
 COPY audio ./audio/
 
@@ -27,4 +27,5 @@ ENV PORT=3000 \
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
 
-CMD ["node", "server.js"]
+# --experimental-sqlite 兼容部分 Node 24.x 小版本（node:sqlite 未默认开启时也能启动）
+CMD ["node", "--experimental-sqlite", "server.js"]

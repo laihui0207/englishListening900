@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./db');
 const audioGen = require('./audio-gen');
+const aiAnalyze = require('./ai-analyze');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -169,6 +170,64 @@ app.get('/api/sentences/:id/audio', (req, res) => {
     return res.status(404).json({ success: false, error: '音频文件丢失' });
   }
   res.type('audio/mpeg').sendFile(file);
+});
+
+// AI 分析未听懂句子的知识弱项
+app.post('/api/analyze', requireAuth, async (req, res) => {
+  const { sentences } = req.body || {};
+  if (!Array.isArray(sentences) || sentences.length === 0) {
+    return res.status(400).json({ success: false, error: '请提供未听懂的句子' });
+  }
+  // 清洗 + 限量，避免超长请求
+  const cleaned = sentences
+    .map((s) => (typeof s === 'string' ? s.trim() : ''))
+    .filter((s) => s.length > 0 && s.length <= 500)
+    .slice(0, 100);
+  if (cleaned.length === 0) {
+    return res.status(400).json({ success: false, error: '没有有效的句子' });
+  }
+
+  try {
+    const apiKey = db.getApiKey(req.userId);
+    const result = await aiAnalyze.analyze(req.userId, cleaned, apiKey);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    if (error.code === 'NO_API_KEY') {
+      return res.status(400).json({ success: false, error: error.message, code: 'NO_API_KEY' });
+    }
+    if (error.code === 'RATE_LIMIT') {
+      return res.status(429).json({ success: false, error: error.message });
+    }
+    console.error('AI 分析失败:', error.message);
+    res.status(502).json({ success: false, error: error.message || 'AI 分析失败' });
+  }
+});
+
+// 获取当前用户设置（返回是否已设置 key + 脱敏预览，绝不返回明文）
+app.get('/api/settings', requireAuth, (req, res) => {
+  const key = db.getApiKey(req.userId);
+  const hasApiKey = !!key;
+  // 脱敏：只显示前 6 位和后 4 位
+  const masked = hasApiKey && key.length > 10
+    ? `${key.slice(0, 6)}...${key.slice(-4)}`
+    : (hasApiKey ? '******' : '');
+  res.json({ success: true, data: { hasApiKey, maskedApiKey: masked } });
+});
+
+// 保存/更新 DeepSeek API Key
+app.put('/api/settings/apikey', requireAuth, (req, res) => {
+  const { apiKey } = req.body || {};
+  if (typeof apiKey !== 'string' || apiKey.trim().length < 8) {
+    return res.status(400).json({ success: false, error: 'API Key 格式无效' });
+  }
+  db.setApiKey(req.userId, apiKey.trim());
+  res.json({ success: true });
+});
+
+// 删除 API Key
+app.delete('/api/settings/apikey', requireAuth, (req, res) => {
+  db.setApiKey(req.userId, null);
+  res.json({ success: true });
 });
 
 // 托管静态前端

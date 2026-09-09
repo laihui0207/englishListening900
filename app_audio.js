@@ -86,6 +86,10 @@ class ListeningPractice {
         this.modeMisunderstood = document.getElementById('modeMisunderstood');
         this.btnClearMarks = document.getElementById('btnClearMarks');
         this.btnExportMarks = document.getElementById('btnExportMarks');
+        this.btnAiAnalyze = document.getElementById('btnAiAnalyze');
+        this.aiModal = document.getElementById('aiModal');
+        this.aiContent = document.getElementById('aiContent');
+        this.aiClose = document.getElementById('aiClose');
     }
 
     async loadSentences() {
@@ -217,6 +221,11 @@ class ListeningPractice {
         // 清空标记按钮
         this.btnClearMarks.addEventListener('click', () => this.clearAllMarks());
         this.btnExportMarks.addEventListener('click', () => this.exportMisunderstood());
+        this.btnAiAnalyze.addEventListener('click', () => this.aiAnalyze());
+        this.aiClose.addEventListener('click', () => this.aiModal.classList.remove('show'));
+        this.aiModal.addEventListener('click', (e) => {
+            if (e.target === this.aiModal) this.aiModal.classList.remove('show');
+        });
 
         // 键盘快捷键
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -1011,8 +1020,9 @@ class ListeningPractice {
         this.misunderstoodCount.textContent = count;
         this.misunderstoodModeCount.textContent = count;
         this.totalCount.textContent = this.allSentences.length;
-        // 无未听懂句子时禁用导出
+        // 无未听懂句子时禁用导出和 AI 分析
         this.btnExportMarks.disabled = count === 0;
+        this.btnAiAnalyze.disabled = count === 0;
     }
 
     // 清空所有未听懂标记
@@ -1069,6 +1079,104 @@ class ListeningPractice {
         URL.revokeObjectURL(url);
 
         this.showStatus(`✓ 已导出 ${lines.length} 个未听懂句子`, 'success');
+    }
+
+    // 取未听懂句子的英文列表
+    getMisunderstoodTexts() {
+        const indices = Array.from(this.misunderstoodSentences).sort((a, b) => a - b);
+        return indices
+            .map(idx => {
+                const s = this.allSentences[idx];
+                return s ? (s.english || s.text || '') : '';
+            })
+            .filter(Boolean);
+    }
+
+    // AI 分析未听懂句子的知识弱项
+    async aiAnalyze() {
+        if (this.misunderstoodSentences.size === 0) {
+            this.showStatus('还没有标记未听懂的句子', 'error');
+            return;
+        }
+        if (!this.isLoggedIn()) {
+            this.showStatus('请先登录后再使用 AI 分析', 'error');
+            return;
+        }
+
+        const sentences = this.getMisunderstoodTexts();
+
+        // 打开弹窗显示 loading
+        this.aiContent.innerHTML = '<div class="ai-loading">🔍 AI 正在分析你的未听懂句子，请稍候…</div>';
+        this.aiModal.classList.add('show');
+        this.btnAiAnalyze.disabled = true;
+
+        try {
+            const token = window.Auth.getToken();
+            const res = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ sentences })
+            });
+            const result = await res.json();
+            if (!res.ok || !result.success) {
+                // 未设置 API Key：关闭分析弹窗，直接打开设置窗口
+                if (result.code === 'NO_API_KEY' && window.Settings) {
+                    this.aiModal.classList.remove('show');
+                    window.Settings.open();
+                    return;
+                }
+                throw new Error(result.error || '分析失败');
+            }
+            this.renderAiResult(result.data);
+        } catch (error) {
+            this.aiContent.innerHTML = `<div class="ai-loading" style="color:#f44336;">❌ ${error.message}</div>`;
+        } finally {
+            this.btnAiAnalyze.disabled = this.misunderstoodSentences.size === 0;
+        }
+    }
+
+    // 渲染 AI 分析结果为分区卡片
+    renderAiResult(data) {
+        // 转义，防止句子内容注入 HTML
+        const esc = (s) => String(s || '')
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        // 兜底：解析失败时后端返回 raw 文本
+        if (data.raw && (!data.weaknesses || data.weaknesses.length === 0)) {
+            this.aiContent.innerHTML = `<div class="ai-summary">${esc(data.raw)}</div>`;
+            return;
+        }
+
+        let html = '';
+        if (data.summary) {
+            html += `<div class="ai-summary">${esc(data.summary)}</div>`;
+        }
+        if (data.weaknesses && data.weaknesses.length > 0) {
+            html += '<div class="ai-section-title">📌 知识弱项</div>';
+            data.weaknesses.forEach(w => {
+                // 兼容字符串或 {topic, detail} 对象
+                const topic = typeof w === 'string' ? w : (w.topic || w.name || '');
+                const detail = typeof w === 'string' ? '' : (w.detail || w.description || '');
+                html += `<div class="ai-weakness">
+                    <div class="ai-weakness-topic">${esc(topic)}</div>
+                    ${detail ? `<div class="ai-weakness-detail">${esc(detail)}</div>` : ''}
+                </div>`;
+            });
+        }
+        if (data.suggestions && data.suggestions.length > 0) {
+            html += '<div class="ai-section-title">💡 练习建议</div>';
+            data.suggestions.forEach(s => {
+                // 模型可能返回字符串，也可能返回 {suggestion/text/detail: "..."} 对象
+                const text = typeof s === 'string'
+                    ? s
+                    : (s.suggestion || s.text || s.detail || s.content || '');
+                html += `<div class="ai-suggestion"><span>✓</span><span>${esc(text)}</span></div>`;
+            });
+        }
+        this.aiContent.innerHTML = html || '<div class="ai-loading">未获得分析结果</div>';
     }
 
     // 保存未听懂的句子到 localStorage

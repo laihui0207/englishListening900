@@ -395,6 +395,19 @@
             border-color: #FF9800;
         }
 
+        .btn-ai-analyze {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .btn-ai-analyze:disabled {
+            background: #c5cae9;
+        }
+
         .marks-actions {
             display: flex;
             gap: 10px;
@@ -630,6 +643,146 @@
             color: white;
         }
 
+        .ai-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ai-modal.show {
+            display: flex;
+        }
+
+        .ai-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .ai-box h2 {
+            color: #667eea;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .ai-summary {
+            background: #f0f4ff;
+            border-radius: 10px;
+            padding: 16px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .ai-section-title {
+            font-weight: 600;
+            color: #333;
+            margin: 18px 0 10px;
+            font-size: 1.05em;
+        }
+
+        .ai-weakness {
+            background: #fff3e0;
+            border-left: 4px solid #FF9800;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+        }
+
+        .ai-weakness-topic {
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 4px;
+        }
+
+        .ai-weakness-detail {
+            color: #666;
+            font-size: 0.92em;
+            line-height: 1.5;
+        }
+
+        .ai-suggestion {
+            display: flex;
+            gap: 8px;
+            padding: 8px 0;
+            color: #444;
+            line-height: 1.5;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .ai-loading {
+            text-align: center;
+            color: #667eea;
+            padding: 30px;
+            font-size: 1.05em;
+        }
+
+        .ai-close {
+            width: 100%;
+            margin-top: 20px;
+            background: #667eea;
+            color: white;
+            padding: 12px;
+        }
+
+        .nav-auth #authUser {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .nav-auth #authUser:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .settings-hint {
+            color: #888;
+            font-size: 0.88em;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .settings-hint a {
+            color: #667eea;
+        }
+
+        .settings-current {
+            background: #f0f4ff;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            font-size: 0.92em;
+            color: #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-current code {
+            font-family: monospace;
+            color: #667eea;
+        }
+
+        .btn-delete-key {
+            background: #f44336;
+            color: white;
+            padding: 6px 14px;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+
         .import-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -746,6 +899,32 @@
         </div>
     </div>
 
+    <div class="ai-modal" id="aiModal">
+        <div class="ai-box">
+            <h2>🤖 AI 弱项分析</h2>
+            <div id="aiContent"></div>
+            <button class="ai-close" id="aiClose">关闭</button>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="settingsModal">
+        <div class="auth-box">
+            <h2>⚙️ 设置</h2>
+            <div class="auth-error" id="settingsError"></div>
+            <div class="settings-hint">
+                AI 弱项分析使用 DeepSeek 大模型，需要你自己的 API Key。
+                前往 <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek 开放平台</a> 免费获取。Key 仅保存在你的账号下，用于分析你的未听懂句子。
+            </div>
+            <div class="settings-current" id="settingsCurrent" style="display:none;">
+                <span>当前 Key：<code id="settingsMasked"></code></span>
+                <button class="btn-delete-key" id="btnDeleteKey">删除</button>
+            </div>
+            <input type="password" id="settingsApiKey" placeholder="输入 DeepSeek API Key (sk-...)" autocomplete="off">
+            <button class="primary" id="btnSaveKey">保存</button>
+            <div class="auth-switch"><a id="settingsClose">关闭</a></div>
+        </div>
+    </div>
+
     <div class="auth-modal" id="authModal">
         <div class="auth-box">
             <h2 id="authTitle">登录</h2>
@@ -845,6 +1024,8 @@
                     </button>
                 </div>
 
+                <button class="btn-ai-analyze" id="btnAiAnalyze">🤖 AI 分析弱项</button>
+
                 <div class="marks-actions">
                     <button class="btn-export-marks" id="btnExportMarks">📤 导出未听懂句子</button>
                     <button class="btn-clear-marks" id="btnClearMarks">🗑️ 清空所有标记</button>
@@ -903,8 +1084,8 @@
         </div>
     </div>
 
-    <script src="auth.js?v=20240909-5"></script>
-    <script src="auth-ui.js?v=20240909-5"></script>
-    <script src="app_audio.js?v=20240909-8"></script>
+    <script src="auth.js?v=20240909-11"></script>
+    <script src="auth-ui.js?v=20240909-11"></script>
+    <script src="app_audio.js?v=20240909-11"></script>
 </body>
 </html>

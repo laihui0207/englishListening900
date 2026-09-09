@@ -15,6 +15,7 @@ db.exec(`
     username TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     progress TEXT NOT NULL DEFAULT '{}',
+    deepseek_api_key TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
@@ -35,6 +36,12 @@ db.exec(`
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
 `);
+
+// 迁移：给已存在的旧库补上 deepseek_api_key 列（CREATE TABLE IF NOT EXISTS 不会改已有表）
+const userCols = db.prepare("PRAGMA table_info(users)").all();
+if (!userCols.some((c) => c.name === 'deepseek_api_key')) {
+  db.exec('ALTER TABLE users ADD COLUMN deepseek_api_key TEXT');
+}
 
 // 密码哈希：使用 Node 内置 scrypt（无需外部依赖），格式 salt:hash
 function hashPassword(password) {
@@ -78,6 +85,21 @@ function getUserById(id) {
 
 function saveProgress(userId, progressObj) {
   updateProgressStmt.run(JSON.stringify(progressObj), userId);
+}
+
+// DeepSeek API Key（按用户存储）
+const setApiKeyStmt = db.prepare(
+  "UPDATE users SET deepseek_api_key = ?, updated_at = datetime('now') WHERE id = ?"
+);
+const getApiKeyStmt = db.prepare('SELECT deepseek_api_key FROM users WHERE id = ?');
+
+function setApiKey(userId, apiKey) {
+  setApiKeyStmt.run(apiKey, userId);
+}
+
+function getApiKey(userId) {
+  const row = getApiKeyStmt.get(userId);
+  return row ? row.deepseek_api_key : null;
 }
 
 // 自定义句子操作（按用户隔离）
@@ -153,6 +175,8 @@ module.exports = {
   getUserByName,
   getUserById,
   saveProgress,
+  setApiKey,
+  getApiKey,
   createSession,
   getSession,
   deleteSession,
