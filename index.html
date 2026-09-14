@@ -149,11 +149,23 @@
             background: #2196F3;
         }
 
+        .misunderstood-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         .btn-misunderstood {
             background: #FF9800;
             color: white;
-            width: 100%;
-            margin-top: 15px;
+            flex: 1;
+        }
+
+        .btn-hint {
+            background: #9C27B0;
+            color: white;
+            white-space: nowrap;
+            padding: 0 20px;
         }
 
         .btn-misunderstood.marked {
@@ -983,7 +995,10 @@
 
             <button class="btn-toggle" id="btnToggle">👁️ 显示原文</button>
 
-            <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂</button>
+            <div class="misunderstood-row">
+                <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂</button>
+                <button class="btn-hint" id="btnHint">💡 提示</button>
+            </div>
 
             <button class="btn-understood" id="btnUnderstood">✅ 已听懂（从列表移除）</button>
 

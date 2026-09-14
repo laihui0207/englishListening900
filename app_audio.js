@@ -78,6 +78,7 @@ class ListeningPractice {
 
         // 未听懂功能相关元素
         this.btnMisunderstood = document.getElementById('btnMisunderstood');
+        this.btnHint = document.getElementById('btnHint');
         this.btnUnderstood = document.getElementById('btnUnderstood');
         this.misunderstoodCount = document.getElementById('misunderstoodCount');
         this.misunderstoodModeCount = document.getElementById('misunderstoodModeCount');
@@ -210,6 +211,17 @@ class ListeningPractice {
 
         // 未听懂按钮
         this.btnMisunderstood.addEventListener('click', () => this.toggleMisunderstood());
+
+        // 提示按钮：未显示原文时只显示中文翻译
+        this.btnHint.addEventListener('click', () => {
+            if (this.isTextVisible) return;
+            const sentence = this.sentences[this.currentIndex];
+            const chineseText = sentence && (sentence.chinese || '');
+            if (chineseText) {
+                this.sentenceDisplay.innerHTML = `<div style="font-size:1.1em;color:#666;">${chineseText}</div>`;
+                this.sentenceDisplay.classList.remove('sentence-hidden');
+            }
+        });
 
         // 已听懂按钮
         this.btnUnderstood.addEventListener('click', () => this.markAsUnderstood());
