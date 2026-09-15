@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>白板 - 画图 / 图形 / 文本</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh; display:flex; flex-direction: column; align-items:center;
+  padding: 20px;
+}
+.navbar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 14px;
+  padding: 10px 18px; margin-bottom: 20px; width: 100%; max-width: 1360px;
+  flex-wrap: wrap; gap: 12px; box-sizing: border-box;
+}
+.nav-menu { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.nav-brand { color: white; font-weight: 700; font-size: 16px; margin-right: 8px; }
+.nav-link {
+  padding: 8px 16px; border-radius: 8px; color: rgba(255,255,255,0.85);
+  text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s ease;
+}
+.nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
+.nav-link.active { background: white; color: #667eea; font-weight: 600; }
+
+.board-card {
+  background: white; border-radius: 20px; padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  width: 100%; max-width: 1360px;
+}
+.toolbar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding-bottom: 16px; border-bottom: 1px solid #eee; margin-bottom: 16px;
+}
+.tool-btn {
+  padding: 9px 14px; font-size: 14px; border: 2px solid #e0e0e0; background: white;
+  border-radius: 9px; cursor: pointer; transition: all 0.2s ease; color: #555; font-weight: 500;
+}
+.tool-btn:hover { border-color: #667eea; color: #667eea; }
+.tool-btn.active {
+  background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;
+}
+.tool-sep { width: 1px; height: 26px; background: #e0e0e0; margin: 0 4px; }
+.tool-field { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #666; }
+.tool-field input[type="color"] {
+  width: 38px; height: 34px; border: 2px solid #e0e0e0; border-radius: 8px;
+  cursor: pointer; background: white; padding: 2px;
+}
+.tool-field input[type="range"] { width: 90px; cursor: pointer; accent-color: #667eea; }
+.tool-btn.danger { color: #f44336; border-color: #ffcdd2; }
+.tool-btn.danger:hover { background: #f44336; color: white; border-color: #f44336; }
+.zoom-label {
+  font-size: 13px; color: #667eea; font-weight: 600; min-width: 48px; text-align: center;
+}
+.sel-info { font-size: 13px; color: #667eea; font-weight: 600; min-width: 62px; }
+.tool-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.tool-btn.danger:disabled { background: white; color: #f44336; border-color: #ffcdd2; }
+
+/* 画布高度只在这里定义一次，聊天面板跟着它走，
+   面板高度与内容无关 —— 消息再多也不会把画布顶变形 */
+.board-body {
+  --board-h: 62vh; --board-min-h: 380px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+/* min-width:0 让 canvas 能被 flex 压缩，否则它会撑破容器 */
+.canvas-wrap { position: relative; flex: 1; min-width: 0; }
+
+.chat-panel {
+  display: flex; flex-direction: column; width: 300px; flex-shrink: 0;
+  height: var(--board-h); min-height: var(--board-min-h);
+  border: 1px solid #e4e4ef; border-radius: 12px; background: #fcfcff; overflow: hidden;
+}
+.chat-panel.hidden { display: none; }
+.chat-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid #eee;
+  font-size: 14px; font-weight: 600; color: #667eea; background: white;
+}
+.chat-close {
+  border: none; background: none; cursor: pointer; color: #aaa; font-size: 14px; padding: 2px 6px;
+}
+.chat-close:hover { color: #f44336; }
+/* min-height:0 是滚动的关键：flex 子项默认 min-height:auto，
+   不肯缩到内容高度以下，overflow-y 永远不触发 */
+.chat-log {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 12px; display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: thin; scrollbar-color: #c9c9de transparent;
+}
+.chat-log::-webkit-scrollbar { width: 8px; }
+.chat-log::-webkit-scrollbar-track { background: transparent; }
+.chat-log::-webkit-scrollbar-thumb { background: #c9c9de; border-radius: 4px; }
+.chat-log::-webkit-scrollbar-thumb:hover { background: #a9a9c4; }
+/* 占位提示不该抢占剩余空间，否则输入框被顶到底部 */
+.chat-empty { flex-shrink: 0; }
+/* 气泡不被 flex 压扁 */
+.msg { flex-shrink: 0; }
+.chat-empty { font-size: 13px; color: #999; line-height: 1.7; }
+.msg { font-size: 13px; line-height: 1.6; max-width: 92%; }
+.msg.user {
+  align-self: flex-end; background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+  padding: 8px 12px; border-radius: 12px 12px 3px 12px; white-space: pre-wrap; word-break: break-word;
+}
+.msg.ai {
+  align-self: flex-start; background: white; border: 1px solid #e8e8f2; color: #444;
+  padding: 8px 12px; border-radius: 12px 12px 12px 3px; word-break: break-word;
+}
+.msg.ai .m-title { font-weight: 600; color: #5b4bc4; margin-bottom: 4px; }
+.msg.ai .m-line { margin: 2px 0; }
+.msg.ai .m-tex {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px; background: #f6f6fb; color: #444;
+  padding: 2px 6px; border-radius: 4px; display: inline-block; margin: 2px 0;
+  word-break: break-all;
+}
+.msg.ai .m-note { color: #e07b39; }
+.msg.ai .m-drawn { margin-top: 6px; font-size: 11px; color: #999; }
+.msg.err { align-self: flex-start; color: #f44336; font-size: 12px; }
+.msg.pending { align-self: flex-start; color: #999; font-size: 12px; }
+.chat-input { border-top: 1px solid #eee; padding: 10px; background: white; }
+.chat-input textarea {
+  width: 100%; padding: 8px 10px; border: 2px solid #e0e0e0; border-radius: 8px;
+  font-size: 13px; font-family: inherit; resize: vertical; outline: none;
+}
+.chat-input textarea:focus { border-color: #667eea; }
+.chat-actions { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.chat-tip { flex: 1; font-size: 10px; color: #bbb; }
+.chat-actions .tool-btn { padding: 6px 12px; font-size: 12px; }
+#board {
+  display: block; width: 100%; height: var(--board-h); min-height: var(--board-min-h);
+  border: 2px dashed #e4e4ef; border-radius: 12px;
+  background: #fff; cursor: grab; touch-action: none;
+}
+#textInput {
+  display: none; position: absolute; z-index: 6;
+  background: rgba(255,255,255,0.92); border: 2px solid #667eea; border-radius: 6px;
+  padding: 2px 6px; outline: none; min-width: 140px;
+}
+/* 默认左下角。拖动后由 JS 写 left/top 覆盖 */
+.minimap-box {
+  position: absolute; left: 12px; bottom: 12px; z-index: 5;
+  background: rgba(255,255,255,0.94); border: 1px solid #d8d8e8; border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12); overflow: hidden;
+}
+.minimap-title {
+  font-size: 11px; color: #999; padding: 4px 8px 3px; border-bottom: 1px solid #eee;
+  user-select: none; cursor: grab; background: #fafaff;
+}
+.minimap-title:active { cursor: grabbing; }
+#minimap { display: block; width: 180px; height: 120px; cursor: pointer; }
+.nav-auth { display: flex; align-items: center; gap: 12px; color: white; font-size: 14px; }
+.nav-auth button {
+  padding: 8px 16px; font-size: 13px; border-radius: 8px; cursor: pointer;
+  background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4);
+  transition: all 0.2s ease;
+}
+.nav-auth button:hover:not(:disabled) { background: rgba(255,255,255,0.3); }
+.nav-auth #authUser { cursor: pointer; }
+.nav-auth #authUser:hover { text-decoration: underline; }
+.auth-modal {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;
+}
+.auth-modal.show { display: flex; }
+.auth-box {
+  background: white; border-radius: 16px; padding: 35px; width: 90%; max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.auth-box h2 { color: #667eea; margin-bottom: 20px; text-align: center; }
+.auth-box input {
+  width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 2px solid #e0e0e0;
+  border-radius: 8px; font-size: 15px;
+}
+.auth-box input:focus { outline: none; border-color: #667eea; }
+.auth-box .primary {
+  width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer;
+  background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-size: 16px; font-weight: 600;
+}
+.auth-error { color: #f44336; font-size: 14px; margin-bottom: 12px; min-height: 20px; text-align: center; }
+.auth-switch { text-align: center; margin-top: 14px; font-size: 14px; color: #666; }
+.auth-switch a { color: #667eea; cursor: pointer; text-decoration: none; margin-left: 4px; }
+.auth-switch a:hover { text-decoration: underline; }
+.settings-hint {
+  font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 14px;
+  background: #f7f7ff; padding: 12px; border-radius: 8px;
+}
+.settings-hint a { color: #667eea; }
+.settings-current {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font-size: 13px; color: #666; margin-bottom: 12px;
+}
+.settings-current code { background: #f0f0f5; padding: 3px 7px; border-radius: 5px; }
+.btn-delete-key {
+  padding: 5px 12px; font-size: 12px; border: 1px solid #ffcdd2; background: white;
+  color: #f44336; border-radius: 6px; cursor: pointer;
+}
+.btn-delete-key:hover { background: #f44336; color: white; }
+.tool-btn.teacher {
+  background: linear-gradient(135deg, #f6a13c, #e0673b); color: white; border-color: transparent;
+}
+.tool-btn.teacher:hover { filter: brightness(1.07); color: white; }
+
+/* 答题窗口：停靠画布底部，让开左下角的小地图。
+   不居中是为了不挡住白板上的题干 */
+.quiz-box {
+  display: none; position: absolute; left: 206px; right: 12px; bottom: 12px;
+  z-index: 9; max-height: 72%; overflow-y: auto;
+  background: white; border: 1px solid #d8d8e8; border-radius: 12px; padding: 14px;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.18);
+  scrollbar-width: thin; scrollbar-color: #c9c9de transparent;
+}
+.quiz-box::-webkit-scrollbar { width: 8px; }
+.quiz-box::-webkit-scrollbar-thumb { background: #c9c9de; border-radius: 4px; }
+.quiz-box.show { display: block; }
+.quiz-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 12px;
+}
+.quiz-q { font-size: 15px; line-height: 1.6; color: #333; margin-bottom: 14px; white-space: pre-wrap; }
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.quiz-opt {
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; cursor: pointer;
+  border: 2px solid #e8e8f2; border-radius: 10px; font-size: 14px; color: #444;
+  transition: all 0.15s ease; text-align: left; background: white; width: 100%;
+}
+.quiz-opt:hover:not(:disabled) { border-color: #667eea; background: #fafaff; }
+.quiz-opt.picked { border-color: #667eea; background: #f0f0ff; }
+.quiz-opt.right { border-color: #4caf50; background: #f1f9f1; }
+.quiz-opt.wrong { border-color: #f44336; background: #fdf2f2; }
+.quiz-opt:disabled { cursor: default; }
+.quiz-opt .k {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: #eee;
+  color: #666; font-weight: 600; font-size: 12px; display: flex;
+  align-items: center; justify-content: center;
+}
+.quiz-opt.picked .k { background: #667eea; color: white; }
+.quiz-opt.right .k { background: #4caf50; color: white; }
+.quiz-opt.wrong .k { background: #f44336; color: white; }
+#quizReply {
+  display: none; width: 100%; padding: 10px 12px; margin-bottom: 12px;
+  border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px;
+  font-family: inherit; resize: vertical; outline: none;
+}
+#quizReply:focus { border-color: #667eea; }
+#quizReply.show { display: block; }
+.quiz-result { font-size: 13px; line-height: 1.6; min-height: 18px; margin-bottom: 10px; }
+.quiz-result.ok { color: #2e7d32; }
+.quiz-result.no { color: #f44336; }
+.quiz-result.part { color: #e07b39; }
+.quiz-result.wait { color: #999; }
+/* 解析区：提交后展开在题目下方，公式用 MathJax 渲染成图片 */
+.quiz-explain { display: none; margin: 10px 0 12px; padding-top: 10px; border-top: 1px dashed #e0e0ec; }
+.quiz-explain.show { display: block; }
+.quiz-explain .e-head { font-size: 12px; font-weight: 600; color: #667eea; margin-bottom: 8px; }
+.quiz-explain .e-answer {
+  display: inline-block; font-size: 13px; font-weight: 600; color: #2e7d32;
+  background: #f1f9f1; border: 1px solid #c8e6c9; border-radius: 6px;
+  padding: 4px 10px; margin-bottom: 10px;
+}
+.quiz-explain .e-line { font-size: 13px; line-height: 1.65; color: #444; margin: 5px 0; }
+.quiz-explain .e-note { font-size: 13px; line-height: 1.65; color: #e07b39; margin: 5px 0; }
+.quiz-explain .e-tex { margin: 8px 0; text-align: center; }
+.quiz-explain .e-tex img { max-width: 100%; vertical-align: middle; }
+/* 公式渲染失败时退化成源码，不留空白 */
+.quiz-explain .e-tex-raw {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px; background: #f6f6fb; color: #555;
+  padding: 3px 7px; border-radius: 4px; display: inline-block; word-break: break-all;
+}
+.quiz-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.quiz-tip { flex: 1; min-width: 90px; font-size: 11px; color: #aaa; }
+.quiz-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #999; font-weight: 400; }
+.quiz-timer { font-variant-numeric: tabular-nums; color: #667eea; font-weight: 600; }
+
+/* 错题本 */
+#wrongList { max-height: 46vh; overflow-y: auto; margin-bottom: 10px; }
+.wrong-item { padding: 10px 0; border-bottom: 1px solid #f0f0f5; }
+.wrong-item:last-child { border-bottom: none; }
+.wrong-q { font-size: 13px; line-height: 1.55; color: #333; margin-bottom: 6px; }
+.wrong-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 11px; color: #999; }
+.wrong-mine { color: #f44336; }
+.wrong-right { color: #2e7d32; }
+.wrong-times { background: #fff3e0; color: #e07b39; padding: 1px 6px; border-radius: 8px; }
+.wrong-empty { font-size: 13px; color: #999; padding: 16px 0; text-align: center; }
+.wrong-retry {
+  border: 1px solid #e0e0ec; background: white; color: #667eea; cursor: pointer;
+  font-size: 11px; padding: 2px 8px; border-radius: 6px;
+}
+.wrong-retry:hover { border-color: #667eea; background: #fafaff; }
+
+.math-box {
+  display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 8; width: 92%; max-width: 440px;
+  background: white; border: 1px solid #d8d8e8; border-radius: 14px; padding: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+}
+.math-box.show { display: block; }
+.math-title { font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 10px; }
+#mathField {
+  width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px; resize: vertical; outline: none;
+}
+#mathField:focus { border-color: #667eea; }
+.math-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  padding: 5px 10px; font-size: 12px; border: 1px solid #e0e0e0; background: #fafaff;
+  border-radius: 14px; cursor: pointer; color: #666; transition: all 0.2s ease;
+}
+.chip:hover { border-color: #667eea; color: #667eea; background: white; }
+.math-error { font-size: 12px; color: #f44336; min-height: 16px; margin-top: 8px; }
+.math-actions { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.math-tip { flex: 1; font-size: 11px; color: #aaa; }
+.tool-btn.primary {
+  background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;
+}
+.hint { margin-top: 12px; font-size: 13px; color: #888; text-align: center; min-height: 18px; }
+
+@media (max-width: 860px) {
+  /* 窄屏改上下堆叠，否则画布被挤得没法画 */
+  .board-body { flex-direction: column; }
+  /* 堆叠时面板不再跟画布等高，min-height 要一起改小，否则它会盖掉 height */
+  .chat-panel { width: auto; height: 300px; min-height: 0; }
+}
+@media (max-width: 640px) {
+  .nav-brand { display: none; }
+  .board-body { --board-h: 54vh; }
+  .tool-btn { padding: 8px 11px; font-size: 13px; }
+  .tool-field input[type="range"] { width: 66px; }
+  #minimap { width: 120px; height: 82px; }
+  /* 小地图变窄，答题窗左边界跟着收；窄屏下改占满宽度 */
+  .quiz-box { left: 12px; max-height: 80%; }
+}
+</style>
+</head>
+<body>
+
+<div class="auth-modal" id="authModal">
+  <div class="auth-box">
+    <h2 id="authTitle">登录</h2>
+    <div class="auth-error" id="authError"></div>
+    <input type="text" id="authUsername" placeholder="用户名（3-32位字母数字下划线）" autocomplete="username">
+    <input type="password" id="authPassword" placeholder="密码（至少6位）" autocomplete="current-password">
+    <button class="primary" id="btnAuthSubmit">登录</button>
+    <div class="auth-switch">
+      <span id="authSwitchText">还没有账号？</span>
+      <a id="authSwitchLink">立即注册</a>
+    </div>
+    <div class="auth-switch"><a id="authClose">关闭</a></div>
+  </div>
+</div>
+
+<div class="auth-modal" id="settingsModal">
+  <div class="auth-box">
+    <h2>⚙️ 设置</h2>
+    <div class="auth-error" id="settingsError"></div>
+    <div class="settings-hint">
+      AI 老师使用 DeepSeek 大模型，需要你自己的 API Key。
+      前往 <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek 开放平台</a> 免费获取。Key 仅保存在你的账号下。
+    </div>
+    <div class="settings-current" id="settingsCurrent" style="display:none;">
+      <span>当前 Key：<code id="settingsMasked"></code></span>
+      <button class="btn-delete-key" id="btnDeleteKey">删除</button>
+    </div>
+    <input type="password" id="settingsApiKey" placeholder="输入 DeepSeek API Key (sk-...)" autocomplete="off">
+    <button class="primary" id="btnSaveKey">保存</button>
+    <div class="auth-switch"><a id="settingsClose">关闭</a></div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="nav-menu">
+    <span class="nav-brand">📚 英语学习</span>
+    <a href="index.html" class="nav-link">🎧 听力练习</a>
+    <a href="test.html" class="nav-link">📖 词汇量测试</a>
+    <a href="whiteboard.html" class="nav-link active">🎨 白板</a>
+  </div>
+  <div class="nav-auth" id="authBar">
+    <span id="authUser"></span>
+    <button id="btnAuthAction">登录 / 注册</button>
+  </div>
+</nav>
+
+<div class="board-card">
+  <div class="toolbar">
+    <button class="tool-btn active" data-tool="select">🖱️ 选择</button>
+    <button class="tool-btn" data-tool="pen">✏️ 画笔</button>
+    <button class="tool-btn" data-tool="rect">▭ 矩形</button>
+    <button class="tool-btn" data-tool="ellipse">◯ 椭圆</button>
+    <button class="tool-btn" data-tool="line">╱ 直线</button>
+    <button class="tool-btn" data-tool="text">🅣 文本</button>
+    <button class="tool-btn" data-tool="math">∑ 公式</button>
+    <button class="tool-btn" data-tool="erase">🎯 点选删除</button>
+
+    <div class="tool-sep"></div>
+
+    <label class="tool-field">颜色
+      <input type="color" id="colorPick" value="#333333">
+    </label>
+    <label class="tool-field">粗细
+      <input type="range" id="widthPick" min="1" max="16" value="3">
+    </label>
+
+    <div class="tool-sep"></div>
+
+    <span class="sel-info" id="selInfo"></span>
+    <button class="tool-btn danger" id="btnDelSel" disabled>✕ 删除选中</button>
+
+    <div class="tool-sep"></div>
+
+    <span class="zoom-label" id="zoomLabel">100%</span>
+    <button class="tool-btn" id="btnFit">🔍 适应内容</button>
+    <button class="tool-btn" id="btnReset">⤢ 100%</button>
+
+    <div class="tool-sep"></div>
+
+    <button class="tool-btn" id="btnUndo">↩️ 撤销</button>
+    <button class="tool-btn" id="btnSave">⬇️ 存图</button>
+    <button class="tool-btn danger" id="btnClear">🗑️ 清屏</button>
+
+    <div class="tool-sep"></div>
+
+    <button class="tool-btn teacher" id="btnAsk">🧑‍🏫 问 AI 老师</button>
+  </div>
+
+  <div class="board-body">
+  <div class="canvas-wrap">
+    <canvas id="board"></canvas>
+    <input id="textInput" type="text" autocomplete="off">
+    <div class="minimap-box" id="minimapBox">
+      <div class="minimap-title" id="minimapTitle">全览 · 拖此移动</div>
+      <canvas id="minimap"></canvas>
+    </div>
+
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-head">
+        <span id="quizKind">📝 选择题</span>
+        <span class="quiz-meta">
+          <span id="quizProgress"></span>
+          <span class="quiz-timer" id="quizTimer">0:00</span>
+        </span>
+        <button class="chat-close" id="btnQuizClose" title="关闭">✕</button>
+      </div>
+      <div class="quiz-q" id="quizQuestion"></div>
+      <div class="quiz-opts" id="quizOptions"></div>
+      <textarea id="quizReply" rows="3" spellcheck="false"
+        placeholder="在此作答…"></textarea>
+      <div class="quiz-result" id="quizResult"></div>
+      <div class="quiz-explain" id="quizExplain"></div>
+      <div class="quiz-actions">
+        <span class="quiz-tip" id="quizTip"></span>
+        <button class="tool-btn" id="btnWrongBook">错题本</button>
+        <button class="tool-btn" id="btnQuizSkip">看答案</button>
+        <button class="tool-btn" id="btnQuizPrev" style="display:none;">← 上一题</button>
+        <button class="tool-btn primary" id="btnQuizSubmit">提交</button>
+        <button class="tool-btn primary" id="btnQuizNext" style="display:none;">下一题 →</button>
+      </div>
+    </div>
+
+    <div class="quiz-box" id="wrongBox">
+      <div class="quiz-head">
+        <span>📕 错题本 <span id="wrongCount" class="quiz-meta"></span></span>
+        <button class="chat-close" id="btnWrongClose" title="关闭">✕</button>
+      </div>
+      <div id="wrongList"></div>
+      <div class="quiz-actions">
+        <span class="quiz-tip">答对后自动移出错题本 · 保存在本机</span>
+        <button class="tool-btn danger" id="btnWrongClear">清空</button>
+      </div>
+    </div>
+
+    <div class="math-box" id="mathBox">
+      <div class="math-title">输入 LaTeX 公式</div>
+      <textarea id="mathField" rows="2" spellcheck="false"
+        placeholder="例：x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}"></textarea>
+      <div class="math-presets">
+        <button class="chip" data-tex="\frac{a}{b}">分数</button>
+        <button class="chip" data-tex="\sqrt{x}">根号</button>
+        <button class="chip" data-tex="x^{2}">上标</button>
+        <button class="chip" data-tex="\sum_{i=1}^{n} i">求和</button>
+        <button class="chip" data-tex="\int_{a}^{b} f(x)\,dx">积分</button>
+        <button class="chip" data-tex="\begin{cases} a &amp; x>0 \\ b &amp; x\le 0 \end{cases}">分段</button>
+      </div>
+      <div class="math-error" id="mathError"></div>
+      <div class="math-actions">
+        <span class="math-tip">Enter 确认 · Shift+Enter 换行 · Esc 取消</span>
+        <button class="tool-btn" id="btnMathCancel">取消</button>
+        <button class="tool-btn primary" id="btnMathOk">插入</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <span>🧑‍🏫 AI 老师</span>
+      <button class="chat-close" id="btnChatClose" title="收起">✕</button>
+    </div>
+    <div class="chat-log" id="chatLog">
+      <div class="chat-empty" id="chatEmpty">
+        问一个问题，老师会把讲解画到白板上。
+        <div class="math-presets">
+          <button class="chip" data-ask="讲一下勾股定理，并给出证明思路">勾股定理</button>
+          <button class="chip" data-ask="二次方程求根公式是怎么推导的">求根公式</button>
+          <button class="chip" data-ask="英语现在完成时和过去时的区别，各举一个例句">时态区别</button>
+          <button class="chip" data-ask="解释一下导数的定义和几何意义">导数</button>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <textarea id="askField" rows="2" spellcheck="false" placeholder="问老师…"></textarea>
+      <div class="chat-actions">
+        <span class="chat-tip">Enter 发送 · Shift+Enter 换行</span>
+        <button class="tool-btn" id="btnChatClear" title="清空对话">清空</button>
+        <button class="tool-btn primary" id="btnAskOk">发送</button>
+      </div>
+    </div>
+  </aside>
+  </div>
+
+  <div class="hint" id="hint"></div>
+</div>
+
+<!-- 配置必须在 MathJax 之前。fontCache:local 让字形留在每个 SVG 内，
+     否则单独取出的 SVG 会因共享 defs 而缺字形 -->
+<script>
+window.MathJax = {
+  svg: { fontCache: 'local' },
+  startup: { typeset: false },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
+
+<script src="auth.js"></script>
+<script src="auth-ui.js"></script>
+<script src="whiteboard-geom.js"></script>
+<script src="whiteboard-quiz.js"></script>
+<script src="whiteboard.js"></script>
+</body>
+</html>

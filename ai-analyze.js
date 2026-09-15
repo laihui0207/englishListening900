@@ -1,9 +1,5 @@
-// AI 弱项分析：调用 DeepSeek（OpenAI 兼容 API），分析未听懂句子，给出知识弱项与练习建议
-// 无需外部依赖，用 Node 内置 fetch
-const crypto = require('crypto');
-
-const API_URL = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions';
-const MODEL = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+// AI 弱项分析：调用 DeepSeek，分析未听懂句子，给出知识弱项与练习建议
+const ds = require('./deepseek');
 
 // 分析用的系统提示：语言教学视角，要求返回固定 JSON 结构
 const SYSTEM_PROMPT = `你是一位经验丰富的英语听力教学专家。用户会提供一批他们"听不懂"的英语句子。
@@ -21,79 +17,30 @@ const SYSTEM_PROMPT = `你是一位经验丰富的英语听力教学专家。用
 }
 weaknesses 给 3-5 项，suggestions 给 3-5 条。所有内容用中文，句子示例可保留英文。`;
 
+const CACHE_SCOPE = 'analyze';
+const RATE_LIMIT_MS = 30000;
+
 // 把用户句子作为待分析数据传入（明确边界，降低提示注入影响）
 function buildUserMessage(sentences) {
   const list = sentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
   return `以下是用户听不懂的英语句子（共 ${sentences.length} 句），请分析：\n\n${list}`;
 }
 
-// 缓存：按用户 + 句子列表哈希，列表没变则不重复调用（省钱）
-// ponytail: 进程内 Map，单实例够用；多实例部署再换 Redis
-const cache = new Map();
-// 限流：每用户 30 秒一次
-const lastCall = new Map();
-const RATE_LIMIT_MS = 30000;
-
-function cacheKey(userId, sentences) {
-  const hash = crypto.createHash('sha256')
-    .update(sentences.join('\n'))
-    .digest('hex');
-  return `${userId}:${hash}`;
-}
-
 async function analyze(userId, sentences, apiKey) {
-  // 优先用调用方传入的用户密钥，其次回退到环境变量（若配置了全局 key）
-  apiKey = apiKey || process.env.DEEPSEEK_API_KEY;
-  if (!apiKey) {
-    const err = new Error('尚未设置 DeepSeek API Key');
-    err.code = 'NO_API_KEY';
-    throw err;
-  }
+  // 缓存：句子列表没变则不重复调用（省钱）
+  const key = `${userId}:${ds.hash(sentences.join('\n'))}`;
+  const cache = ds.bucket(CACHE_SCOPE);
+  if (cache.has(key)) return { ...cache.get(key), cached: true };
 
-  // 命中缓存直接返回，不扣费
-  const key = cacheKey(userId, sentences);
-  if (cache.has(key)) {
-    return { ...cache.get(key), cached: true };
-  }
+  ds.checkRate(CACHE_SCOPE, userId, RATE_LIMIT_MS);
 
-  // 限流
-  const now = Date.now();
-  const last = lastCall.get(userId) || 0;
-  if (now - last < RATE_LIMIT_MS) {
-    const wait = Math.ceil((RATE_LIMIT_MS - (now - last)) / 1000);
-    const err = new Error(`分析太频繁，请 ${wait} 秒后再试`);
-    err.code = 'RATE_LIMIT';
-    throw err;
-  }
-  lastCall.set(userId, now);
-
-  const body = {
-    model: MODEL,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: buildUserMessage(sentences) },
-    ],
-    response_format: { type: 'json_object' },
+  const content = await ds.chat({
+    apiKey,
+    system: SYSTEM_PROMPT,
+    user: buildUserMessage(sentences),
+    json: true,
     temperature: 0.7,
-  };
-
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
   });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    console.error(`DeepSeek API 错误 ${res.status}: ${text.slice(0, 200)}`);
-    throw new Error('AI 分析服务暂时不可用');
-  }
-
-  const data = await res.json();
-  const content = data.choices?.[0]?.message?.content || '';
 
   // 防御性解析：DeepSeek 非严格 schema，解析失败则兜底为纯文本
   let result;

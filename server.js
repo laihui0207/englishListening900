@@ -6,6 +6,7 @@ const fs = require('fs');
 const db = require('./db');
 const audioGen = require('./audio-gen');
 const aiAnalyze = require('./ai-analyze');
+const aiTeacher = require('./ai-teacher');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -200,6 +201,70 @@ app.post('/api/analyze', requireAuth, async (req, res) => {
     }
     console.error('AI 分析失败:', error.message);
     res.status(502).json({ success: false, error: error.message || 'AI 分析失败' });
+  }
+});
+
+// AI 老师：回答问题，返回可直接画到白板的结构化块
+app.post('/api/teach', requireAuth, async (req, res) => {
+  const { question, history } = req.body || {};
+  if (typeof question !== 'string' || question.trim().length === 0) {
+    return res.status(400).json({ success: false, error: '请输入问题' });
+  }
+  const q = question.trim();
+  if (q.length > 500) {
+    return res.status(400).json({ success: false, error: '问题请控制在 500 字以内' });
+  }
+  // history 由前端传来，不可信：长度先卡一道，内容交给 trimHistory 清洗
+  if (history !== undefined && (!Array.isArray(history) || history.length > 40)) {
+    return res.status(400).json({ success: false, error: '对话历史格式错误' });
+  }
+
+  try {
+    const apiKey = db.getApiKey(req.userId);
+    const result = await aiTeacher.ask(req.userId, q, apiKey, history);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    if (error.code === 'NO_API_KEY') {
+      return res.status(400).json({ success: false, error: error.message, code: 'NO_API_KEY' });
+    }
+    if (error.code === 'RATE_LIMIT') {
+      return res.status(429).json({ success: false, error: error.message });
+    }
+    console.error('AI 讲解失败:', error.message);
+    res.status(502).json({ success: false, error: error.message || 'AI 讲解失败' });
+  }
+});
+
+// 判定简答题对错（选择题前端本地比对，不走这里）
+app.post('/api/judge', requireAuth, async (req, res) => {
+  const { question, answer, reply } = req.body || {};
+  if (typeof question !== 'string' || question.trim().length === 0) {
+    return res.status(400).json({ success: false, error: '缺少题目' });
+  }
+  if (typeof reply !== 'string' || reply.trim().length === 0) {
+    return res.status(400).json({ success: false, error: '请先作答' });
+  }
+  if (reply.length > 1000) {
+    return res.status(400).json({ success: false, error: '回答请控制在 1000 字以内' });
+  }
+
+  try {
+    const apiKey = db.getApiKey(req.userId);
+    const result = await aiTeacher.judge(req.userId, {
+      question: question.trim().slice(0, 500),
+      answer: typeof answer === 'string' ? answer.trim().slice(0, 500) : '',
+      reply: reply.trim(),
+    }, apiKey);
+    res.json({ success: true, data: result });
+  } catch (error) {
+    if (error.code === 'NO_API_KEY') {
+      return res.status(400).json({ success: false, error: error.message, code: 'NO_API_KEY' });
+    }
+    if (error.code === 'RATE_LIMIT') {
+      return res.status(429).json({ success: false, error: error.message });
+    }
+    console.error('判定失败:', error.message);
+    res.status(502).json({ success: false, error: error.message || '判定失败' });
   }
 });
 
