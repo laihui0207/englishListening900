@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
   let shapes = [];
   let tool = 'select';
   let color = '#333333';
-  let width = 12;
+  let width = 3;
   let view = { scale: 1, x: 0, y: 0 };
 
   // 选中集用 id 而非下标：删除图形后失效 id 自然不匹配，
