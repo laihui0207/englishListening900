@@ -382,6 +382,21 @@ body {
 }
 .llm-tab { font-size:12px; padding:6px 12px; }
 .llm-tab.active { background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-color:transparent; }
+.chat-icon-btn {
+  border: none; background: none; cursor: pointer;
+  font-size: 15px; padding: 4px 6px; border-radius: 6px;
+  color: #999; transition: background 0.15s, color 0.15s; line-height: 1;
+}
+.chat-icon-btn:hover { background: #f0f0ff; color: #667eea; }
+.chat-tools { display: flex; align-items: center; gap: 1px; }
+  display:inline-flex; align-items:center; gap:4px;
+  padding:3px 8px; border-radius:12px; font-size:12px;
+  background:#f0f0ff; border:1px solid #d8d8f0; color:#555; max-width:140px;
+}
+.attach-chip span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0; }
+.attach-chip-img { width:32px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0; }
+.attach-del { border:none; background:none; cursor:pointer; color:#bbb; padding:0 2px; font-size:12px; flex-shrink:0; }
+.attach-del:hover { color:#f44336; }
 </style>
 </head>
 <body>
@@ -621,6 +636,8 @@ body {
       </div>
     </div>
     <div class="chat-input">
+      <!-- 附件预览区 -->
+      <div id="attachPreview" style="display:none;padding:6px 2px 4px;display:flex;flex-wrap:wrap;gap:6px"></div>
       <div style="position:relative">
         <textarea id="askField" rows="2" spellcheck="false" placeholder="问老师…  （可用 $LaTeX$ 嵌入公式）"></textarea>
         <!-- 聊天公式小弹窗 -->
@@ -651,13 +668,17 @@ body {
         </div>
       </div>
       <div class="chat-actions">
-        <button class="tool-btn" id="btnChatMath" title="插入公式" style="padding:6px 10px;font-size:13px">∑</button>
-        <span class="chat-tip">Enter 发送</span>
-        <button class="tool-btn" id="btnTtsReplay" title="重新播放" style="display:none">▶</button>
-        <button class="tool-btn" id="btnTtsStop" title="停止播放" style="display:none">⏹</button>
-        <button class="tool-btn" id="btnTtsMute" title="静音/取消静音">🔊</button>
-        <button class="tool-btn" id="btnChatClear" title="清空对话">清空</button>
-        <button class="tool-btn primary" id="btnAskOk">发送</button>
+        <input type="file" id="attachInput" accept="image/*,.pdf,.txt,.md" multiple style="display:none">
+        <div class="chat-tools">
+          <button class="chat-icon-btn" id="btnAttach" title="上传图片或文档">📎</button>
+          <button class="chat-icon-btn" id="btnChatMath" title="插入公式">∑</button>
+          <button class="chat-icon-btn" id="btnTtsReplay" title="重新播放" style="display:none">▶</button>
+          <button class="chat-icon-btn" id="btnTtsStop" title="停止播放" style="display:none">⏹</button>
+          <button class="chat-icon-btn" id="btnTtsMute" title="静音/取消静音">🔊</button>
+        </div>
+        <span style="flex:1;font-size:10px;color:#ccc;text-align:center">Enter 发送</span>
+        <button class="tool-btn" id="btnChatClear" style="padding:5px 10px;font-size:12px">清空</button>
+        <button class="tool-btn primary" id="btnAskOk" style="padding:5px 14px;font-size:13px">发送</button>
       </div>
     </div>
   </aside>

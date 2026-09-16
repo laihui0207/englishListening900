@@ -1,7 +1,6 @@
 // 统一 LLM 调用层：支持 OpenAI 兼容接口（DeepSeek / OpenAI / Ollama）
 const crypto = require('crypto');
 
-// 从模型响应中提取 JSON 对象：处理 markdown 代码块和前置说明文字
 function extractJson(raw) {
   if (!raw) return '';
   const fenceMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -42,8 +41,37 @@ const DEFAULTS = {
   model: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
 };
 
+// 构建用户消息：纯文本 or vision 数组（图片附件）
+function buildUserContent(text, attachments) {
+  if (!attachments || attachments.length === 0) return text;
+
+  // 文本附件拼入问题文字
+  const textAttachments = attachments.filter((a) => a.type === 'text');
+  let fullText = text;
+  if (textAttachments.length > 0) {
+    const docs = textAttachments
+      .map((a) => `【${a.name}】\n${a.content.slice(0, 8000)}`)
+      .join('\n\n');
+    fullText = `${text}\n\n以下是上传的文档内容，请结合文档回答：\n\n${docs}`;
+  }
+
+  const imgAttachments = attachments.filter((a) => a.type === 'image');
+  if (imgAttachments.length === 0) return fullText;
+
+  // 有图片时用 vision content 数组
+  const parts = [{ type: 'text', text: fullText }];
+  for (const a of imgAttachments) {
+    parts.push({
+      type: 'image_url',
+      image_url: { url: `data:${a.mime};base64,${a.data}` },
+    });
+  }
+  return parts;
+}
+
 // cfg: { provider, baseUrl, apiKey, model }
-async function chat({ cfg, system, user, history, json, temperature, maxTokens }) {
+// attachments: [{type:'image', data:'base64', mime:'image/png'} | {type:'text', name, content}]
+async function chat({ cfg, system, user, history, json, temperature, maxTokens, attachments }) {
   const apiKey = cfg?.apiKey || process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     const err = new Error('尚未设置 API Key，请在设置中配置');
@@ -52,10 +80,6 @@ async function chat({ cfg, system, user, history, json, temperature, maxTokens }
   }
 
   let url = cfg?.baseUrl || DEFAULTS.baseUrl;
-  // 支持只填 base 地址，自动补全路径：
-  //   https://api.deepseek.com           → .../chat/completions
-  //   https://api.openai.com/v1          → .../chat/completions
-  //   https://api.deepseek.com/v1/chat/completions  → 不变
   if (url && !url.endsWith('/completions')) {
     const base = url.replace(/\/$/, '');
     url = base.endsWith('/v1') ? base + '/chat/completions' : base + '/v1/chat/completions';
@@ -67,21 +91,17 @@ async function chat({ cfg, system, user, history, json, temperature, maxTokens }
     messages: [
       { role: 'system', content: system },
       ...(Array.isArray(history) ? history : []),
-      { role: 'user', content: user },
+      { role: 'user', content: buildUserContent(user, attachments) },
     ],
     temperature: temperature ?? 0.7,
   };
-  // ponytail: json_object 只发给明确支持的模型，其余靠 extractJson 兜底
   const supportsJsonMode = /deepseek-chat|gpt-|o1|o3/.test(model);
   if (json && supportsJsonMode) body.response_format = { type: 'json_object' };
   if (maxTokens) body.max_tokens = maxTokens;
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
     body: JSON.stringify(body),
   });
 

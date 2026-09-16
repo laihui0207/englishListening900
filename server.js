@@ -231,24 +231,27 @@ app.post('/api/analyze', requireAuth, async (req, res) => {
 
 // AI 老师：回答问题，返回可直接画到白板的结构化块
 app.post('/api/teach', requireAuth, async (req, res) => {
-  const { question, history } = req.body || {};
+  const { question, history, attachments } = req.body || {};
   if (typeof question !== 'string' || question.trim().length === 0) {
     return res.status(400).json({ success: false, error: '请输入问题' });
   }
   const q = question.trim();
-  if (q.length > 500) {
-    return res.status(400).json({ success: false, error: '问题请控制在 500 字以内' });
+  if (q.length > 2000) {
+    return res.status(400).json({ success: false, error: '问题请控制在 2000 字以内' });
   }
-  // history 由前端传来，不可信：长度先卡一道，内容交给 trimHistory 清洗
   if (history !== undefined && (!Array.isArray(history) || history.length > 40)) {
     return res.status(400).json({ success: false, error: '对话历史格式错误' });
+  }
+  // attachments: [{ type:'image', data:'base64...', mime:'image/png' } | { type:'text', name:'file.txt', content:'...' }]
+  if (attachments !== undefined && (!Array.isArray(attachments) || attachments.length > 5)) {
+    return res.status(400).json({ success: false, error: '附件格式错误或数量超限' });
   }
 
   try {
     const apiKey = db.getApiKey(req.userId);
     const llmCfg = { ...db.getLlmConfig(req.userId) };
     if (!llmCfg.apiKey) llmCfg.apiKey = apiKey;
-    const result = await aiTeacher.ask(req.userId, q, llmCfg, history);
+    const result = await aiTeacher.ask(req.userId, q, llmCfg, history, attachments);
     res.json({ success: true, data: result });
   } catch (error) {
     if (error.code === 'NO_API_KEY') {

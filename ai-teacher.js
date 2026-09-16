@@ -239,11 +239,12 @@ function trimHistory(history) {
     .slice(-HISTORY_TURNS);
 }
 
-async function ask(userId, question, cfg, history) {
+async function ask(userId, question, cfg, history, attachments) {
   const past = trimHistory(history);
   const key = `${userId}:${ds.hash(JSON.stringify(past) + '\n' + question)}`;
   const cache = ds.bucket(CACHE_SCOPE);
-  if (cache.has(key)) return { ...cache.get(key), cached: true };
+  // 有附件时不走缓存（每次图片可能不同）
+  if (!attachments?.length && cache.has(key)) return { ...cache.get(key), cached: true };
 
   ds.checkRate(CACHE_SCOPE, userId, RATE_LIMIT_MS);
 
@@ -255,6 +256,7 @@ async function ask(userId, question, cfg, history) {
     json: true,
     temperature: 0.5,
     maxTokens: 1600,
+    attachments,
   });
 
   let parsed;

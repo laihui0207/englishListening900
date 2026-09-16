@@ -960,6 +960,95 @@ if (typeof window !== 'undefined') {
   const askField = document.getElementById('askField');
   const btnAskOk = document.getElementById('btnAskOk');
 
+  // ---------- 附件上传 ----------
+  const attachInput = document.getElementById('attachInput');
+  const attachPreview = document.getElementById('attachPreview');
+  const btnAttach = document.getElementById('btnAttach');
+  let attachments = []; // [{ type:'image'|'text', name, data/content, mime }]
+
+  btnAttach.addEventListener('click', () => attachInput.click());
+
+  attachInput.addEventListener('change', async () => {
+    for (const file of attachInput.files) {
+      if (attachments.length >= 5) break;
+      if (file.type.startsWith('image/')) {
+        const data = await readAsBase64(file);
+        attachments.push({ type: 'image', name: file.name, data, mime: file.type });
+      } else {
+        const content = await readAsText(file);
+        attachments.push({ type: 'text', name: file.name, content });
+      }
+    }
+    attachInput.value = '';
+    renderAttachPreview();
+  });
+
+  function readAsBase64(file) {
+    return new Promise((ok) => {
+      const r = new FileReader();
+      r.onload = (e) => ok(e.target.result.split(',')[1]);
+      r.readAsDataURL(file);
+    });
+  }
+
+  function readAsText(file) {
+    return new Promise((ok) => {
+      const r = new FileReader();
+      r.onload = (e) => ok(e.target.result);
+      r.readAsText(file);
+    });
+  }
+
+  function renderAttachPreview() {
+    attachPreview.textContent = '';
+    if (attachments.length === 0) { attachPreview.style.display = 'none'; return; }
+    attachPreview.style.display = 'flex';
+    attachments.forEach((a, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'attach-chip';
+      if (a.type === 'image') {
+        const img = document.createElement('img');
+        img.className = 'attach-chip-img';
+        img.src = `data:${a.mime};base64,${a.data}`;
+        chip.appendChild(img);
+      } else {
+        const icon = document.createElement('span');
+        icon.textContent = '📄';
+        chip.appendChild(icon);
+      }
+      const name = document.createElement('span');
+      name.textContent = a.name;
+      const del = document.createElement('button');
+      del.className = 'attach-del';
+      del.textContent = '✕';
+      del.addEventListener('click', () => { attachments.splice(i, 1); renderAttachPreview(); });
+      chip.append(name, del);
+      attachPreview.appendChild(chip);
+    });
+  }
+
+  function clearAttachments() {
+    attachments = [];
+    renderAttachPreview();
+  }
+
+  // 剪切板粘贴图片
+  askField.addEventListener('paste', async (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (!item.type.startsWith('image/')) continue;
+      if (attachments.length >= 5) break;
+      e.preventDefault();
+      const file = item.getAsFile();
+      if (!file) continue;
+      const data = await readAsBase64(file);
+      const name = `粘贴图片_${Date.now()}.${file.type.split('/')[1] || 'png'}`;
+      attachments.push({ type: 'image', name, data, mime: file.type });
+      renderAttachPreview();
+    }
+  });
+
   // ---------- 聊天框公式插入 ----------
   const chatMathBox = document.getElementById('chatMathBox');
   const chatMathField = document.getElementById('chatMathField');
@@ -1219,8 +1308,9 @@ if (typeof window !== 'undefined') {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${window.Auth.getToken()}`,
         },
-        body: JSON.stringify({ question, history: chatHistory }),
+        body: JSON.stringify({ question, history: chatHistory, attachments: attachments.length ? attachments : undefined }),
       });
+      clearAttachments();
       const out = await res.json().catch(() => ({}));
       if (!res.ok) {
         // 未配置 Key：直接引导到设置弹窗
