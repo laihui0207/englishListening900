@@ -13,6 +13,29 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '5mb' }));
 
+// HTML 文件不缓存（JS/CSS 等静态资源仍走浏览器缓存）
+// JS 文件用启动时间戳作为版本号，通过重写 HTML 里的 script src 实现缓存破坏
+const BUILD_TS = Date.now();
+
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html') || req.path === '/') {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  }
+  next();
+});
+
+// 拦截 HTML 文件，动态注入版本戳到 .js 引用
+const fs2 = fs;
+app.get('*.html', (req, res, next) => {
+  const file = path.join(__dirname, req.path);
+  if (!fs2.existsSync(file)) return next();
+  let html = fs2.readFileSync(file, 'utf8');
+  html = html.replace(/(src="[^"]+\.js)(")/g, `$1?v=${BUILD_TS}$2`);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.send(html);
+});
+
 // 输入校验：用户名 3-32 位（字母数字下划线），密码 6-128 位
 function validateCredentials(username, password) {
   if (typeof username !== 'string' || typeof password !== 'string') {

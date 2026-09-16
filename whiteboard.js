@@ -1056,7 +1056,8 @@ if (typeof window !== 'undefined') {
     if (!synth) return;
     ttsLastText = text;
     synth.cancel();
-    if (ttsMuted) return;
+    // 静音按钮 或 设置里关闭了自动播放 → 不播放
+    if (ttsMuted || localStorage.getItem('ttsAutoPlay') === 'false') return;
     const utt = new SpeechSynthesisUtterance(text);
     utt.lang = 'zh-CN';
     utt.rate = 1.0;
@@ -1190,7 +1191,9 @@ if (typeof window !== 'undefined') {
     const parts = [];
     if (data.title) parts.push(data.title);
     for (const b of data.blocks) {
-      parts.push(b.type === 'formula' ? b.tex : b.text);
+      if (b.type === 'formula') parts.push(b.tex);
+      else if (b.type === 'plot') parts.push(`函数图像：${b.exprs?.join('，')}`);
+      else if (b.text) parts.push(b.text);
     }
     return parts.join('；');
   }

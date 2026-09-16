@@ -37,14 +37,12 @@
   const llmHint = $('llmHint');
 
   const PROVIDER_HINTS = {
-    openai: 'DeepSeek / OpenAI 兼容接口。默认地址 <code>https://api.deepseek.com/chat/completions</code>，默认模型 <code>deepseek-chat</code>。也可填 OpenAI 地址使用 GPT 系列。',
-    anthropic: 'Anthropic Claude。默认地址 <code>https://api.anthropic.com/v1/messages</code>，默认模型 <code>claude-sonnet-4-5</code>。',
-    ollama: '本地 Ollama。默认地址 <code>http://localhost:11434/v1/chat/completions</code>，模型填你已拉取的名称如 <code>llama3</code>。API Key 可留空。',
+    openai: 'OpenAI 兼容接口（DeepSeek / OpenAI / 第三方代理）。只填域名即可，路径自动补全。默认模型 <code>deepseek-chat</code>。',
+    ollama: '本地 Ollama。只填 <code>http://localhost:11434</code> 即可，路径自动补全。模型填你已拉取的名称如 <code>llama3</code>。API Key 可留空。',
   };
   const PROVIDER_DEFAULTS = {
-    openai: { baseUrl: 'https://api.deepseek.com/chat/completions', model: 'deepseek-chat' },
-    anthropic: { baseUrl: 'https://api.anthropic.com/v1/messages', model: 'claude-sonnet-4-5' },
-    ollama: { baseUrl: 'http://localhost:11434/v1/chat/completions', model: '' },
+    openai: { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat' },
+    ollama: { baseUrl: 'http://localhost:11434', model: '' },
   };
 
   let activeProvider = 'openai';
@@ -81,6 +79,9 @@
     llmBaseUrl.value = '';
     llmModel.value = '';
     settingsCurrent.style.display = 'none';
+    // 恢复语音自动播放勾选状态
+    const ttsAutoPlay = document.getElementById('ttsAutoPlay');
+    if (ttsAutoPlay) ttsAutoPlay.checked = localStorage.getItem('ttsAutoPlay') !== 'false';
     settingsModal.classList.add('show');
     try {
       const { data } = await settingsApi('/settings/llm', 'GET');
@@ -99,6 +100,9 @@
 
   async function saveKey() {
     settingsError.textContent = '';
+    // 保存语音自动播放偏好
+    const ttsAutoPlay = document.getElementById('ttsAutoPlay');
+    if (ttsAutoPlay) localStorage.setItem('ttsAutoPlay', ttsAutoPlay.checked);
     try {
       await settingsApi('/settings/llm', 'PUT', {
         provider: activeProvider,
