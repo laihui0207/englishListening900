@@ -35,6 +35,90 @@ if (typeof window !== 'undefined') {
     return withIds;
   }
 
+  // 橡皮擦：pen 路径按点切割成多段，其他图形整体删除
+  // 返回替换后的 shapes 数组（不直接赋值，方便调用方判断是否有变化）
+  function applyEraser(p, radius) {
+    let changed = false;
+    const next = [];
+
+    for (const s of shapes) {
+      if (s.type === 'pen') {
+        // 把笔迹按"在圆内"的点切断，产生 0 到多条新笔迹
+        const segs = splitPenByEraser(s.points, p, radius);
+        if (segs === null) {
+          next.push(s); // 完全没碰到
+        } else {
+          changed = true;
+          for (const pts of segs) {
+            if (pts.length >= 1) {
+              // 分配新 id，保留原笔迹其他属性
+              next.push({ ...s, id: nextId++, points: pts });
+            }
+          }
+        }
+      } else {
+        // 非笔迹：用圆与包围盒的重叠判断
+        const b = G.bbox(s);
+        if (b && circleHitsBox(p, radius, b)) {
+          changed = true;
+          sel = sel.filter((id) => id !== s.id);
+        } else {
+          next.push(s);
+        }
+      }
+    }
+
+    return changed ? next : null;
+  }
+
+  // 把 pen points 切成若干段，圆内的点丢弃。
+  // 返回 null 表示完全没接触；返回数组（可能为空）表示有变化
+  function splitPenByEraser(points, p, radius) {
+    const r2 = radius * radius;
+    const inside = points.map(([x, y]) => {
+      const dx = x - p.x, dy = y - p.y;
+      return dx * dx + dy * dy <= r2;
+    });
+
+    // 全都在外面：没变化
+    if (inside.every((v) => !v)) return null;
+
+    const segs = [];
+    let cur = [];
+    for (let i = 0; i < points.length; i++) {
+      if (inside[i]) {
+        if (cur.length > 0) { segs.push(cur); cur = []; }
+      } else {
+        cur.push(points[i]);
+      }
+    }
+    if (cur.length > 0) segs.push(cur);
+    return segs;
+  }
+
+  // 圆心 p、半径 r 是否与轴对齐矩形 b 相交
+  function circleHitsBox(p, r, b) {
+    const cx = Math.max(b.x1, Math.min(p.x, b.x2));
+    const cy = Math.max(b.y1, Math.min(p.y, b.y2));
+    const dx = p.x - cx, dy = p.y - cy;
+    return dx * dx + dy * dy <= r * r;
+  }
+
+  // 当前橡皮圆的世界坐标（onMove 时更新，redraw 时画出来）
+  let eraserPos = null;
+  const ERASER_R_PX = 14; // 屏幕像素半径
+
+  function eraseAt(p) {
+    const r = ERASER_R_PX / view.scale;
+    const next = applyEraser(p, r);
+    if (next !== null) {
+      shapes = next;
+      drag.erased = true;
+    }
+    eraserPos = p;
+    redraw();
+  }
+
   const isSel = (s) => sel.includes(s.id);
   const selShapes = () => shapes.filter(isSel);
   const selBox = () => G.bboxAll(selShapes());
@@ -348,12 +432,25 @@ if (typeof window !== 'undefined') {
     const r = dpr();
     ctx.setTransform(r, 0, 0, r, 0, 0);
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    // 视口变换叠在 dpr 之上
     ctx.setTransform(view.scale * r, 0, 0, view.scale * r, view.x * r, view.y * r);
     for (const s of shapes) drawShape(ctx, s);
     if (draft) drawShape(ctx, draft);
     if (!draft) drawSelection();
     if (marquee) drawMarquee(marquee);
+    // 橡皮圆预览
+    if (tool === 'eraser' && eraserPos) {
+      const er = ERASER_R_PX / view.scale;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(eraserPos.x, eraserPos.y, er, 0, Math.PI * 2);
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1.5 / view.scale;
+      ctx.setLineDash([3 / view.scale, 2 / view.scale]);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.fill();
+      ctx.restore();
+    }
     drawMinimap();
     zoomLabel.textContent = Math.round(view.scale * 100) + '%';
   }
@@ -419,13 +516,18 @@ if (typeof window !== 'undefined') {
     if (tool === 'erase') {
       const i = G.hitTest(shapes, p.x, p.y, tol);
       if (i >= 0) {
-        // 按 id 移出选中集，无需按下标重映射
         const gone = shapes[i].id;
         shapes = shapes.filter((_, idx) => idx !== i);
         sel = sel.filter((id) => id !== gone);
         markDirty();
         redraw();
       }
+      return;
+    }
+
+    if (tool === 'eraser') {
+      drag = { mode: 'eraser', erased: false };
+      eraseAt(p);
       return;
     }
 
@@ -493,6 +595,12 @@ if (typeof window !== 'undefined') {
 
   function onMove(e) {
     if (!drag) {
+      // 橡皮工具：实时更新圆圈预览位置
+      if (tool === 'eraser') {
+        eraserPos = worldPos(e);
+        redraw();
+        return;
+      }
       // select 模式下悬停手柄给个方向光标
       if (tool === 'select' && !spaceDown) {
         const p = worldPos(e);
@@ -526,6 +634,8 @@ if (typeof window !== 'undefined') {
       draft = draft.type === 'pen'
         ? { ...draft, points: [...draft.points, [p.x, p.y]] }
         : { ...draft, w: p.x - draft.x, h: p.y - draft.y };
+    } else if (drag.mode === 'eraser') {
+      eraseAt(p);
     } else if (drag.mode === 'marquee') {
       marquee = G.normBox(drag.sx, drag.sy, p.x, p.y);
       // 实时反馈选中结果，松手前就能看到会选中什么
@@ -560,6 +670,9 @@ if (typeof window !== 'undefined') {
         sel = drag.add ? drag.base : [];
       }
       marquee = null;
+    }
+    if (drag.mode === 'eraser' && drag.erased) {
+      markDirty();
     }
     // 空白处按下但没拖动 = 单击空白，取消选中
     if (drag.mode === 'pan' && drag.fromEmpty) {
@@ -771,6 +884,9 @@ if (typeof window !== 'undefined') {
   canvas.addEventListener('touchmove', onMove, { passive: false });
   window.addEventListener('touchend', onUp);
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  canvas.addEventListener('mouseleave', () => {
+    if (tool === 'eraser') { eraserPos = null; redraw(); }
+  });
 
   // 双击公式改 LaTeX：原地替换，保留位置和尺寸
   canvas.addEventListener('dblclick', (e) => {
@@ -843,6 +959,130 @@ if (typeof window !== 'undefined') {
   const chatEmpty = document.getElementById('chatEmpty');
   const askField = document.getElementById('askField');
   const btnAskOk = document.getElementById('btnAskOk');
+
+  // ---------- 聊天框公式插入 ----------
+  const chatMathBox = document.getElementById('chatMathBox');
+  const chatMathField = document.getElementById('chatMathField');
+  const chatMathPreview = document.getElementById('chatMathPreview');
+
+  function openChatMath() {
+    chatMathField.value = '';
+    chatMathPreview.textContent = '';
+    chatMathBox.style.display = '';
+    chatMathField.focus();
+  }
+
+  function closeChatMath() {
+    chatMathBox.style.display = 'none';
+  }
+
+  function insertChatMath() {
+    const tex = chatMathField.value.trim();
+    if (!tex) { closeChatMath(); return; }
+    // 插入到 askField 光标位置
+    const start = askField.selectionStart;
+    const end = askField.selectionEnd;
+    const val = askField.value;
+    const insert = `$${tex}$`;
+    askField.value = val.slice(0, start) + insert + val.slice(end);
+    askField.selectionStart = askField.selectionEnd = start + insert.length;
+    askField.focus();
+    closeChatMath();
+  }
+
+  // 实时预览（用 MathJax 渲染成 SVG 文本）
+  let _previewTimer = null;
+  chatMathField.addEventListener('input', () => {
+    clearTimeout(_previewTimer);
+    _previewTimer = setTimeout(async () => {
+      const tex = chatMathField.value.trim();
+      if (!tex || !mathReady()) { chatMathPreview.textContent = tex ? '（公式引擎加载中…）' : ''; return; }
+      try {
+        const node = await window.MathJax.tex2svgPromise(tex, { display: false });
+        const svg = node.querySelector('svg');
+        if (svg) {
+          chatMathPreview.textContent = '';
+          svg.style.maxWidth = '100%';
+          svg.style.maxHeight = '40px';
+          chatMathPreview.appendChild(svg.cloneNode(true));
+        }
+      } catch { chatMathPreview.textContent = '⚠️ 公式有误'; }
+    }, 300);
+  });
+
+  chatMathField.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); insertChatMath(); }
+    if (e.key === 'Escape') { e.preventDefault(); closeChatMath(); }
+  });
+
+  document.getElementById('btnChatMath').addEventListener('click', (e) => {
+    e.stopPropagation();
+    chatMathBox.style.display === 'none' ? openChatMath() : closeChatMath();
+  });
+  document.getElementById('btnChatMathOk').addEventListener('click', insertChatMath);
+  document.getElementById('btnChatMathCancel').addEventListener('click', closeChatMath);
+
+  // 点击弹窗外关闭
+  document.addEventListener('click', (e) => {
+    if (chatMathBox.style.display !== 'none' &&
+        !chatMathBox.contains(e.target) &&
+        e.target.id !== 'btnChatMath') {
+      closeChatMath();
+    }
+  });
+
+  // 常用公式快捷键
+  document.querySelectorAll('[data-chat-tex]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cur = chatMathField.value;
+      const pos = chatMathField.selectionStart;
+      const tex = btn.dataset.chatTex;
+      chatMathField.value = cur.slice(0, pos) + tex + cur.slice(pos);
+      chatMathField.selectionStart = chatMathField.selectionEnd = pos + tex.length;
+      chatMathField.dispatchEvent(new Event('input'));
+      chatMathField.focus();
+    });
+  });
+
+  // ---------- TTS ----------
+  const synth = window.speechSynthesis;
+  const btnTtsMute = document.getElementById('btnTtsMute');
+  const btnTtsStop = document.getElementById('btnTtsStop');
+  const btnTtsReplay = document.getElementById('btnTtsReplay');
+  let ttsMuted = false;
+  let ttsLastText = '';
+
+  function ttsSpeak(text) {
+    if (!synth) return;
+    ttsLastText = text;
+    synth.cancel();
+    if (ttsMuted) return;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'zh-CN';
+    utt.rate = 1.0;
+    utt.onstart = () => { btnTtsStop.style.display = ''; btnTtsReplay.style.display = 'none'; };
+    utt.onend = utt.onerror = () => { btnTtsStop.style.display = 'none'; btnTtsReplay.style.display = ttsLastText ? '' : 'none'; };
+    synth.speak(utt);
+  }
+
+  if (btnTtsMute) {
+    btnTtsMute.addEventListener('click', () => {
+      ttsMuted = !ttsMuted;
+      btnTtsMute.textContent = ttsMuted ? '🔇' : '🔊';
+      btnTtsMute.title = ttsMuted ? '取消静音' : '静音';
+      if (ttsMuted) { synth && synth.cancel(); btnTtsStop.style.display = 'none'; }
+    });
+  }
+  if (btnTtsStop) {
+    btnTtsStop.addEventListener('click', () => {
+      synth && synth.cancel();
+      btnTtsStop.style.display = 'none';
+      btnTtsReplay.style.display = ttsLastText ? '' : 'none';
+    });
+  }
+  if (btnTtsReplay) {
+    btnTtsReplay.addEventListener('click', () => { if (ttsLastText) ttsSpeak(ttsLastText); });
+  }
 
   // 对话历史，同时用于界面展示和发给模型做上下文
   let chatHistory = [];
@@ -1000,6 +1240,12 @@ if (typeof window !== 'undefined') {
       }
       pending.remove();
       addMsg(aiBubble(data, placed.length, !!data.quizzes));
+      // TTS：把标题 + 文字块拼成朗读文本，跳过公式和图表
+      const ttsText = [
+        data.title,
+        ...data.blocks.filter((b) => b.type === 'text' || b.type === 'note' || b.type === 'heading').map((b) => b.text),
+      ].filter(Boolean).join('。');
+      if (ttsText) ttsSpeak(ttsText);
       if (data.quizzes) {
         // 记住主题用于再来一组。用标题而非原问题 —— 问题可能是"再来一组"这种没信息量的话
         if (data.title && !/^(再来|下一)/.test(question)) quizTopic = data.title;
@@ -1541,6 +1787,10 @@ if (typeof window !== 'undefined') {
   document.getElementById('btnChatClear').addEventListener('click', () => {
     chatHistory = [];
     markDirty();
+    synth && synth.cancel();
+    ttsLastText = '';
+    btnTtsStop.style.display = 'none';
+    btnTtsReplay.style.display = 'none';
     // 清空气泡但保留占位提示节点
     for (const n of [...chatLog.children]) {
       if (n !== chatEmpty) n.remove();
@@ -1567,15 +1817,18 @@ if (typeof window !== 'undefined') {
     text: '点击画布位置后输入文字，回车确认，Esc 取消',
     math: '点击画布位置后输入 LaTeX 公式；已有公式双击可改',
     erase: '点击某个图形即可单独删除它',
+    eraser: '拖动擦除：画笔路径按点切割，其他图形整体删除',
   };
 
   // select 下默认抓手：空白处按住就能拖画布
-  const cursorFor = (t) => (t === 'select' ? 'grab' : t === 'erase' ? 'pointer' : 'crosshair');
+  const cursorFor = (t) => (t === 'select' ? 'grab' : t === 'erase' ? 'pointer' : t === 'eraser' ? 'none' : 'crosshair');
 
   document.querySelectorAll('[data-tool]').forEach((btn) => {
     btn.addEventListener('click', () => {
       tool = btn.dataset.tool;
       if (tool !== 'select') { sel = []; updateSelInfo(); }
+      // 切换离橡皮工具时清除预览圆
+      if (tool !== 'eraser') { eraserPos = null; }
       document.querySelectorAll('[data-tool]').forEach((b) => b.classList.toggle('active', b === btn));
       hint.textContent = HINTS[tool] || '';
       canvas.style.cursor = cursorFor(tool);
