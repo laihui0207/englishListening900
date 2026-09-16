@@ -37,10 +37,40 @@ db.exec(`
   );
 `);
 
-// 迁移：给已存在的旧库补上 deepseek_api_key 列（CREATE TABLE IF NOT EXISTS 不会改已有表）
+// 白板对话（每用户多个，独立白板）
+db.exec(`
+  CREATE TABLE IF NOT EXISTS whiteboard_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL DEFAULT '新对话',
+    shapes TEXT NOT NULL DEFAULT '[]',
+    view TEXT NOT NULL DEFAULT '{"scale":1,"x":0,"y":0}',
+    chat_history TEXT NOT NULL DEFAULT '[]',
+    wrong_book TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+`);
+
+// 迁移：把旧 whiteboard_data 数据搬进 whiteboard_sessions
+const oldTable = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='whiteboard_data'").get();
+if (oldTable) {
+  const rows = db.prepare('SELECT * FROM whiteboard_data').all();
+  const ins = db.prepare(`INSERT OR IGNORE INTO whiteboard_sessions (user_id, title, shapes, view, chat_history, wrong_book, updated_at) VALUES (?, '默认对话', ?, ?, ?, ?, ?)`);
+  for (const r of rows) {
+    ins.run(r.user_id, r.shapes, r.view, r.chat_history, r.wrong_book, r.updated_at);
+  }
+  db.exec('DROP TABLE whiteboard_data');
+}
+
+// 迁移：给已存在的旧库补上 deepseek_api_key 和 llm_config 列
 const userCols = db.prepare("PRAGMA table_info(users)").all();
 if (!userCols.some((c) => c.name === 'deepseek_api_key')) {
   db.exec('ALTER TABLE users ADD COLUMN deepseek_api_key TEXT');
+}
+if (!userCols.some((c) => c.name === 'llm_config')) {
+  db.exec("ALTER TABLE users ADD COLUMN llm_config TEXT NOT NULL DEFAULT '{}'");
 }
 
 // 密码哈希：使用 Node 内置 scrypt（无需外部依赖），格式 salt:hash
@@ -146,6 +176,79 @@ function getPendingSentences() {
   return pendingCustomStmt.all();
 }
 
+// 白板对话操作
+const listWbSessionsStmt = db.prepare(
+  "SELECT id, title, updated_at FROM whiteboard_sessions WHERE user_id = ? ORDER BY updated_at DESC"
+);
+const getWbSessionStmt = db.prepare(
+  'SELECT * FROM whiteboard_sessions WHERE id = ? AND user_id = ?'
+);
+const createWbSessionStmt = db.prepare(
+  "INSERT INTO whiteboard_sessions (user_id, title) VALUES (?, ?)"
+);
+const updateWbSessionStmt = db.prepare(`
+  UPDATE whiteboard_sessions SET
+    title = ?, shapes = ?, view = ?, chat_history = ?, wrong_book = ?,
+    updated_at = datetime('now')
+  WHERE id = ? AND user_id = ?
+`);
+const deleteWbSessionStmt = db.prepare(
+  'DELETE FROM whiteboard_sessions WHERE id = ? AND user_id = ?'
+);
+
+function listWbSessions(userId) {
+  return listWbSessionsStmt.all(userId);
+}
+
+function getWbSession(id, userId) {
+  const row = getWbSessionStmt.get(id, userId);
+  if (!row) return null;
+  return {
+    id: row.id,
+    title: row.title,
+    shapes: JSON.parse(row.shapes),
+    view: JSON.parse(row.view),
+    chatHistory: JSON.parse(row.chat_history),
+    wrongBook: JSON.parse(row.wrong_book),
+    updatedAt: row.updated_at,
+  };
+}
+
+function createWbSession(userId, title) {
+  return createWbSessionStmt.run(userId, title || '新对话').lastInsertRowid;
+}
+
+function saveWbSession(id, userId, { title, shapes, view, chatHistory, wrongBook }) {
+  updateWbSessionStmt.run(
+    title,
+    JSON.stringify(shapes),
+    JSON.stringify(view),
+    JSON.stringify(chatHistory),
+    JSON.stringify(wrongBook),
+    id, userId
+  );
+}
+
+function deleteWbSession(id, userId) {
+  deleteWbSessionStmt.run(id, userId);
+}
+
+// LLM 配置（provider / baseUrl / model / apiKey，按用户存储）
+const getLlmConfigStmt = db.prepare('SELECT llm_config FROM users WHERE id = ?');
+const setLlmConfigStmt = db.prepare(
+  "UPDATE users SET llm_config = ?, updated_at = datetime('now') WHERE id = ?"
+);
+
+function getLlmConfig(userId) {
+  const row = getLlmConfigStmt.get(userId);
+  if (!row) return {};
+  try { return JSON.parse(row.llm_config) || {}; } catch { return {}; }
+}
+
+function setLlmConfig(userId, cfg) {
+  setLlmConfigStmt.run(JSON.stringify(cfg), userId);
+}
+
 // 会话操作：随机 token 存库，可撤销
 const createSessionStmt = db.prepare(
   'INSERT INTO sessions (token, user_id) VALUES (?, ?)'
@@ -186,4 +289,11 @@ module.exports = {
   setAudioStatus,
   deleteCustomSentences,
   getPendingSentences,
+  listWbSessions,
+  getWbSession,
+  createWbSession,
+  saveWbSession,
+  deleteWbSession,
+  getLlmConfig,
+  setLlmConfig,
 };

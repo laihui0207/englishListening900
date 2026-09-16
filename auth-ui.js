@@ -26,12 +26,38 @@
     }
   }
 
-  // ===== 设置弹窗（DeepSeek API Key）=====
+  // ===== 设置弹窗（LLM 配置）=====
   const settingsModal = $('settingsModal');
   const settingsError = $('settingsError');
   const settingsApiKey = $('settingsApiKey');
   const settingsCurrent = $('settingsCurrent');
   const settingsMasked = $('settingsMasked');
+  const llmBaseUrl = $('llmBaseUrl');
+  const llmModel = $('llmModel');
+  const llmHint = $('llmHint');
+
+  const PROVIDER_HINTS = {
+    openai: 'DeepSeek / OpenAI 兼容接口。默认地址 <code>https://api.deepseek.com/chat/completions</code>，默认模型 <code>deepseek-chat</code>。也可填 OpenAI 地址使用 GPT 系列。',
+    anthropic: 'Anthropic Claude。默认地址 <code>https://api.anthropic.com/v1/messages</code>，默认模型 <code>claude-sonnet-4-5</code>。',
+    ollama: '本地 Ollama。默认地址 <code>http://localhost:11434/v1/chat/completions</code>，模型填你已拉取的名称如 <code>llama3</code>。API Key 可留空。',
+  };
+  const PROVIDER_DEFAULTS = {
+    openai: { baseUrl: 'https://api.deepseek.com/chat/completions', model: 'deepseek-chat' },
+    anthropic: { baseUrl: 'https://api.anthropic.com/v1/messages', model: 'claude-sonnet-4-5' },
+    ollama: { baseUrl: 'http://localhost:11434/v1/chat/completions', model: '' },
+  };
+
+  let activeProvider = 'openai';
+
+  function setActiveTab(p) {
+    activeProvider = p;
+    document.querySelectorAll('.llm-tab').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.p === p);
+    });
+    llmHint.innerHTML = PROVIDER_HINTS[p] || '';
+    llmBaseUrl.placeholder = PROVIDER_DEFAULTS[p]?.baseUrl || '';
+    llmModel.placeholder = PROVIDER_DEFAULTS[p]?.model || '';
+  }
 
   async function settingsApi(path, method, body) {
     const headers = {};
@@ -49,20 +75,22 @@
   }
 
   async function openSettings() {
-    if (!window.Auth.isLoggedIn()) {
-      openModal();
-      return;
-    }
+    if (!window.Auth.isLoggedIn()) { openModal(); return; }
     settingsError.textContent = '';
     settingsApiKey.value = '';
+    llmBaseUrl.value = '';
+    llmModel.value = '';
+    settingsCurrent.style.display = 'none';
     settingsModal.classList.add('show');
     try {
-      const { data } = await settingsApi('/settings', 'GET');
+      const { data } = await settingsApi('/settings/llm', 'GET');
+      const p = data.provider || 'openai';
+      setActiveTab(p);
+      llmBaseUrl.value = data.baseUrl || '';
+      llmModel.value = data.model || '';
       if (data.hasApiKey) {
-        settingsMasked.textContent = data.maskedApiKey;
+        settingsMasked.textContent = data.apiKey;
         settingsCurrent.style.display = 'flex';
-      } else {
-        settingsCurrent.style.display = 'none';
       }
     } catch (e) {
       settingsError.textContent = e.message;
@@ -70,14 +98,14 @@
   }
 
   async function saveKey() {
-    const key = settingsApiKey.value.trim();
     settingsError.textContent = '';
-    if (!key) {
-      settingsError.textContent = '请输入 API Key';
-      return;
-    }
     try {
-      await settingsApi('/settings/apikey', 'PUT', { apiKey: key });
+      await settingsApi('/settings/llm', 'PUT', {
+        provider: activeProvider,
+        baseUrl: llmBaseUrl.value.trim(),
+        model: llmModel.value.trim(),
+        apiKey: settingsApiKey.value.trim(),
+      });
       settingsModal.classList.remove('show');
     } catch (e) {
       settingsError.textContent = e.message;
@@ -87,7 +115,12 @@
   async function deleteKey() {
     settingsError.textContent = '';
     try {
-      await settingsApi('/settings/apikey', 'DELETE');
+      await settingsApi('/settings/llm', 'PUT', {
+        provider: activeProvider,
+        baseUrl: llmBaseUrl.value.trim(),
+        model: llmModel.value.trim(),
+        apiKey: '',
+      });
       settingsApiKey.value = '';
       settingsCurrent.style.display = 'none';
     } catch (e) {
@@ -98,6 +131,9 @@
   if (settingsModal) {
     authUser.addEventListener('click', () => {
       if (window.Auth.isLoggedIn()) openSettings();
+    });
+    document.querySelectorAll('.llm-tab').forEach((btn) => {
+      btn.addEventListener('click', () => setActiveTab(btn.dataset.p));
     });
     $('btnSaveKey').addEventListener('click', saveKey);
     $('btnDeleteKey').addEventListener('click', deleteKey);
@@ -110,7 +146,6 @@
     settingsApiKey.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') saveKey();
     });
-    // 暴露给 app_audio.js：无 key 时点 AI 分析可直接打开设置
     window.Settings = { open: openSettings };
   }
 

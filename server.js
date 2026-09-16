@@ -11,7 +11,7 @@ const aiTeacher = require('./ai-teacher');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '5mb' }));
 
 // 输入校验：用户名 3-32 位（字母数字下划线），密码 6-128 位
 function validateCredentials(username, password) {
@@ -190,7 +190,9 @@ app.post('/api/analyze', requireAuth, async (req, res) => {
 
   try {
     const apiKey = db.getApiKey(req.userId);
-    const result = await aiAnalyze.analyze(req.userId, cleaned, apiKey);
+    const llmCfg = { ...db.getLlmConfig(req.userId) };
+    if (!llmCfg.apiKey) llmCfg.apiKey = apiKey;
+    const result = await aiAnalyze.analyze(req.userId, cleaned, llmCfg);
     res.json({ success: true, data: result });
   } catch (error) {
     if (error.code === 'NO_API_KEY') {
@@ -221,7 +223,9 @@ app.post('/api/teach', requireAuth, async (req, res) => {
 
   try {
     const apiKey = db.getApiKey(req.userId);
-    const result = await aiTeacher.ask(req.userId, q, apiKey, history);
+    const llmCfg = { ...db.getLlmConfig(req.userId) };
+    if (!llmCfg.apiKey) llmCfg.apiKey = apiKey;
+    const result = await aiTeacher.ask(req.userId, q, llmCfg, history);
     res.json({ success: true, data: result });
   } catch (error) {
     if (error.code === 'NO_API_KEY') {
@@ -250,11 +254,13 @@ app.post('/api/judge', requireAuth, async (req, res) => {
 
   try {
     const apiKey = db.getApiKey(req.userId);
+    const llmCfg = { ...db.getLlmConfig(req.userId) };
+    if (!llmCfg.apiKey) llmCfg.apiKey = apiKey;
     const result = await aiTeacher.judge(req.userId, {
       question: question.trim().slice(0, 500),
       answer: typeof answer === 'string' ? answer.trim().slice(0, 500) : '',
       reply: reply.trim(),
-    }, apiKey);
+    }, llmCfg);
     res.json({ success: true, data: result });
   } catch (error) {
     if (error.code === 'NO_API_KEY') {
@@ -266,6 +272,37 @@ app.post('/api/judge', requireAuth, async (req, res) => {
     console.error('判定失败:', error.message);
     res.status(502).json({ success: false, error: error.message || '判定失败' });
   }
+});
+
+// 获取 LLM 配置（脱敏返回 apiKey）
+app.get('/api/settings/llm', requireAuth, (req, res) => {
+  const cfg = db.getLlmConfig(req.userId);
+  // 脱敏：只显示 key 的前6后4位
+  const masked = cfg.apiKey && cfg.apiKey.length > 10
+    ? `${cfg.apiKey.slice(0, 6)}...${cfg.apiKey.slice(-4)}`
+    : (cfg.apiKey ? '******' : '');
+  res.json({ success: true, data: { ...cfg, apiKey: masked, hasApiKey: !!cfg.apiKey } });
+});
+
+// 保存 LLM 配置
+app.put('/api/settings/llm', requireAuth, (req, res) => {
+  const { provider, baseUrl, model, apiKey } = req.body || {};
+  const PROVIDERS = new Set(['openai', 'anthropic', 'ollama']);
+  if (provider && !PROVIDERS.has(provider)) {
+    return res.status(400).json({ success: false, error: '不支持的 provider' });
+  }
+  // 如果 apiKey 是脱敏占位符（含...）则保留旧值
+  const existing = db.getLlmConfig(req.userId);
+  const finalKey = (typeof apiKey === 'string' && apiKey.trim() && !apiKey.includes('...'))
+    ? apiKey.trim()
+    : existing.apiKey;
+  db.setLlmConfig(req.userId, {
+    provider: provider || existing.provider || 'openai',
+    baseUrl: typeof baseUrl === 'string' ? baseUrl.trim() : (existing.baseUrl || ''),
+    model: typeof model === 'string' ? model.trim() : (existing.model || ''),
+    apiKey: finalKey || '',
+  });
+  res.json({ success: true });
 });
 
 // 获取当前用户设置（返回是否已设置 key + 脱敏预览，绝不返回明文）
@@ -286,6 +323,60 @@ app.put('/api/settings/apikey', requireAuth, (req, res) => {
     return res.status(400).json({ success: false, error: 'API Key 格式无效' });
   }
   db.setApiKey(req.userId, apiKey.trim());
+  res.json({ success: true });
+});
+
+// 列出当前用户所有白板对话（只返回 id/title/updatedAt，不含内容）
+app.get('/api/wb/sessions', requireAuth, (req, res) => {
+  res.json({ success: true, data: db.listWbSessions(req.userId) });
+});
+
+// 新建对话
+app.post('/api/wb/sessions', requireAuth, (req, res) => {
+  const title = (typeof req.body.title === 'string' ? req.body.title.trim() : '') || '新对话';
+  const id = db.createWbSession(req.userId, title.slice(0, 60));
+  res.json({ success: true, data: { id, title } });
+});
+
+// 加载某个对话的完整数据
+app.get('/api/wb/sessions/:id', requireAuth, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const data = db.getWbSession(id, req.userId);
+  if (!data) return res.status(404).json({ success: false, error: '对话不存在' });
+  res.json({ success: true, data });
+});
+
+// 保存（覆写）对话内容
+app.put('/api/wb/sessions/:id', requireAuth, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const { title, shapes, view, chatHistory, wrongBook } = req.body || {};
+  if (!Array.isArray(shapes)) {
+    return res.status(400).json({ success: false, error: '数据格式错误' });
+  }
+  const existing = db.getWbSession(id, req.userId);
+  if (!existing) return res.status(404).json({ success: false, error: '对话不存在' });
+  try {
+    db.saveWbSession(id, req.userId, {
+      title: (typeof title === 'string' ? title.trim().slice(0, 60) : null) || existing.title,
+      shapes,
+      view: view || { scale: 1, x: 0, y: 0 },
+      chatHistory: chatHistory || [],
+      wrongBook: wrongBook || [],
+    });
+    res.json({ success: true });
+  } catch (error) {
+    console.error('保存白板对话失败:', error);
+    res.status(500).json({ success: false, error: '保存失败' });
+  }
+});
+
+// 删除对话
+app.delete('/api/wb/sessions/:id', requireAuth, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (!db.getWbSession(id, req.userId)) {
+    return res.status(404).json({ success: false, error: '对话不存在' });
+  }
+  db.deleteWbSession(id, req.userId);
   res.json({ success: true });
 });
 

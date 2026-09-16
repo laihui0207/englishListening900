@@ -31,6 +31,7 @@ if (typeof window !== 'undefined') {
   function addShapes(list) {
     const withIds = list.map((s) => ({ ...s, id: nextId++ }));
     shapes = [...shapes, ...withIds];
+    markDirty();
     return withIds;
   }
 
@@ -45,7 +46,7 @@ if (typeof window !== 'undefined') {
     btnDelSel.disabled = n === 0;
   }
   // 按 id 改写图形，找不到就原样返回
-  const patch = (id, fn) => { shapes = shapes.map((s) => (s.id === id ? fn(s) : s)); };
+  const patch = (id, fn) => { shapes = shapes.map((s) => (s.id === id ? fn(s) : s)); markDirty(); };
 
   const mathBox = document.getElementById('mathBox');
   const mathField = document.getElementById('mathField');
@@ -186,14 +187,109 @@ if (typeof window !== 'undefined') {
       if (s.img) {
         c.drawImage(s.img, b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1);
       } else {
-        // 贴图未就绪（异步渲染中）：占位框，避免看起来什么都没发生
         c.save();
         c.strokeStyle = '#bbb';
         c.setLineDash([4, 3]);
         c.strokeRect(b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1);
         c.restore();
       }
+    } else if (s.type === 'plot') {
+      drawPlot(c, s);
     }
+  }
+
+  function drawPlot(c, s) {
+    const b = G.bbox(s);
+    const pw = b.x2 - b.x1;
+    const ph = b.y2 - b.y1;
+    if (pw < 4 || ph < 4) return;
+
+    const xMin = s.xMin ?? -5;
+    const xMax = s.xMax ?? 5;
+    const yMin = s.yMin ?? -5;
+    const yMax = s.yMax ?? 5;
+
+    // 世界坐标 → 图形内像素
+    const px = (wx) => b.x1 + (wx - xMin) / (xMax - xMin) * pw;
+    const py = (wy) => b.y1 + (1 - (wy - yMin) / (yMax - yMin)) * ph;
+
+    c.save();
+    c.rect(b.x1, b.y1, pw, ph);
+    c.clip();
+
+    // 背景
+    c.fillStyle = '#fafafa';
+    c.fillRect(b.x1, b.y1, pw, ph);
+
+    // 网格
+    c.strokeStyle = '#e8e8e8';
+    c.lineWidth = 0.5 / (c.getTransform ? c.getTransform().a || 1 : 1);
+    c.setLineDash([]);
+    const step = (xMax - xMin) / 10;
+    for (let xi = Math.ceil(xMin / step) * step; xi <= xMax + 1e-9; xi += step) {
+      c.beginPath(); c.moveTo(px(xi), b.y1); c.lineTo(px(xi), b.y2); c.stroke();
+    }
+    const ystep = (yMax - yMin) / 10;
+    for (let yi = Math.ceil(yMin / ystep) * ystep; yi <= yMax + 1e-9; yi += ystep) {
+      c.beginPath(); c.moveTo(b.x1, py(yi)); c.lineTo(b.x2, py(yi)); c.stroke();
+    }
+
+    // 坐标轴
+    c.strokeStyle = '#aaa';
+    c.lineWidth = 1;
+    if (xMin <= 0 && 0 <= xMax) {
+      c.beginPath(); c.moveTo(px(0), b.y1); c.lineTo(px(0), b.y2); c.stroke();
+    }
+    if (yMin <= 0 && 0 <= yMax) {
+      c.beginPath(); c.moveTo(b.x1, py(0)); c.lineTo(b.x2, py(0)); c.stroke();
+    }
+
+    // 刻度标签
+    c.fillStyle = '#999';
+    c.font = `${Math.max(9, Math.min(12, pw / 30))}px sans-serif`;
+    c.textAlign = 'center';
+    c.textBaseline = 'top';
+    const labelStep = Math.ceil((xMax - xMin) / 8);
+    for (let xi = Math.ceil(xMin); xi <= xMax; xi += labelStep || 1) {
+      if (Math.abs(xi) < 1e-9) continue;
+      c.fillText(xi, px(xi), py(0) + 2);
+    }
+    c.textAlign = 'right';
+    c.textBaseline = 'middle';
+    for (let yi = Math.ceil(yMin); yi <= yMax; yi += labelStep || 1) {
+      if (Math.abs(yi) < 1e-9) continue;
+      c.fillText(yi, px(0) - 3, py(yi));
+    }
+
+    // 曲线（每条独立颜色）
+    const CURVE_COLORS = ['#e53935', '#1e88e5', '#43a047', '#fb8c00', '#8e24aa'];
+    const exprs = Array.isArray(s.exprs) ? s.exprs : (s.expr ? [s.expr] : []);
+    const samples = Math.min(Math.ceil(pw * 2), 800);
+    exprs.forEach((expr, ei) => {
+      let fn;
+      try { fn = new Function('x', `"use strict"; return (${expr})`); } catch { return; }
+      c.strokeStyle = CURVE_COLORS[ei % CURVE_COLORS.length];
+      c.lineWidth = s.width || 2;
+      c.setLineDash([]);
+      c.beginPath();
+      let penDown = false;
+      for (let i = 0; i <= samples; i++) {
+        const wx = xMin + (xMax - xMin) * i / samples;
+        let wy;
+        try { wy = fn(wx); } catch { penDown = false; continue; }
+        if (!isFinite(wy) || Math.abs(wy) > (yMax - yMin) * 10) { penDown = false; continue; }
+        if (!penDown) { c.moveTo(px(wx), py(wy)); penDown = true; }
+        else c.lineTo(px(wx), py(wy));
+      }
+      c.stroke();
+    });
+
+    // 外框
+    c.strokeStyle = '#ccc';
+    c.lineWidth = 1;
+    c.strokeRect(b.x1, b.y1, pw, ph);
+
+    c.restore();
   }
 
   // 选中态：每个选中图形一圈细虚线，整组共用一个带手柄的外框。
@@ -307,6 +403,7 @@ if (typeof window !== 'undefined') {
     // 输入中再次点击画布：先提交当前文本，再按这次点击继续处理
     if (pendingText) commitText();
     if (pendingMath) return; // 公式框是模态的，点画布不误触
+    if (pendingPlot) return; // 曲线框同上
     // 阻止默认聚焦，否则焦点跑到 body，刚 focus 的 textInput 立刻 blur
     if (e.preventDefault) e.preventDefault();
     const sp = screenPos(e);
@@ -326,6 +423,7 @@ if (typeof window !== 'undefined') {
         const gone = shapes[i].id;
         shapes = shapes.filter((_, idx) => idx !== i);
         sel = sel.filter((id) => id !== gone);
+        markDirty();
         redraw();
       }
       return;
@@ -333,6 +431,7 @@ if (typeof window !== 'undefined') {
 
     if (tool === 'text') { openTextInput(p, sp); return; }
     if (tool === 'math') { openMathInput(p, sp); return; }
+    if (tool === 'plot') { openPlotInput(p); return; }
 
     if (tool === 'select') {
       // 手柄优先于图形本体：整组外框的角
@@ -473,6 +572,7 @@ if (typeof window !== 'undefined') {
         if (s.type === 'math') reRenderMath(s.id);
       }
     }
+    if (drag.mode === 'move' || drag.mode === 'resize') markDirty();
     drag = null;
     updateSelInfo();
     redraw();
@@ -572,19 +672,83 @@ if (typeof window !== 'undefined') {
     });
   });
 
+  // ---------- 函数曲线输入 ----------
+
+  const plotBox = document.getElementById('plotBox');
+  const plotExprs = document.getElementById('plotExprs');
+  const plotXMin = document.getElementById('plotXMin');
+  const plotXMax = document.getElementById('plotXMax');
+  const plotYMin = document.getElementById('plotYMin');
+  const plotYMax = document.getElementById('plotYMax');
+  const plotError = document.getElementById('plotError');
+  let pendingPlot = null; // 世界坐标落点
+
+  function openPlotInput(worldP) {
+    pendingPlot = worldP;
+    plotBox.classList.add('show');
+    plotError.textContent = '';
+    plotExprs.focus();
+  }
+
+  function closePlotInput() {
+    pendingPlot = null;
+    plotBox.classList.remove('show');
+    plotError.textContent = '';
+  }
+
+  function commitPlot() {
+    if (!pendingPlot) return;
+    const raw = plotExprs.value.trim();
+    if (!raw) { closePlotInput(); return; }
+    // 多条曲线用换行或分号分隔
+    const exprs = raw.split(/[\n;]+/).map((s) => s.trim()).filter(Boolean);
+    // 安全检验：尝试编译每条表达式
+    for (const expr of exprs) {
+      try { new Function('x', `"use strict"; return (${expr})`); }
+      catch (e) { plotError.textContent = `表达式错误: ${expr}`; return; }
+    }
+    const xMin = parseFloat(plotXMin.value) || -5;
+    const xMax = parseFloat(plotXMax.value) || 5;
+    const yMin = parseFloat(plotYMin.value) || -5;
+    const yMax = parseFloat(plotYMax.value) || 5;
+    if (xMin >= xMax || yMin >= yMax) { plotError.textContent = '范围无效'; return; }
+    const size = 300; // 默认图形大小（世界坐标）
+    addShapes([{
+      type: 'plot', exprs, xMin, xMax, yMin, yMax, color, width: 2,
+      x: pendingPlot.x, y: pendingPlot.y, w: size, h: size,
+    }]);
+    closePlotInput();
+    redraw();
+  }
+
+  plotExprs.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); closePlotInput(); }
+  });
+  document.getElementById('btnPlotOk').addEventListener('click', commitPlot);
+  document.getElementById('btnPlotCancel').addEventListener('click', closePlotInput);
+  document.querySelectorAll('[data-plot]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cur = plotExprs.value.trim();
+      plotExprs.value = cur ? cur + '\n' + btn.dataset.plot : btn.dataset.plot;
+      plotExprs.focus();
+    });
+  });
+
   // ---------- 事件 ----------
 
   let spaceDown = false;
   window.addEventListener('keydown', (e) => {
     // 输入框内不触发画布快捷键，否则 Delete/空格会被画布吞掉
     if (e.target === textInput || e.target === mathField
-      || e.target === askField || e.target === quizReply) return;
+      || e.target === askField || e.target === quizReply
+      || e.target === plotExprs) return;
     if (e.code === 'Space') { spaceDown = true; canvas.style.cursor = 'grab'; e.preventDefault(); }
     if ((e.key === 'Delete' || e.key === 'Backspace') && sel.length > 0) {
       e.preventDefault();
       shapes = shapes.filter((s) => !isSel(s)); // 整组删除
       sel = [];
       updateSelInfo();
+      markDirty();
       redraw();
     }
     if (e.key === 'Escape') { sel = []; updateSelInfo(); redraw(); }
@@ -802,6 +966,7 @@ if (typeof window !== 'undefined') {
     addMsg(el('div', 'msg user', question));
     askField.value = '';
     btnAskOk.disabled = true;
+    if (window._wbAutoTitle) window._wbAutoTitle(question);
     const pending = addMsg(el('div', 'msg pending', '老师正在思考…'));
 
     try {
@@ -846,6 +1011,7 @@ if (typeof window !== 'undefined') {
         { role: 'user', content: question },
         { role: 'assistant', content: summarize(out.data) },
       ].slice(-12); // 前端也留一手，别让请求体无限变大
+      markDirty();
     } catch (err) {
       pending.className = 'msg err';
       pending.textContent = '⚠️ ' + err.message;
@@ -878,7 +1044,6 @@ if (typeof window !== 'undefined') {
       if (b.type === 'formula') {
         try {
           const { img, w, h } = await renderMath(b.tex, BLOCK_STYLE.formula.color, 1);
-          // 超宽公式等比缩到栏宽，否则会压到隔壁栏
           const k = w > COL_W ? COL_W / w : 1;
           items.push({
             kind: 'math', tex: b.tex, img,
@@ -887,9 +1052,17 @@ if (typeof window !== 'undefined') {
             keepWithNext: false,
           });
         } catch (err) {
-          // 单个公式失败不该毁掉整次板书，退化成源码文本
           pushText('[公式] ' + b.tex, BLOCK_STYLE.text);
         }
+      } else if (b.type === 'plot') {
+        const size = Math.min(COL_W, 280);
+        items.push({
+          kind: 'plot', exprs: b.exprs,
+          xMin: b.xMin, xMax: b.xMax, yMin: b.yMin, yMax: b.yMax,
+          w: size, mh: size,
+          h: size + (BLOCK_STYLE.formula.gap || 16),
+          keepWithNext: false,
+        });
       } else {
         const style = BLOCK_STYLE[b.type] || BLOCK_STYLE.text;
         // 标题必须跟住后面第一块，否则会孤零零落在栏底
@@ -916,6 +1089,14 @@ if (typeof window !== 'undefined') {
         added.push({
           type: 'math', tex: item.tex, img: item.img,
           color: BLOCK_STYLE.formula.color, width: 3,
+          x: px, y: py, w: item.w, h: item.mh,
+        });
+      } else if (item.kind === 'plot') {
+        added.push({
+          type: 'plot', exprs: item.exprs,
+          xMin: item.xMin, xMax: item.xMax,
+          yMin: item.yMin, yMax: item.yMax,
+          color, width: 2,
           x: px, y: py, w: item.w, h: item.mh,
         });
       } else {
@@ -967,23 +1148,22 @@ if (typeof window !== 'undefined') {
   let usedMs = 0;       // 本题耗时（判定时定格）
   let tick = null;      // 计时器句柄
 
-  // 错题本存 localStorage：刷新不丢，但不上传服务器 —— 错题是私人数据
+  // 错题本存 localStorage：刷新不丢，未登录时仍可用
   const BOOK_KEY = 'whiteboardWrongBook';
 
   function loadBook() {
     try {
       return Q.cleanBook(JSON.parse(localStorage.getItem(BOOK_KEY) || '[]'));
     } catch (e) {
-      return []; // 数据坏了就当空的，不要让答题功能整个崩掉
+      return [];
     }
   }
 
   function saveBook(book) {
     try {
       localStorage.setItem(BOOK_KEY, JSON.stringify(book));
-    } catch (e) {
-      // 配额满或隐私模式：错题本失效但不影响答题
-    }
+    } catch (e) {}
+    markDirty(); // 错题变化也触发云端保存
   }
 
   let wrongBook = loadBook();
@@ -1209,6 +1389,7 @@ if (typeof window !== 'undefined') {
       { role: 'user', content: `我的回答：${quizMine()}` },
       { role: 'assistant', content: `${label}。${comment || ''}` },
     ].slice(-12);
+    markDirty();
   }
 
   async function submitQuiz() {
@@ -1359,6 +1540,7 @@ if (typeof window !== 'undefined') {
   document.getElementById('btnChatClose').addEventListener('click', () => toggleChat(false));
   document.getElementById('btnChatClear').addEventListener('click', () => {
     chatHistory = [];
+    markDirty();
     // 清空气泡但保留占位提示节点
     for (const n of [...chatLog.children]) {
       if (n !== chatEmpty) n.remove();
@@ -1409,6 +1591,7 @@ if (typeof window !== 'undefined') {
       shapes = shapes.map((s) => (isSel(s) ? { ...s, color } : s));
       // 公式颜色烧在 SVG 里，改属性不够，得重新渲染贴图
       for (const id of ids) reRenderMath(id);
+      markDirty();
       redraw();
     }
   });
@@ -1416,6 +1599,7 @@ if (typeof window !== 'undefined') {
     width = Number(e.target.value);
     if (sel.length > 0) {
       shapes = shapes.map((s) => (isSel(s) ? { ...s, width } : s));
+      markDirty();
       redraw();
     }
   });
@@ -1432,6 +1616,7 @@ if (typeof window !== 'undefined') {
     shapes = shapes.filter((s) => !isSel(s));
     sel = [];
     updateSelInfo();
+    markDirty();
     redraw();
   });
 
@@ -1441,6 +1626,7 @@ if (typeof window !== 'undefined') {
     shapes = [];
     sel = [];
     updateSelInfo();
+    markDirty();
     redraw();
   });
 
@@ -1483,4 +1669,248 @@ if (typeof window !== 'undefined') {
   hint.textContent = HINTS.select;
   updateSelInfo();
   resize();
+
+  // ---------- 云端保存 / 对话管理 ----------
+
+  const SESSION_KEY = 'wbSessionId'; // localStorage 记住上次用的对话 id
+  let currentSessionId = null;
+  let currentSessionTitle = '新对话';
+
+  // math shape 的 img 无法 JSON 序列化，存前剥离，加载后按 tex 重建
+  function stripImg(shape) {
+    if (shape.type === 'math') { const { img, ...rest } = shape; return rest; }
+    return shape;
+  }
+
+  function authHeaders() {
+    return { 'Content-Type': 'application/json', Authorization: `Bearer ${window.Auth.getToken()}` };
+  }
+
+  // 把当前白板内容写入 session
+  let _saveTimer = null;
+  function markDirty() {
+    if (!window.Auth || !window.Auth.isLoggedIn() || !currentSessionId) return;
+    clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(pushSession, 1500);
+  }
+
+  async function pushSession() {
+    if (!window.Auth || !window.Auth.isLoggedIn() || !currentSessionId) return;
+    try {
+      await fetch(`/api/wb/sessions/${currentSessionId}`, {
+        method: 'PUT', headers: authHeaders(), keepalive: true,
+        body: JSON.stringify({
+          title: currentSessionTitle,
+          shapes: shapes.map(stripImg), view, chatHistory, wrongBook,
+        }),
+      });
+    } catch (e) {}
+  }
+
+  // 把一个对话的数据加载进白板（不触发 markDirty）
+  function applySessionData(data) {
+    shapes = Array.isArray(data.shapes) ? data.shapes : [];
+    nextId = shapes.reduce((m, s) => Math.max(m, s.id || 0), 0) + 1;
+    view = (data.view && typeof data.view.scale === 'number') ? data.view : { scale: 1, x: 0, y: 0 };
+
+    // 重建 math 图像（直接赋值，不经 patch，避免触发 markDirty）
+    for (const s of shapes) {
+      if (s.type === 'math' && s.tex) {
+        renderMath(s.tex, s.color, s.width / 3)
+          .then(({ img }) => { shapes = shapes.map((x) => (x.id === s.id ? { ...x, img } : x)); redraw(); })
+          .catch(() => {});
+      }
+    }
+
+    // 重建聊天气泡
+    for (const n of [...chatLog.children]) { if (n !== chatEmpty) n.remove(); }
+    chatHistory = Array.isArray(data.chatHistory) ? data.chatHistory : [];
+    if (chatHistory.length > 0) {
+      chatEmpty.style.display = 'none';
+      for (const msg of chatHistory) {
+        addMsg(el('div', msg.role === 'user' ? 'msg user' : 'msg ai', msg.content));
+      }
+    } else {
+      chatEmpty.style.display = '';
+    }
+
+    // 重建错题本
+    wrongBook = Q.cleanBook(Array.isArray(data.wrongBook) ? data.wrongBook : []);
+    localStorage.setItem(BOOK_KEY, JSON.stringify(wrongBook));
+    renderBook();
+
+    sel = [];
+    updateSelInfo();
+    redraw();
+  }
+
+  // ---- 对话列表 UI ----
+  const sessionBtn = document.getElementById('sessionBtn');
+  const sessionTitle = document.getElementById('sessionTitle');
+  const sessionDropdown = document.getElementById('sessionDropdown');
+  const sessionList = document.getElementById('sessionList');
+  const btnNewSession = document.getElementById('btnNewSession');
+  btnNewSession.addEventListener('click', newSession);
+
+  let _sessions = []; // [{id, title, updated_at}]
+
+  function fmtDate(s) {
+    if (!s) return '';
+    const d = new Date(s + 'Z'); // SQLite datetime('now') 是 UTC
+    const now = new Date();
+    const diff = now - d;
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+    return d.toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
+  }
+
+  function renderSessionList() {
+    sessionList.textContent = '';
+    if (_sessions.length === 0) {
+      sessionList.appendChild(el('div', 'session-item', '暂无对话'));
+      return;
+    }
+    for (const s of _sessions) {
+      const item = el('div', 'session-item' + (s.id === currentSessionId ? ' active' : ''));
+      const titleEl = el('span', 's-title', s.title);
+      const dateEl = el('span', 's-date', fmtDate(s.updated_at));
+      const delBtn = el('button', 's-del', '✕');
+      delBtn.title = '删除';
+      delBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteSession(s.id); });
+      item.append(titleEl, dateEl, delBtn);
+      item.addEventListener('click', () => switchSession(s.id));
+      sessionList.appendChild(item);
+    }
+  }
+
+  function setSessionTitle(title) {
+    currentSessionTitle = title;
+    sessionTitle.textContent = '🧑‍🏫 ' + (title.length > 14 ? title.slice(0, 14) + '…' : title);
+  }
+
+  // 切换下拉显示
+  sessionBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = sessionDropdown.classList.toggle('show');
+    sessionBtn.classList.toggle('open', open);
+    if (open) renderSessionList();
+  });
+  document.addEventListener('click', () => {
+    sessionDropdown.classList.remove('show');
+    sessionBtn.classList.remove('open');
+  });
+  sessionDropdown.addEventListener('click', (e) => e.stopPropagation());
+
+  // ---- 对话操作 ----
+  async function loadSessionList() {
+    if (!window.Auth || !window.Auth.isLoggedIn()) return;
+    try {
+      const res = await fetch('/api/wb/sessions', { headers: authHeaders() });
+      if (!res.ok) return;
+      const { data } = await res.json();
+      _sessions = data || [];
+    } catch (e) {}
+  }
+
+  async function switchSession(id) {
+    if (id === currentSessionId) { sessionDropdown.classList.remove('show'); sessionBtn.classList.remove('open'); return; }
+    // 先把当前对话存好
+    clearTimeout(_saveTimer);
+    await pushSession();
+    // 加载新对话
+    try {
+      const res = await fetch(`/api/wb/sessions/${id}`, { headers: authHeaders() });
+      if (!res.ok) return;
+      const { data } = await res.json();
+      currentSessionId = id;
+      localStorage.setItem(SESSION_KEY, id);
+      setSessionTitle(data.title);
+      applySessionData(data);
+      await loadSessionList();
+      renderSessionList();
+    } catch (e) {}
+    sessionDropdown.classList.remove('show');
+    sessionBtn.classList.remove('open');
+  }
+
+  async function newSession() {
+    if (!window.Auth || !window.Auth.isLoggedIn()) return;
+    clearTimeout(_saveTimer);
+    await pushSession();
+    try {
+      const res = await fetch('/api/wb/sessions', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ title: '新对话' }),
+      });
+      const { data } = await res.json();
+      currentSessionId = data.id;
+      localStorage.setItem(SESSION_KEY, data.id);
+      setSessionTitle(data.title);
+      applySessionData({ shapes: [], view: { scale: 1, x: 0, y: 0 }, chatHistory: [], wrongBook: [] });
+      await loadSessionList();
+      renderSessionList();
+    } catch (e) {}
+    sessionDropdown.classList.remove('show');
+    sessionBtn.classList.remove('open');
+  }
+
+  async function deleteSession(id) {
+    if (_sessions.length <= 1) { alert('至少保留一个对话'); return; }
+    if (!confirm('删除该对话？白板内容将一并删除，无法恢复。')) return;
+    try {
+      await fetch(`/api/wb/sessions/${id}`, { method: 'DELETE', headers: authHeaders() });
+      await loadSessionList();
+      if (id === currentSessionId) {
+        // 被删的是当前对话：切到列表第一个
+        const first = _sessions[0];
+        if (first) await switchSession(first.id);
+      } else {
+        renderSessionList();
+      }
+    } catch (e) {}
+  }
+
+  // 对话标题自动取第一条用户提问内容
+  function autoTitle(question) {
+    if (currentSessionTitle !== '新对话') return;
+    const t = question.trim().slice(0, 20);
+    currentSessionTitle = t;
+    setSessionTitle(t);
+    // 立即更新列表里的 title
+    _sessions = _sessions.map((s) => s.id === currentSessionId ? { ...s, title: t } : s);
+  }
+  // 暴露给 askTeacher 调用
+  window._wbAutoTitle = autoTitle;
+
+  // 页面关闭前保存
+  window.addEventListener('beforeunload', pushSession);
+
+  // 启动：拉取对话列表，恢复上次的对话
+  async function initSessions() {
+    if (!window.Auth || !window.Auth.isLoggedIn()) return;
+    await loadSessionList();
+    let targetId = parseInt(localStorage.getItem(SESSION_KEY), 10) || 0;
+    // 上次 id 不在列表里（已删除）则取最新一条
+    if (!_sessions.find((s) => s.id === targetId)) {
+      targetId = _sessions.length > 0 ? _sessions[0].id : 0;
+    }
+    if (targetId) {
+      try {
+        const res = await fetch(`/api/wb/sessions/${targetId}`, { headers: authHeaders() });
+        if (res.ok) {
+          const { data } = await res.json();
+          currentSessionId = targetId;
+          localStorage.setItem(SESSION_KEY, targetId);
+          setSessionTitle(data.title);
+          applySessionData(data);
+        }
+      } catch (e) {}
+    } else {
+      // 新用户，没有任何对话，自动建一个
+      await newSession();
+    }
+  }
+
+  initSessions();
 }

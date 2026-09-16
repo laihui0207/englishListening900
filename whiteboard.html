@@ -206,6 +206,48 @@ body {
 }
 .tool-btn.teacher:hover { filter: brightness(1.07); color: white; }
 
+/* 对话切换器 */
+.session-switcher { position: relative; flex: 1; min-width: 0; }
+.session-btn {
+  display: flex; align-items: center; gap: 5px; width: 100%;
+  background: none; border: none; cursor: pointer; padding: 2px 4px; border-radius: 6px;
+  font-size: 13px; font-weight: 600; color: #667eea; text-align: left;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: background 0.15s;
+}
+.session-btn:hover { background: #f0f0ff; }
+.session-btn .arrow { font-size: 10px; color: #aaa; flex-shrink: 0; transition: transform 0.2s; }
+.session-btn.open .arrow { transform: rotate(180deg); }
+.session-dropdown {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: white; border: 1px solid #e0e0f0; border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(102,126,234,0.15); z-index: 20;
+  max-height: 260px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: #c9c9de transparent;
+}
+.session-dropdown.show { display: block; }
+.session-item {
+  display: flex; align-items: center; gap: 6px; padding: 9px 12px;
+  font-size: 13px; color: #444; cursor: pointer; border-bottom: 1px solid #f4f4fb;
+  transition: background 0.12s;
+}
+.session-item:last-child { border-bottom: none; }
+.session-item:hover { background: #f7f7ff; }
+.session-item.active { background: #f0f0ff; color: #667eea; font-weight: 600; }
+.session-item .s-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.session-item .s-date { font-size: 11px; color: #bbb; flex-shrink: 0; }
+.session-item .s-del {
+  flex-shrink: 0; border: none; background: none; color: #ccc; cursor: pointer;
+  font-size: 13px; padding: 1px 4px; border-radius: 4px; line-height: 1;
+}
+.session-item .s-del:hover { color: #f44336; background: #fff0f0; }
+.session-new {
+  display: flex; align-items: center; gap: 6px; padding: 9px 12px;
+  font-size: 13px; color: #667eea; cursor: pointer; font-weight: 500;
+  border-top: 1px solid #eee;
+}
+.session-new:hover { background: #f7f7ff; }
+
 /* 答题窗口：停靠画布底部，让开左下角的小地图。
    不居中是为了不挡住白板上的题干 */
 .quiz-box {
@@ -337,6 +379,8 @@ body {
   /* 小地图变窄，答题窗左边界跟着收；窄屏下改占满宽度 */
   .quiz-box { left: 12px; max-height: 80%; }
 }
+.llm-tab { font-size:12px; padding:6px 12px; }
+.llm-tab.active { background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-color:transparent; }
 </style>
 </head>
 <body>
@@ -357,19 +401,33 @@ body {
 </div>
 
 <div class="auth-modal" id="settingsModal">
-  <div class="auth-box">
+  <div class="auth-box" style="max-width:480px">
     <h2>⚙️ 设置</h2>
     <div class="auth-error" id="settingsError"></div>
-    <div class="settings-hint">
-      AI 老师使用 DeepSeek 大模型，需要你自己的 API Key。
-      前往 <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek 开放平台</a> 免费获取。Key 仅保存在你的账号下。
+
+    <!-- Provider 选项卡 -->
+    <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="tool-btn llm-tab active" data-p="openai">DeepSeek / OpenAI</button>
+      <button class="tool-btn llm-tab" data-p="anthropic">Claude (Anthropic)</button>
+      <button class="tool-btn llm-tab" data-p="ollama">Ollama (本地)</button>
     </div>
+
+    <div class="settings-hint" id="llmHint"></div>
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">Base URL</label>
+    <input type="text" id="llmBaseUrl" placeholder="留空使用默认地址" autocomplete="off" style="margin-bottom:10px">
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">Model Name</label>
+    <input type="text" id="llmModel" placeholder="留空使用默认模型" autocomplete="off" style="margin-bottom:10px">
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">API Key</label>
     <div class="settings-current" id="settingsCurrent" style="display:none;">
       <span>当前 Key：<code id="settingsMasked"></code></span>
       <button class="btn-delete-key" id="btnDeleteKey">删除</button>
     </div>
-    <input type="password" id="settingsApiKey" placeholder="输入 DeepSeek API Key (sk-...)" autocomplete="off">
-    <button class="primary" id="btnSaveKey">保存</button>
+    <input type="password" id="settingsApiKey" placeholder="输入 API Key" autocomplete="off">
+
+    <button class="primary" id="btnSaveKey" style="margin-top:14px">保存</button>
     <div class="auth-switch"><a id="settingsClose">关闭</a></div>
   </div>
 </div>
@@ -396,6 +454,7 @@ body {
     <button class="tool-btn" data-tool="line">╱ 直线</button>
     <button class="tool-btn" data-tool="text">🅣 文本</button>
     <button class="tool-btn" data-tool="math">∑ 公式</button>
+    <button class="tool-btn" data-tool="plot">📈 曲线</button>
     <button class="tool-btn" data-tool="erase">🎯 点选删除</button>
 
     <div class="tool-sep"></div>
@@ -494,11 +553,54 @@ body {
         <button class="tool-btn primary" id="btnMathOk">插入</button>
       </div>
     </div>
+
+    <div class="math-box" id="plotBox">
+      <div class="math-title">📈 函数曲线</div>
+      <textarea id="plotExprs" rows="3" spellcheck="false"
+        placeholder="每行一个函数，如：&#10;x*x&#10;Math.sin(x)&#10;Math.sqrt(Math.abs(x))"></textarea>
+      <div class="math-presets" style="margin-top:8px">
+        <button class="chip" data-plot="x*x">x²</button>
+        <button class="chip" data-plot="Math.sqrt(x)">√x</button>
+        <button class="chip" data-plot="Math.sin(x)">sin x</button>
+        <button class="chip" data-plot="Math.cos(x)">cos x</button>
+        <button class="chip" data-plot="Math.tan(x)">tan x</button>
+        <button class="chip" data-plot="1/x">1/x</button>
+        <button class="chip" data-plot="Math.abs(x)">|x|</button>
+        <button class="chip" data-plot="Math.exp(x)">eˣ</button>
+        <button class="chip" data-plot="Math.log(Math.abs(x))">ln|x|</button>
+        <button class="chip" data-plot="x*x*x">x³</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;font-size:12px;color:#666;align-items:center;flex-wrap:wrap">
+        <span>x:</span>
+        <input id="plotXMin" type="number" value="-5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+        <span>~</span>
+        <input id="plotXMax" type="number" value="5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+        <span style="margin-left:8px">y:</span>
+        <input id="plotYMin" type="number" value="-5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+        <span>~</span>
+        <input id="plotYMax" type="number" value="5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+      </div>
+      <div class="math-error" id="plotError"></div>
+      <div class="math-actions">
+        <span class="math-tip">支持 Math.sin / cos / sqrt / abs / exp / log / PI</span>
+        <button class="tool-btn" id="btnPlotCancel">取消</button>
+        <button class="tool-btn primary" id="btnPlotOk">插入</button>
+      </div>
+    </div>
   </div>
 
   <aside class="chat-panel" id="chatPanel">
     <div class="chat-head">
-      <span>🧑‍🏫 AI 老师</span>
+      <div class="session-switcher" id="sessionSwitcher">
+        <button class="session-btn" id="sessionBtn">
+          <span id="sessionTitle">🧑‍🏫 AI 老师</span>
+          <span class="arrow">▾</span>
+        </button>
+        <div class="session-dropdown" id="sessionDropdown">
+          <div id="sessionList"></div>
+          <div class="session-new" id="btnNewSession">＋ 新建对话</div>
+        </div>
+      </div>
       <button class="chat-close" id="btnChatClose" title="收起">✕</button>
     </div>
     <div class="chat-log" id="chatLog">

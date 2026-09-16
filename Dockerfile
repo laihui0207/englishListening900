@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM docker.huivip.com.cn:8580/node:20-alpine
 
 WORKDIR /app
 

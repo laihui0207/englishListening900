@@ -1,5 +1,5 @@
 // AI 弱项分析：调用 DeepSeek，分析未听懂句子，给出知识弱项与练习建议
-const ds = require('./deepseek');
+const ds = require('./llm');
 
 // 分析用的系统提示：语言教学视角，要求返回固定 JSON 结构
 const SYSTEM_PROMPT = `你是一位经验丰富的英语听力教学专家。用户会提供一批他们"听不懂"的英语句子。
@@ -26,8 +26,7 @@ function buildUserMessage(sentences) {
   return `以下是用户听不懂的英语句子（共 ${sentences.length} 句），请分析：\n\n${list}`;
 }
 
-async function analyze(userId, sentences, apiKey) {
-  // 缓存：句子列表没变则不重复调用（省钱）
+async function analyze(userId, sentences, cfg) {
   const key = `${userId}:${ds.hash(sentences.join('\n'))}`;
   const cache = ds.bucket(CACHE_SCOPE);
   if (cache.has(key)) return { ...cache.get(key), cached: true };
@@ -35,7 +34,7 @@ async function analyze(userId, sentences, apiKey) {
   ds.checkRate(CACHE_SCOPE, userId, RATE_LIMIT_MS);
 
   const content = await ds.chat({
-    apiKey,
+    cfg,
     system: SYSTEM_PROMPT,
     user: buildUserMessage(sentences),
     json: true,
