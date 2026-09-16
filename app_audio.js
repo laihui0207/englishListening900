@@ -91,6 +91,10 @@ class ListeningPractice {
         this.aiModal = document.getElementById('aiModal');
         this.aiContent = document.getElementById('aiContent');
         this.aiClose = document.getElementById('aiClose');
+
+        // 听写输入
+        this.dictationInputs = document.getElementById('dictationInputs');
+        this.btnPlayDictation = document.getElementById('btnPlayDictation');
     }
 
     async loadSentences() {
@@ -238,6 +242,9 @@ class ListeningPractice {
         this.aiModal.addEventListener('click', (e) => {
             if (e.target === this.aiModal) this.aiModal.classList.remove('show');
         });
+
+        // 听写播放按钮
+        this.btnPlayDictation.addEventListener('click', () => this.playDictationInputs());
 
         // 键盘快捷键
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -522,6 +529,12 @@ class ListeningPractice {
         const sentence = this.sentences[this.currentIndex];
         const progress = ((this.currentIndex + 1) / this.sentences.length) * 100;
 
+        // 重建听写输入框（仅在句子切换时）
+        if (this._lastSentenceIndex !== this.currentIndex) {
+            this.buildDictationInputs(sentence.english || sentence.text || '');
+            this._lastSentenceIndex = this.currentIndex;
+        }
+
         // 更新进度条
         this.progressFill.style.width = progress + '%';
         this.progressText.textContent = `进度: ${this.currentIndex + 1} / ${this.sentences.length}`;
@@ -594,6 +607,52 @@ class ListeningPractice {
         } else {
             this.btnPlay.textContent = '▶️ 播放';
         }
+    }
+
+    buildDictationInputs(text) {
+        const words = text.match(/\S+/g) || [];
+        this.dictationInputs.querySelectorAll('.word-input-wrapper').forEach(el => el.remove());
+        const btn = document.getElementById('btnPlayDictation');
+        words.forEach((word, i) => {
+            const clean = word.replace(/[^a-zA-Z'-]/g, '');
+            const width = Math.max(clean.length, 3) * 14;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'word-input-wrapper';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'word-input';
+            input.style.width = width + 'px';
+            input.dataset.index = i;
+            input.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur();
+                    const next = this.dictationInputs.querySelector(`[data-index="${i + 1}"]`);
+                    if (next) next.focus();
+                }
+            });
+            input.addEventListener('blur', () => this.speakWord(input.value.trim()));
+            wrapper.appendChild(input);
+            this.dictationInputs.insertBefore(wrapper, btn);
+        });
+    }
+
+    speakWord(word) {
+        if (!/^[a-zA-Z'-]+$/.test(word)) return;
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(word);
+        utt.lang = 'en-US';
+        window.speechSynthesis.speak(utt);
+    }
+
+    playDictationInputs() {
+        const inputs = this.dictationInputs.querySelectorAll('.word-input');
+        const words = Array.from(inputs).map(i => i.value.trim()).filter(w => w);
+        if (!words.length) return;
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(words.join(' '));
+        utt.lang = 'en-US';
+        window.speechSynthesis.speak(utt);
     }
 
     async importSentences() {

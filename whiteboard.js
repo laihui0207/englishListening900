@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
   let shapes = [];
   let tool = 'select';
   let color = '#333333';
-  let width = 3;
+  let width = 12;
   let view = { scale: 1, x: 0, y: 0 };
 
   // 选中集用 id 而非下标：删除图形后失效 id 自然不匹配，
@@ -827,7 +827,7 @@ if (typeof window !== 'undefined') {
     if (xMin >= xMax || yMin >= yMax) { plotError.textContent = '范围无效'; return; }
     const size = 300; // 默认图形大小（世界坐标）
     addShapes([{
-      type: 'plot', exprs, xMin, xMax, yMin, yMax, color, width: 2,
+      type: 'plot', exprs, xMin, xMax, yMin, yMax, color, width,
       x: pendingPlot.x, y: pendingPlot.y, w: size, h: size,
     }]);
     closePlotInput();

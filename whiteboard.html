@@ -341,27 +341,40 @@ body {
 
 .math-box {
   display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  z-index: 8; width: 92%; max-width: 440px;
-  background: white; border: 1px solid #d8d8e8; border-radius: 14px; padding: 16px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+  z-index: 8; width: 92%; max-width: 480px;
+  background: white; border: 1px solid #d8d8e8; border-radius: 18px; padding: 22px 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
 }
 .math-box.show { display: block; }
-.math-title { font-size: 14px; font-weight: 600; color: #667eea; margin-bottom: 10px; }
+.math-title { font-size: 15px; font-weight: 700; color: #667eea; margin-bottom: 12px; }
 #mathField {
   width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 14px; resize: vertical; outline: none;
 }
 #mathField:focus { border-color: #667eea; }
-.math-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.math-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .chip {
-  padding: 5px 10px; font-size: 12px; border: 1px solid #e0e0e0; background: #fafaff;
-  border-radius: 14px; cursor: pointer; color: #666; transition: all 0.2s ease;
+  padding: 5px 12px; font-size: 12px; border: 1px solid #e0e0e0; background: #fafaff;
+  border-radius: 20px; cursor: pointer; color: #555; transition: all 0.15s ease;
+  white-space: nowrap;
 }
-.chip:hover { border-color: #667eea; color: #667eea; background: white; }
-.math-error { font-size: 12px; color: #f44336; min-height: 16px; margin-top: 8px; }
-.math-actions { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-.math-tip { flex: 1; font-size: 11px; color: #aaa; }
+.chip:hover { border-color: #667eea; color: #667eea; background: #f0f0ff; }
+.math-error { font-size: 12px; color: #f44336; min-height: 16px; margin-top: 6px; }
+.math-actions { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.math-tip { flex: 1; font-size: 11px; color: #bbb; }
+.plot-range {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px;
+}
+.plot-range label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #666;
+}
+.plot-range-input {
+  flex: 1; min-width: 0; padding: 5px 8px; border: 1.5px solid #e0e0e0;
+  border-radius: 8px; font-size: 13px; text-align: center; outline: none;
+}
+.plot-range-input:focus { border-color: #667eea; }
 .tool-btn.primary {
   background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;
 }
@@ -484,7 +497,7 @@ body {
       <input type="color" id="colorPick" value="#333333">
     </label>
     <label class="tool-field">粗细
-      <input type="range" id="widthPick" min="1" max="16" value="3">
+      <input type="range" id="widthPick" min="10" max="50" value="12">
     </label>
 
     <div class="tool-sep"></div>
@@ -577,7 +590,7 @@ body {
 
     <div class="math-box" id="plotBox">
       <div class="math-title">📈 函数曲线</div>
-      <textarea id="plotExprs" rows="3" spellcheck="false"
+      <textarea id="plotExprs" rows="4" spellcheck="false" style="width:100%;padding:10px 12px;border:2px solid #e0e0e0;border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;resize:none;outline:none;box-sizing:border-box;"
         placeholder="每行一个函数，如：&#10;x*x&#10;Math.sin(x)&#10;Math.sqrt(Math.abs(x))"></textarea>
       <div class="math-presets" style="margin-top:8px">
         <button class="chip" data-plot="x*x">x²</button>
@@ -591,15 +604,11 @@ body {
         <button class="chip" data-plot="Math.log(Math.abs(x))">ln|x|</button>
         <button class="chip" data-plot="x*x*x">x³</button>
       </div>
-      <div style="display:flex;gap:8px;margin-top:10px;font-size:12px;color:#666;align-items:center;flex-wrap:wrap">
-        <span>x:</span>
-        <input id="plotXMin" type="number" value="-5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
-        <span>~</span>
-        <input id="plotXMax" type="number" value="5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
-        <span style="margin-left:8px">y:</span>
-        <input id="plotYMin" type="number" value="-5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
-        <span>~</span>
-        <input id="plotYMax" type="number" value="5" style="width:54px;padding:4px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+      <div class="plot-range">
+        <label>x 最小 <input id="plotXMin" type="number" value="-5" class="plot-range-input"></label>
+        <label>x 最大 <input id="plotXMax" type="number" value="5" class="plot-range-input"></label>
+        <label>y 最小 <input id="plotYMin" type="number" value="-5" class="plot-range-input"></label>
+        <label>y 最大 <input id="plotYMax" type="number" value="5" class="plot-range-input"></label>
       </div>
       <div class="math-error" id="plotError"></div>
       <div class="math-actions">
