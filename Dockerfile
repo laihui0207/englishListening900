@@ -19,8 +19,9 @@ COPY public ./public/
 
 # 分级数据与音频（zip 解压后删除，减小镜像层）
 COPY levels ./levels/
-RUN cd /app/levels/general && unzip -q audio.zip -d audio && rm audio.zip \
- && cd /app/levels/primary && unzip -q audio.zip -d audio && rm audio.zip
+RUN cd /app/levels/general && unzip -oq audio.zip -d audio && rm audio.zip \
+ && cd /app/levels/primary && unzip -oq audio.zip -d audio && rm audio.zip \
+ && cd /app/levels/junior && unzip -oq audio.zip -d audio && rm audio.zip
 
 # 数据库与用户音频目录（挂载卷可持久化）
 RUN mkdir -p /app/data/audio

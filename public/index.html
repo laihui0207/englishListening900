@@ -114,11 +114,10 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            flex: 1;
         }
 
         .jump-input-inline {
-            width: 100%;
+            width: 64px;
             padding: 4px 8px;
             border: 1.5px solid #d0d0e8;
             border-radius: 6px;
@@ -162,8 +161,9 @@
         }
 
         .progress-text {
-            color: #999;
-            font-size: 0.78em;
+            color: #667eea;
+            font-size: 1em;
+            font-weight: 500;
         }
 
         .sentence-number {
@@ -1141,11 +1141,6 @@
                 <button id="btnAuthAction">登录 / 注册</button>
             </div>
         </nav>
-        <div class="header">
-            <h1>🎧 英语900句听力练习</h1>
-            <p>Listen, Learn, Master</p>
-            <span class="badge">✨ 高质量真人发音版</span>
-        </div>
 
         <!-- 级别选择 -->
         <div class="level-tabs">
@@ -1163,11 +1158,11 @@
 
             <div class="sentence-header">
                 <div class="sentence-number" id="sentenceNumber">句子 1</div>
+                <div class="progress-text" id="progressText">准备开始</div>
                 <div class="jump-inline">
                     <input type="number" id="jumpInput" class="jump-input-inline" placeholder="跳转..." min="1" max="900">
                     <button id="btnJump" class="btn-jump-inline">→</button>
                 </div>
-                <div class="progress-text" id="progressText">准备开始</div>
             </div>
 
             <div class="sentence-display">

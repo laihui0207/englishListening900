@@ -413,9 +413,7 @@ app.delete('/api/settings/apikey', requireAuth, (req, res) => {
 app.get('/api/sentences-data', (req, res) => {
   const level = req.query.level || 'general';
 
-  // 初中复用通用数据
-  const dataLevel = level === 'junior' ? 'general' : level;
-  const filePath = path.join(__dirname, 'levels', dataLevel, 'sentences.json');
+  const filePath = path.join(__dirname, 'levels', level, 'sentences.json');
 
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, error: '数据文件不存在' });
@@ -425,7 +423,7 @@ app.get('/api/sentences-data', (req, res) => {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     res.json({ success: true, data, level });
   } catch (error) {
-    console.error(`读取 levels/${dataLevel}/sentences.json 失败:`, error);
+    console.error(`读取 levels/${level}/sentences.json 失败:`, error);
     res.status(500).json({ success: false, error: '读取数据失败' });
   }
 });
