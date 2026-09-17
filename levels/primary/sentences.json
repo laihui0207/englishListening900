@@ -17,7 +17,7 @@
   },
   {
     "id": 3,
-    "english": "Im John Smith.",
+    "english": "I'm John Smith.",
     "chinese": "我是约翰·史密斯。",
     "audio": "levels/primary/audio/sentence_003.mp3",
     "unit": "Greetings",
@@ -65,7 +65,7 @@
   },
   {
     "id": 9,
-    "english": "Shes very well, thank you.",
+    "english": "She's very well, thank you.",
     "chinese": "她很好，谢谢。",
     "audio": "levels/primary/audio/sentence_009.mp3",
     "unit": "Greetings",
@@ -161,7 +161,7 @@
   },
   {
     "id": 21,
-    "english": "Dont open your book.",
+    "english": "Don‘t open your book.",
     "chinese": "不要打开你的书。",
     "audio": "levels/primary/audio/sentence_021.mp3",
     "unit": "Classroom expressions",
@@ -185,7 +185,7 @@
   },
   {
     "id": 24,
-    "english": "No, I dont understand.",
+    "english": "No, I don't understand.",
     "chinese": "不，我不明白。",
     "audio": "levels/primary/audio/sentence_024.mp3",
     "unit": "Classroom expressions",
@@ -209,7 +209,7 @@
   },
   {
     "id": 27,
-    "english": "Thats fine.",
+    "english": "That's fine.",
     "chinese": "那很好。",
     "audio": "levels/primary/audio/sentence_027.mp3",
     "unit": "Classroom expressions",
@@ -217,7 +217,7 @@
   },
   {
     "id": 28,
-    "english": "Its time to begin.",
+    "english": "It's time to begin.",
     "chinese": "该开始了。",
     "audio": "levels/primary/audio/sentence_028.mp3",
     "unit": "Classroom expressions",
@@ -225,7 +225,7 @@
   },
   {
     "id": 29,
-    "english": "Lets begin now.",
+    "english": "Let's begin now.",
     "chinese": "我们现在开始吧。",
     "audio": "levels/primary/audio/sentence_029.mp3",
     "unit": "Classroom expressions",
@@ -241,7 +241,7 @@
   },
   {
     "id": 31,
-    "english": "Whats this?",
+    "english": "What's this?",
     "chinese": "这是什么？",
     "audio": "levels/primary/audio/sentence_031.mp3",
     "unit": "Identifying objects",
@@ -249,7 +249,7 @@
   },
   {
     "id": 32,
-    "english": "Thats a book.",
+    "english": "That's a book.",
     "chinese": "那是一本书。",
     "audio": "levels/primary/audio/sentence_032.mp3",
     "unit": "Identifying objects",
@@ -265,7 +265,7 @@
   },
   {
     "id": 34,
-    "english": "No, thats not my book.",
+    "english": "No, that's not my book.",
     "chinese": "不，那不是我的书。",
     "audio": "levels/primary/audio/sentence_034.mp3",
     "unit": "Identifying objects",
@@ -281,7 +281,7 @@
   },
   {
     "id": 36,
-    "english": "Thats your book.",
+    "english": "That's your book.",
     "chinese": "那是你的书。",
     "audio": "levels/primary/audio/sentence_036.mp3",
     "unit": "Identifying objects",
@@ -289,7 +289,7 @@
   },
   {
     "id": 37,
-    "english": "And whats that?",
+    "english": "And what's that?",
     "chinese": "那是什么？",
     "audio": "levels/primary/audio/sentence_037.mp3",
     "unit": "Identifying objects",
@@ -305,7 +305,7 @@
   },
   {
     "id": 39,
-    "english": "No, it isnt.",
+    "english": "No, it isn't.",
     "chinese": "不，不是。",
     "audio": "levels/primary/audio/sentence_039.mp3",
     "unit": "Identifying objects",
@@ -313,7 +313,7 @@
   },
   {
     "id": 40,
-    "english": "Its a pencil.",
+    "english": "It's a pencil.",
     "chinese": "它是一支铅笔。",
     "audio": "levels/primary/audio/sentence_040.mp3",
     "unit": "Identifying objects",
@@ -329,7 +329,7 @@
   },
   {
     "id": 42,
-    "english": "Yes, its mine.",
+    "english": "Yes, it's mine.",
     "chinese": "是的，它是我的。",
     "audio": "levels/primary/audio/sentence_042.mp3",
     "unit": "Identifying objects",
@@ -409,7 +409,7 @@
   },
   {
     "id": 52,
-    "english": "Theyre over there.",
+    "english": "They're over there.",
     "chinese": "它们在那边。",
     "audio": "levels/primary/audio/sentence_052.mp3",
     "unit": "Identifying objects.",
@@ -441,7 +441,7 @@
   },
   {
     "id": 56,
-    "english": "These are your books, arent they?",
+    "english": "These are your books, aren't they?",
     "chinese": "这些是你的书，不是吗？",
     "audio": "levels/primary/audio/sentence_056.mp3",
     "unit": "Identifying objects.",
@@ -449,7 +449,7 @@
   },
   {
     "id": 57,
-    "english": "No, they arent.",
+    "english": "No, they aren't.",
     "chinese": "不，它们不是。",
     "audio": "levels/primary/audio/sentence_057.mp3",
     "unit": "Identifying objects.",
@@ -457,7 +457,7 @@
   },
   {
     "id": 58,
-    "english": "Theyre not mine.",
+    "english": "They're not mine.",
     "chinese": "它们不是我的。",
     "audio": "levels/primary/audio/sentence_058.mp3",
     "unit": "Identifying objects.",
@@ -473,7 +473,7 @@
   },
   {
     "id": 60,
-    "english": "Those arent your pens, are they?",
+    "english": "Those aren't your pens, are they?",
     "chinese": "那些不是你的钢笔，是吗？",
     "audio": "levels/primary/audio/sentence_060.mp3",
     "unit": "Identifying objects.",
@@ -489,7 +489,7 @@
   },
   {
     "id": 62,
-    "english": "Im a student.",
+    "english": "I'm a student.",
     "chinese": "我是学生。",
     "audio": "levels/primary/audio/sentence_062.mp3",
     "unit": "Identifying people by occupation",
@@ -505,7 +505,7 @@
   },
   {
     "id": 64,
-    "english": "Hes a student, too.",
+    "english": "He's a student, too.",
     "chinese": "他也是学生。",
     "audio": "levels/primary/audio/sentence_064.mp3",
     "unit": "Identifying people by occupation",
@@ -521,7 +521,7 @@
   },
   {
     "id": 66,
-    "english": "No, she isnt.",
+    "english": "No, she isn't.",
     "chinese": "不，她不是。",
     "audio": "levels/primary/audio/sentence_066.mp3",
     "unit": "Identifying people by occupation",
@@ -529,7 +529,7 @@
   },
   {
     "id": 67,
-    "english": "Those men arent students, either.",
+    "english": "Those men aren't students, either.",
     "chinese": "那些男人也不是学生。",
     "audio": "levels/primary/audio/sentence_067.mp3",
     "unit": "Identifying people by occupation",
@@ -553,7 +553,7 @@
   },
   {
     "id": 70,
-    "english": "That man is a teacher, isnt he?",
+    "english": "That man is a teacher, isn't he?",
     "chinese": "那个男人是老师，对吧？",
     "audio": "levels/primary/audio/sentence_070.mp3",
     "unit": "Identifying people by occupation",
@@ -577,7 +577,7 @@
   },
   {
     "id": 73,
-    "english": "Maybe theyre farmers.",
+    "english": "Maybe they're farmers.",
     "chinese": "也许他们是农民。",
     "audio": "levels/primary/audio/sentence_073.mp3",
     "unit": "Identifying people by occupation",
@@ -585,7 +585,7 @@
   },
   {
     "id": 74,
-    "english": "Arent they students?",
+    "english": "Aren't they students?",
     "chinese": "他们不是学生吗？",
     "audio": "levels/primary/audio/sentence_074.mp3",
     "unit": "Identifying people by occupation",
@@ -593,7 +593,7 @@
   },
   {
     "id": 75,
-    "english": "I really dont know.",
+    "english": "I really don't know.",
     "chinese": "我真的不知道。",
     "audio": "levels/primary/audio/sentence_075.mp3",
     "unit": "Identifying people by occupation",
@@ -601,7 +601,7 @@
   },
   {
     "id": 76,
-    "english": "Whats your name?",
+    "english": "What's your name?",
     "chinese": "你叫什么名字？",
     "audio": "levels/primary/audio/sentence_076.mp3",
     "unit": "Introductions and courtesies",
@@ -617,7 +617,7 @@
   },
   {
     "id": 78,
-    "english": "Whats your first name?",
+    "english": "What's your first name?",
     "chinese": "你的名字是什么？",
     "audio": "levels/primary/audio/sentence_078.mp3",
     "unit": "Introductions and courtesies",
@@ -649,7 +649,7 @@
   },
   {
     "id": 82,
-    "english": "Whats your friends name?",
+    "english": "What's your friends name?",
     "chinese": "你朋友叫什么名字？",
     "audio": "levels/primary/audio/sentence_082.mp3",
     "unit": "Introductions and courtesies",
@@ -681,7 +681,7 @@
   },
   {
     "id": 86,
-    "english": "No, Im not.",
+    "english": "No, I'm not.",
     "chinese": "不，我不是。",
     "audio": "levels/primary/audio/sentence_086.mp3",
     "unit": "Introductions and courtesies",
@@ -729,7 +729,7 @@
   },
   {
     "id": 92,
-    "english": "T oday is Monday.",
+    "english": "Today is Monday.",
     "chinese": "今天星期一。",
     "audio": "levels/primary/audio/sentence_092.mp3",
     "unit": "Days and months of the calendar",
@@ -745,7 +745,7 @@
   },
   {
     "id": 94,
-    "english": "Y esterday was Sunday.",
+    "english": "Yesterday was Sunday.",
     "chinese": "昨天星期日。",
     "audio": "levels/primary/audio/sentence_094.mp3",
     "unit": "Days and months of the calendar",
@@ -777,7 +777,7 @@
   },
   {
     "id": 98,
-    "english": "Last month was December, wasnt it ?",
+    "english": "Last month was December, wasn't it ?",
     "chinese": "上个月是十二月，对吧？",
     "audio": "levels/primary/audio/sentence_098.mp3",
     "unit": "Days and months of the calendar",
@@ -817,7 +817,7 @@
   },
   {
     "id": 103,
-    "english": "Y ou were here in February, werent you?",
+    "english": "Y ou were here in February, weren't you?",
     "chinese": "你二月份在这里，对吧？",
     "audio": "levels/primary/audio/sentence_103.mp3",
     "unit": "Days and months of the calendar",
@@ -825,7 +825,7 @@
   },
   {
     "id": 104,
-    "english": "No, I wasnt.",
+    "english": "No, I wasn't.",
     "chinese": "不，我没有。",
     "audio": "levels/primary/audio/sentence_104.mp3",
     "unit": "Days and months of the calendar",
@@ -833,7 +833,7 @@
   },
   {
     "id": 105,
-    "english": "Your friend was here a week ago, wasnt he?",
+    "english": "Your friend was here a week ago, wasn't he?",
     "chinese": "你的朋友一周前来过这里，不是吗？",
     "audio": "levels/primary/audio/sentence_105.mp3",
     "unit": "Days and months of the calendar",
@@ -857,7 +857,7 @@
   },
   {
     "id": 108,
-    "english": "Y ou have a radio, dont you?",
+    "english": "You have a radio, don't you?",
     "chinese": "你有收音机，不是吗？",
     "audio": "levels/primary/audio/sentence_108.mp3",
     "unit": "Talking about objects",
@@ -865,7 +865,7 @@
   },
   {
     "id": 109,
-    "english": "No, I dont.",
+    "english": "No, I don't.",
     "chinese": "不，我没有。",
     "audio": "levels/primary/audio/sentence_109.mp3",
     "unit": "Talking about objects",
@@ -873,7 +873,7 @@
   },
   {
     "id": 110,
-    "english": "I dont have a phonograph, either.",
+    "english": "I don't have a phonograph, either.",
     "chinese": "我也没有留声机。",
     "audio": "levels/primary/audio/sentence_110.mp3",
     "unit": "Talking about objects",
@@ -905,7 +905,7 @@
   },
   {
     "id": 114,
-    "english": "Don t you have my hat?",
+    "english": "Don't you have my hat?",
     "chinese": "你没有拿我的帽子吗？",
     "audio": "levels/primary/audio/sentence_114.mp3",
     "unit": "Talking about objects",
@@ -937,7 +937,7 @@
   },
   {
     "id": 118,
-    "english": "He has a radio, doesnt he?",
+    "english": "He has a radio, doesn't he?",
     "chinese": "他有收音机，不是吗？",
     "audio": "levels/primary/audio/sentence_118.mp3",
     "unit": "Talking about objects",
@@ -945,7 +945,7 @@
   },
   {
     "id": 119,
-    "english": "No, he doesnt have one.",
+    "english": "No, he doesn't have one.",
     "chinese": "不，他没有。",
     "audio": "levels/primary/audio/sentence_119.mp3",
     "unit": "Talking about objects",
@@ -953,7 +953,7 @@
   },
   {
     "id": 120,
-    "english": "He already has a phonograph, but he doesnt have a radio yet.",
+    "english": "He already has a phonograph, but he doesn't have a radio yet.",
     "chinese": "他已经有留声机了，但还没有收音机。",
     "audio": "levels/primary/audio/sentence_120.mp3",
     "unit": "Talking about objects",
@@ -969,7 +969,7 @@
   },
   {
     "id": 122,
-    "english": "Its two oclock.",
+    "english": "It's two o'clock.",
     "chinese": "现在两点钟。",
     "audio": "levels/primary/audio/sentence_122.mp3",
     "unit": "Telling time",
@@ -977,7 +977,7 @@
   },
   {
     "id": 123,
-    "english": "Its a few minutes after two.",
+    "english": "It's a few minutes after two.",
     "chinese": "现在是两点过几分。",
     "audio": "levels/primary/audio/sentence_123.mp3",
     "unit": "Telling time",
@@ -1001,7 +1001,7 @@
   },
   {
     "id": 126,
-    "english": "No, I cant.",
+    "english": "No, I can't.",
     "chinese": "不，我不能。",
     "audio": "levels/primary/audio/sentence_126.mp3",
     "unit": "Telling time",
@@ -1009,7 +1009,7 @@
   },
   {
     "id": 127,
-    "english": "I dont know what time it is.",
+    "english": "I don't know what time it is.",
     "chinese": "我不知道现在几点。",
     "audio": "levels/primary/audio/sentence_127.mp3",
     "unit": "Telling time",
@@ -1017,7 +1017,7 @@
   },
   {
     "id": 128,
-    "english": "I dont think its four oclock yet.",
+    "english": "I don't think it's four o'clock yet.",
     "chinese": "我觉得还没到四点。",
     "audio": "levels/primary/audio/sentence_128.mp3",
     "unit": "Telling time",
@@ -1033,7 +1033,7 @@
   },
   {
     "id": 130,
-    "english": "I get up before six oclock every day.",
+    "english": "I get up before six o'clock every day.",
     "chinese": "我每天六点前起床。",
     "audio": "levels/primary/audio/sentence_130.mp3",
     "unit": "Telling time",
@@ -1049,7 +1049,7 @@
   },
   {
     "id": 132,
-    "english": "Wi ll you be here at ten oclock tomorrow?",
+    "english": "Will you be here at ten o'clock tomorrow?",
     "chinese": "你明天十点会到这儿吗？",
     "audio": "levels/primary/audio/sentence_132.mp3",
     "unit": "Telling time",
@@ -1065,7 +1065,7 @@
   },
   {
     "id": 134,
-    "english": "Well be on time, wont we?",
+    "english": "Well be on time, won't we?",
     "chinese": "我们会准时到，对吧？",
     "audio": "levels/primary/audio/sentence_134.mp3",
     "unit": "Telling time",
@@ -1081,7 +1081,7 @@
   },
   {
     "id": 136,
-    "english": "Whats the date today?",
+    "english": "What's the date today?",
     "chinese": "今天几号？",
     "audio": "levels/primary/audio/sentence_136.mp3",
     "unit": "Talking about dates",
@@ -1113,7 +1113,7 @@
   },
   {
     "id": 140,
-    "english": "T oday is my birthday.",
+    "english": "Today is my birthday.",
     "chinese": "今天是我的生日。",
     "audio": "levels/primary/audio/sentence_140.mp3",
     "unit": "Talking about dates",
@@ -1129,7 +1129,7 @@
   },
   {
     "id": 142,
-    "english": "I dont know the exact date.",
+    "english": "I don't know the exact date.",
     "chinese": "我不知道确切日期。",
     "audio": "levels/primary/audio/sentence_142.mp3",
     "unit": "Talking about dates",
@@ -1161,7 +1161,7 @@
   },
   {
     "id": 146,
-    "english": "I dont know anything about that.",
+    "english": "I don't know anything about that.",
     "chinese": "我对此一无所知。",
     "audio": "levels/primary/audio/sentence_146.mp3",
     "unit": "Talking about dates",
@@ -1169,7 +1169,7 @@
   },
   {
     "id": 147,
-    "english": "Lets talk about something else.",
+    "english": "Let's talk about something else.",
     "chinese": "我们聊点别的吧。",
     "audio": "levels/primary/audio/sentence_147.mp3",
     "unit": "Talking about dates",
@@ -1185,7 +1185,7 @@
   },
   {
     "id": 149,
-    "english": "I dont remember where I was then.",
+    "english": "I don't remember where I was then.",
     "chinese": "我不记得当时在哪里。",
     "audio": "levels/primary/audio/sentence_149.mp3",
     "unit": "Talking about dates",
@@ -1241,7 +1241,7 @@
   },
   {
     "id": 156,
-    "english": "It doesnt matter to me.",
+    "english": "It doesn't matter to me.",
     "chinese": "对我来说无所谓。",
     "audio": "levels/primary/audio/sentence_156.mp3",
     "unit": "Talking about objects and people",
@@ -1249,7 +1249,7 @@
   },
   {
     "id": 157,
-    "english": "Id like to talk with Mr. Johns or Mr. Smith.",
+    "english": "I'd like to talk with Mr. Johns or Mr. Smith.",
     "chinese": "我想和约翰斯先生或史密斯先生谈谈。",
     "audio": "levels/primary/audio/sentence_157.mp3",
     "unit": "Talking about objects and people",
@@ -1257,7 +1257,7 @@
   },
   {
     "id": 158,
-    "english": "Im sorry, but both of them are busy right now.",
+    "english": "I'm sorry, but both of them are busy right now.",
     "chinese": "抱歉，他们俩现在都很忙。",
     "audio": "levels/primary/audio/sentence_158.mp3",
     "unit": "Talking about objects and people",
@@ -1265,7 +1265,7 @@
   },
   {
     "id": 159,
-    "english": "Wouldnt you like some coffee?",
+    "english": "Wouldn't you like some coffee?",
     "chinese": "你不想来点咖啡吗？",
     "audio": "levels/primary/audio/sentence_159.mp3",
     "unit": "Talking about objects and people",
@@ -1273,7 +1273,7 @@
   },
   {
     "id": 160,
-    "english": "Id rather have some tea, if you dont mind.",
+    "english": "I'd rather have some tea, if you don't mind.",
     "chinese": "如果你不介意，我宁愿喝点茶。",
     "audio": "levels/primary/audio/sentence_160.mp3",
     "unit": "Talking about objects and people",
@@ -1329,7 +1329,7 @@
   },
   {
     "id": 167,
-    "english": "Y es, a little.",
+    "english": "Yes, a little.",
     "chinese": "是的，会一点。",
     "audio": "levels/primary/audio/sentence_167.mp3",
     "unit": "Talking about languages",
@@ -1345,7 +1345,7 @@
   },
   {
     "id": 169,
-    "english": "Y es, he speaks English perfectly.",
+    "english": "Yes, he speaks English perfectly.",
     "chinese": "是的，他英语说得很好。",
     "audio": "levels/primary/audio/sentence_169.mp3",
     "unit": "Talking about languages",
@@ -1353,7 +1353,7 @@
   },
   {
     "id": 170,
-    "english": "whats his native language?",
+    "english": "what's his native language?",
     "chinese": "他的母语是什么？",
     "audio": "levels/primary/audio/sentence_170.mp3",
     "unit": "Talking about languages",
@@ -1361,7 +1361,7 @@
   },
   {
     "id": 171,
-    "english": "I dont know what his native language is.",
+    "english": "I don't know what his native language is.",
     "chinese": "我不知道他的母语是什么。",
     "audio": "levels/primary/audio/sentence_171.mp3",
     "unit": "Talking about languages",
@@ -1449,7 +1449,7 @@
   },
   {
     "id": 182,
-    "english": "Im reading a book.",
+    "english": "I'm reading a book.",
     "chinese": "我在看书。",
     "audio": "levels/primary/audio/sentence_182.mp3",
     "unit": "Talking about activities",
@@ -1457,7 +1457,7 @@
   },
   {
     "id": 183,
-    "english": "Whats your friend doing?",
+    "english": "What's your friend doing?",
     "chinese": "你的朋友在做什么？",
     "audio": "levels/primary/audio/sentence_183.mp3",
     "unit": "Talking about activities",
@@ -1465,7 +1465,7 @@
   },
   {
     "id": 184,
-    "english": "Hes studying his lesson.",
+    "english": "He's studying his lesson.",
     "chinese": "他在学习功课。",
     "audio": "levels/primary/audio/sentence_184.mp3",
     "unit": "Talking about activities",
@@ -1473,7 +1473,7 @@
   },
   {
     "id": 185,
-    "english": "Im not doing anything right now.",
+    "english": "I'm not doing anything right now.",
     "chinese": "我现在没做什么。",
     "audio": "levels/primary/audio/sentence_185.mp3",
     "unit": "Talking about activities",
@@ -1489,7 +1489,7 @@
   },
   {
     "id": 187,
-    "english": "Im going home.",
+    "english": "I'm going home.",
     "chinese": "我回家。",
     "audio": "levels/primary/audio/sentence_187.mp3",
     "unit": "Talking about activities",
@@ -1505,7 +1505,7 @@
   },
   {
     "id": 189,
-    "english": "Im not sure what time Im coming back.",
+    "english": "I'm not sure what time I'm coming back.",
     "chinese": "我不确定什么时候回来。",
     "audio": "levels/primary/audio/sentence_189.mp3",
     "unit": "Talking about activities",
@@ -1521,7 +1521,7 @@
   },
   {
     "id": 191,
-    "english": "Im thinking about my lesson.",
+    "english": "I'm thinking about my lesson.",
     "chinese": "我在想我的功课。",
     "audio": "levels/primary/audio/sentence_191.mp3",
     "unit": "Talking about activities",
@@ -1537,7 +1537,7 @@
   },
   {
     "id": 193,
-    "english": "Im writing to a friend of mine in South American.",
+    "english": "I'm writing to a friend of mine in South American.",
     "chinese": "我在给南美的一个朋友写信。",
     "audio": "levels/primary/audio/sentence_193.mp3",
     "unit": "Talking about activities",
@@ -1553,7 +1553,7 @@
   },
   {
     "id": 195,
-    "english": "Im not waiting for anybody.",
+    "english": "I'm not waiting for anybody.",
     "chinese": "我没等任何人。",
     "audio": "levels/primary/audio/sentence_195.mp3",
     "unit": "Talking about activities",
@@ -1569,7 +1569,7 @@
   },
   {
     "id": 197,
-    "english": "Im twenty-one years old.",
+    "english": "I'm twenty-one years old.",
     "chinese": "我二十一岁。",
     "audio": "levels/primary/audio/sentence_197.mp3",
     "unit": "Asking about age",
@@ -1601,7 +1601,7 @@
   },
   {
     "id": 201,
-    "english": "Im two years older than you are.",
+    "english": "I'm two years older than you are.",
     "chinese": "我比你大两岁。",
     "audio": "levels/primary/audio/sentence_201.mp3",
     "unit": "Asking about age",
@@ -1641,7 +1641,7 @@
   },
   {
     "id": 206,
-    "english": "Im the youngest.",
+    "english": "I'm the youngest.",
     "chinese": "我最年轻。",
     "audio": "levels/primary/audio/sentence_206.mp3",
     "unit": "Asking about age",
@@ -1657,7 +1657,7 @@
   },
   {
     "id": 208,
-    "english": "Id say youre about twenty-three.",
+    "english": "I'd say you're about twenty-three.",
     "chinese": "我猜你大概二十三岁。",
     "audio": "levels/primary/audio/sentence_208.mp3",
     "unit": "Asking about age",
@@ -1673,7 +1673,7 @@
   },
   {
     "id": 210,
-    "english": "Im going to be sixty-one next Tuesday.",
+    "english": "I'm going to be sixty-one next Tuesday.",
     "chinese": "下周二我就六十一岁了。",
     "audio": "levels/primary/audio/sentence_210.mp3",
     "unit": "Asking about age",
@@ -1697,7 +1697,7 @@
   },
   {
     "id": 213,
-    "english": "I get up at 6 oclock every day.",
+    "english": "I get up at 6 o'clock every day.",
     "chinese": "我每天六点起床。",
     "audio": "levels/primary/audio/sentence_213.mp3",
     "unit": "Talking about daily activities",
@@ -1745,7 +1745,7 @@
   },
   {
     "id": 219,
-    "english": "I get to work at nine oclock every morning.",
+    "english": "I get to work at nine o'clock every morning.",
     "chinese": "我每天早上九点到单位。",
     "audio": "levels/primary/audio/sentence_219.mp3",
     "unit": "Talking about daily activities",
@@ -1777,7 +1777,7 @@
   },
   {
     "id": 223,
-    "english": "I eat dinner at about 7 oclock.",
+    "english": "I eat dinner at about 7 o'clock.",
     "chinese": "我大约七点吃晚饭。",
     "audio": "levels/primary/audio/sentence_223.mp3",
     "unit": "Talking about daily activities",
@@ -1809,7 +1809,7 @@
   },
   {
     "id": 227,
-    "english": "I woke up early and got up at 6 oclock.",
+    "english": "I woke up early and got up at 6 o'clock.",
     "chinese": "我醒得早，六点就起床了。",
     "audio": "levels/primary/audio/sentence_227.mp3",
     "unit": "Talking about yesterday's activities",
@@ -1857,7 +1857,7 @@
   },
   {
     "id": 233,
-    "english": "I left the house at 8 oclock and got to work at 8:30.",
+    "english": "I left the house at 8 o'clock and got to work at 8:30.",
     "chinese": "我八点出门，八点半到单位。",
     "audio": "levels/primary/audio/sentence_233.mp3",
     "unit": "Talking about yesterday's activities",
@@ -1945,7 +1945,7 @@
   },
   {
     "id": 244,
-    "english": "I didnt see Mr. Jones, but I saw John Smith.",
+    "english": "I didn't see Mr. Jones, but I saw John Smith.",
     "chinese": "我没见到琼斯先生，但见到了约翰·史密斯。",
     "audio": "levels/primary/audio/sentence_244.mp3",
     "unit": "Meeting a friend",
@@ -2049,7 +2049,7 @@
   },
   {
     "id": 257,
-    "english": "I used to wake up early and get up at 7 oclock.",
+    "english": "I used to wake up early and get up at 7 o'clock.",
     "chinese": "我过去常常早醒，7点起床。",
     "audio": "levels/primary/audio/sentence_257.mp3",
     "unit": "Talking about last year's activities",
@@ -2089,7 +2089,7 @@
   },
   {
     "id": 262,
-    "english": "I used to start working at 9:00 oclock every day.",
+    "english": "I used to start working at 9:00 o'clock every day.",
     "chinese": "我过去每天9:00开始工作。",
     "audio": "levels/primary/audio/sentence_262.mp3",
     "unit": "Talking about last year's activities",
@@ -2105,7 +2105,7 @@
   },
   {
     "id": 264,
-    "english": "I used to work until nearly 6:00 oclock each day.",
+    "english": "I used to work until nearly 6:00 o'clock each day.",
     "chinese": "我过去每天工作到将近6:00。",
     "audio": "levels/primary/audio/sentence_264.mp3",
     "unit": "Talking about last year's activities",
@@ -2177,7 +2177,7 @@
   },
   {
     "id": 273,
-    "english": "Whats your address?",
+    "english": "What's your address?",
     "chinese": "你的地址是什么？",
     "audio": "levels/primary/audio/sentence_273.mp3",
     "unit": "Asking about addresses",
@@ -2193,7 +2193,7 @@
   },
   {
     "id": 275,
-    "english": "Im Mr. Smiths next door neighbor.",
+    "english": "I'm Mr. Smiths next door neighbor.",
     "chinese": "我是史密斯先生的隔壁邻居。",
     "audio": "levels/primary/audio/sentence_275.mp3",
     "unit": "Asking about addresses",
@@ -2201,7 +2201,7 @@
   },
   {
     "id": 276,
-    "english": "You live here in the city, dont you?",
+    "english": "You live here in the city, don't you?",
     "chinese": "你住在这个城市，对吧？",
     "audio": "levels/primary/audio/sentence_276.mp3",
     "unit": "Asking about addresses",
@@ -2209,7 +2209,7 @@
   },
   {
     "id": 277,
-    "english": "Im from out of town.",
+    "english": "I'm from out of town.",
     "chinese": "我来自外地。",
     "audio": "levels/primary/audio/sentence_277.mp3",
     "unit": "Asking about addresses",
@@ -2225,7 +2225,7 @@
   },
   {
     "id": 279,
-    "english": "Ive lived here for five years.",
+    "english": "I've lived here for five years.",
     "chinese": "我在这里住了五年。",
     "audio": "levels/primary/audio/sentence_279.mp3",
     "unit": "Asking about addresses",
@@ -2233,7 +2233,7 @@
   },
   {
     "id": 280,
-    "english": "Hes known me for over ten years.",
+    "english": "He's known me for over ten years.",
     "chinese": "他认识我超过十年了。",
     "audio": "levels/primary/audio/sentence_280.mp3",
     "unit": "Asking about addresses",
@@ -2241,7 +2241,7 @@
   },
   {
     "id": 281,
-    "english": "Ive spoken English all my life.",
+    "english": "I've spoken English all my life.",
     "chinese": "我一生都在说英语。",
     "audio": "levels/primary/audio/sentence_281.mp3",
     "unit": "Asking about addresses",
@@ -2249,7 +2249,7 @@
   },
   {
     "id": 282,
-    "english": "Ive already read that book.",
+    "english": "I've already read that book.",
     "chinese": "我已经读过那本书了。",
     "audio": "levels/primary/audio/sentence_282.mp3",
     "unit": "Asking about addresses",
@@ -2305,7 +2305,7 @@
   },
   {
     "id": 289,
-    "english": "What were you doing at about 4 oclock yesterday afternoon?",
+    "english": "What were you doing at about 4 o'clock yesterday afternoon?",
     "chinese": "昨天下午4点左右你在做什么？",
     "audio": "levels/primary/audio/sentence_289.mp3",
     "unit": "Asking questions",
@@ -2369,7 +2369,7 @@
   },
   {
     "id": 297,
-    "english": "I cant remember what John was doing yesterday afternoon.",
+    "english": "I can't remember what John was doing yesterday afternoon.",
     "chinese": "我不记得约翰昨天下午在做什么。",
     "audio": "levels/primary/audio/sentence_297.mp3",
     "unit": "Asking questions",
@@ -2377,7 +2377,7 @@
   },
   {
     "id": 298,
-    "english": "Ive forgotten what he said his address was.",
+    "english": "I've forgotten what he said his address was.",
     "chinese": "我忘了他说的地址是什么。",
     "audio": "levels/primary/audio/sentence_298.mp3",
     "unit": "Asking questions",
@@ -2385,7 +2385,7 @@
   },
   {
     "id": 299,
-    "english": "Ive forgotten what time he said he had dinner last night.",
+    "english": "I've forgotten what time he said he had dinner last night.",
     "chinese": "我忘了他说的昨晚几点吃晚饭。",
     "audio": "levels/primary/audio/sentence_299.mp3",
     "unit": "Asking questions",
@@ -2425,7 +2425,7 @@
   },
   {
     "id": 304,
-    "english": "Its not too heavy, but I dont know the exact weight.",
+    "english": "It's not too heavy, but I don't know the exact weight.",
     "chinese": "不太重，但我不知道确切重量。",
     "audio": "levels/primary/audio/sentence_304.mp3",
     "unit": "Describing objects",
@@ -2521,7 +2521,7 @@
   },
   {
     "id": 316,
-    "english": "Would you please tell Mr. Cooper that Im here?",
+    "english": "Would you please tell Mr. Cooper that I'm here?",
     "chinese": "请告诉库珀先生我到了好吗？",
     "audio": "levels/primary/audio/sentence_316.mp3",
     "unit": "Asking people to do things.",
@@ -2585,7 +2585,7 @@
   },
   {
     "id": 324,
-    "english": "Please dont bother me now. Im very busy.",
+    "english": "Please don't bother me now. I'm very busy.",
     "chinese": "现在请别打扰我，我很忙。",
     "audio": "levels/primary/audio/sentence_324.mp3",
     "unit": "Asking people to do things.",
@@ -2657,7 +2657,7 @@
   },
   {
     "id": 333,
-    "english": "Its two blocks straight ahead.",
+    "english": "It's two blocks straight ahead.",
     "chinese": "一直往前走，过两个街区。",
     "audio": "levels/primary/audio/sentence_333.mp3",
     "unit": "Getting information and directions",
@@ -2689,7 +2689,7 @@
   },
   {
     "id": 337,
-    "english": "Its a long way from here.",
+    "english": "It's a long way from here.",
     "chinese": "离这里很远。",
     "audio": "levels/primary/audio/sentence_337.mp3",
     "unit": "Getting information and directions",
@@ -2713,7 +2713,7 @@
   },
   {
     "id": 340,
-    "english": "You cant miss it.",
+    "english": "You can't miss it.",
     "chinese": "你不会错过的。",
     "audio": "levels/primary/audio/sentence_340.mp3",
     "unit": "Getting information and directions",
@@ -2769,7 +2769,7 @@
   },
   {
     "id": 347,
-    "english": "No, Im not married. Im still single.",
+    "english": "No, I'm not married. I'm still single.",
     "chinese": "不，我没结婚。我还是单身。",
     "audio": "levels/primary/audio/sentence_347.mp3",
     "unit": "Talking about family and relatives",
@@ -2777,7 +2777,7 @@
   },
   {
     "id": 348,
-    "english": "Your niece is engaged, isnt she?",
+    "english": "Your niece is engaged, isn't she?",
     "chinese": "你侄女订婚了，对吧？",
     "audio": "levels/primary/audio/sentence_348.mp3",
     "unit": "Talking about family and relatives",
@@ -2817,7 +2817,7 @@
   },
   {
     "id": 353,
-    "english": "Theyve been married for quite a few years.",
+    "english": "They've been married for quite a few years.",
     "chinese": "他们已经结婚好几年了。",
     "audio": "levels/primary/audio/sentence_353.mp3",
     "unit": "Talking about family and relatives",
@@ -2857,7 +2857,7 @@
   },
   {
     "id": 358,
-    "english": "They dont know when the wedding will be.",
+    "english": "They don't know when the wedding will be.",
     "chinese": "他们不知道婚礼什么时候举行。",
     "audio": "levels/primary/audio/sentence_358.mp3",
     "unit": "Talking about family and relatives",
@@ -2873,7 +2873,7 @@
   },
   {
     "id": 360,
-    "english": "Shes a widow. Her husband died last year.",
+    "english": "She's a widow. Her husband died last year.",
     "chinese": "她是个寡妇。她丈夫去年去世了。",
     "audio": "levels/primary/audio/sentence_360.mp3",
     "unit": "Talking about family and relatives",
@@ -2937,7 +2937,7 @@
   },
   {
     "id": 368,
-    "english": "Theyre building a new house up the street from me.",
+    "english": "They're building a new house up the street from me.",
     "chinese": "他们正在我家沿街那头建一栋新房子。",
     "audio": "levels/primary/audio/sentence_368.mp3",
     "unit": "Talking about neighbors and friends",
@@ -3009,7 +3009,7 @@
   },
   {
     "id": 377,
-    "english": "Ill probably wake up early and get up at 6:30.",
+    "english": "I'll probably wake up early and get up at 6:30.",
     "chinese": "我可能会早醒，六点半起床。",
     "audio": "levels/primary/audio/sentence_377.mp3",
     "unit": "Talking about future activities.",
@@ -3025,7 +3025,7 @@
   },
   {
     "id": 379,
-    "english": "After I get dressed, Ill have breakfast.",
+    "english": "After I get dressed, I'll have breakfast.",
     "chinese": "穿好衣服后，我吃早餐。",
     "audio": "levels/primary/audio/sentence_379.mp3",
     "unit": "Talking about future activities.",
@@ -3041,7 +3041,7 @@
   },
   {
     "id": 381,
-    "english": "Ill probably have eggs and toast for breakfast.",
+    "english": "I'll probably have eggs and toast for breakfast.",
     "chinese": "我早餐可能吃鸡蛋和吐司。",
     "audio": "levels/primary/audio/sentence_381.mp3",
     "unit": "Talking about future activities.",
@@ -3049,7 +3049,7 @@
   },
   {
     "id": 382,
-    "english": "After breakfast, Ill get ready ro go to work.",
+    "english": "After breakfast, I'll get ready ro go to work.",
     "chinese": "早餐后，我准备去上班。",
     "audio": "levels/primary/audio/sentence_382.mp3",
     "unit": "Talking about future activities.",
@@ -3057,7 +3057,7 @@
   },
   {
     "id": 383,
-    "english": "Ill leave the house at 8:00 and get to the office at 8:30.",
+    "english": "I'll leave the house at 8:00 and get to the office at 8:30.",
     "chinese": "我八点出门，八点半到办公室。",
     "audio": "levels/primary/audio/sentence_383.mp3",
     "unit": "Talking about future activities.",
@@ -3065,7 +3065,7 @@
   },
   {
     "id": 384,
-    "english": "Ill probably go out for lunch at about 12:30.",
+    "english": "I'll probably go out for lunch at about 12:30.",
     "chinese": "我大概十二点半出去吃午饭。",
     "audio": "levels/primary/audio/sentence_384.mp3",
     "unit": "Talking about future activities.",
@@ -3073,7 +3073,7 @@
   },
   {
     "id": 385,
-    "english": "Ill finish working at 5:30 and get home by 6 oclock.",
+    "english": "I'll finish working at 5:30 and get home by 6 o'clock.",
     "chinese": "我五点半下班，六点到家。",
     "audio": "levels/primary/audio/sentence_385.mp3",
     "unit": "Talking about future activities.",
@@ -3089,7 +3089,7 @@
   },
   {
     "id": 387,
-    "english": "Do you think youll go to the movies tomorrow night?",
+    "english": "Do you think you'll go to the movies tomorrow night?",
     "chinese": "你觉得你明晚会去看电影吗？",
     "audio": "levels/primary/audio/sentence_387.mp3",
     "unit": "Talking about future activities.",
@@ -3097,7 +3097,7 @@
   },
   {
     "id": 388,
-    "english": "Ill probably stay home and watch television.",
+    "english": "I'll probably stay home and watch television.",
     "chinese": "我可能会待在家看电视。",
     "audio": "levels/primary/audio/sentence_388.mp3",
     "unit": "Talking about future activities.",
@@ -3105,7 +3105,7 @@
   },
   {
     "id": 389,
-    "english": "When I get sleepy, Ill probably get ready for bed.",
+    "english": "When I get sleepy, I'll probably get ready for bed.",
     "chinese": "困了的话，我可能就准备睡觉了。",
     "audio": "levels/primary/audio/sentence_389.mp3",
     "unit": "Talking about future activities.",
@@ -3113,7 +3113,7 @@
   },
   {
     "id": 390,
-    "english": "Do you think youll be able to go to sleep right away?",
+    "english": "Do you think you'll be able to go to sleep right away?",
     "chinese": "你觉得你能马上睡着吗？",
     "audio": "levels/primary/audio/sentence_390.mp3",
     "unit": "Talking about future activities.",
@@ -3145,7 +3145,7 @@
   },
   {
     "id": 394,
-    "english": "Y esterday it rained all day.",
+    "english": "Yesterday it rained all day.",
     "chinese": "昨天下了一整天雨。",
     "audio": "levels/primary/audio/sentence_394.mp3",
     "unit": "Talking about the weather",
@@ -3161,7 +3161,7 @@
   },
   {
     "id": 396,
-    "english": "Its going to snow tomorrow.",
+    "english": "It's going to snow tomorrow.",
     "chinese": "明天要下雪。",
     "audio": "levels/primary/audio/sentence_396.mp3",
     "unit": "Talking about the weather",
@@ -3169,7 +3169,7 @@
   },
   {
     "id": 397,
-    "english": "Its quite cold today.",
+    "english": "It's quite cold today.",
     "chinese": "今天挺冷的。",
     "audio": "levels/primary/audio/sentence_397.mp3",
     "unit": "Talking about the weather",
@@ -3177,7 +3177,7 @@
   },
   {
     "id": 398,
-    "english": "Its been cloudy all morning.",
+    "english": "It's been cloudy all morning.",
     "chinese": "一上午都是阴天。",
     "audio": "levels/primary/audio/sentence_398.mp3",
     "unit": "Talking about the weather",
@@ -3193,7 +3193,7 @@
   },
   {
     "id": 400,
-    "english": "Itll probably clear up this afternoon.",
+    "english": "It'll probably clear up this afternoon.",
     "chinese": "今天下午可能会放晴。",
     "audio": "levels/primary/audio/sentence_400.mp3",
     "unit": "Talking about the weather",
@@ -3217,7 +3217,7 @@
   },
   {
     "id": 403,
-    "english": "Whats the temperature today?",
+    "english": "What's the temperature today?",
     "chinese": "今天气温多少？",
     "audio": "levels/primary/audio/sentence_403.mp3",
     "unit": "Talking about the weather",
@@ -3225,7 +3225,7 @@
   },
   {
     "id": 404,
-    "english": "Its about seventy degrees Fahrenheit this afternoon.",
+    "english": "It's about seventy degrees Fahrenheit this afternoon.",
     "chinese": "今天下午大约华氏七十度。",
     "audio": "levels/primary/audio/sentence_404.mp3",
     "unit": "Talking about the weather",
@@ -3233,7 +3233,7 @@
   },
   {
     "id": 405,
-    "english": "Theres a cool breeze this evening.",
+    "english": "There's a cool breeze this evening.",
     "chinese": "今晚有凉风。",
     "audio": "levels/primary/audio/sentence_405.mp3",
     "unit": "Talking about the weather",
@@ -3249,7 +3249,7 @@
   },
   {
     "id": 407,
-    "english": "I dont feel very well this morning.",
+    "english": "I don't feel very well this morning.",
     "chinese": "今天早上我感觉不太舒服。",
     "audio": "levels/primary/audio/sentence_407.mp3",
     "unit": "Talking about sickness and health",
@@ -3257,7 +3257,7 @@
   },
   {
     "id": 408,
-    "english": "I was sick yesterday, but Im better today.",
+    "english": "I was sick yesterday, but I'm better today.",
     "chinese": "我昨天病了，但今天好多了。",
     "audio": "levels/primary/audio/sentence_408.mp3",
     "unit": "Talking about sickness and health",
@@ -3297,7 +3297,7 @@
   },
   {
     "id": 413,
-    "english": "Whats matter with you?",
+    "english": "What's matter with you?",
     "chinese": "你怎么了？",
     "audio": "levels/primary/audio/sentence_413.mp3",
     "unit": "Talking about sickness and health",
@@ -3305,7 +3305,7 @@
   },
   {
     "id": 414,
-    "english": "Ive got a pain in my back.",
+    "english": "I've got a pain in my back.",
     "chinese": "我背疼。",
     "audio": "levels/primary/audio/sentence_414.mp3",
     "unit": "Talking about sickness and health",
@@ -3345,7 +3345,7 @@
   },
   {
     "id": 419,
-    "english": "Its bleeding. Youd better go see a doctor about that cut.",
+    "english": "It's bleeding. You'd better go see a doctor about that cut.",
     "chinese": "在流血。你最好去看医生处理一下伤口。",
     "audio": "levels/primary/audio/sentence_419.mp3",
     "unit": "Talking about sickness and health",
@@ -3353,7 +3353,7 @@
   },
   {
     "id": 420,
-    "english": "I hope youll be well soon.",
+    "english": "I hope you'll be well soon.",
     "chinese": "希望你早日康复。",
     "audio": "levels/primary/audio/sentence_420.mp3",
     "unit": "Talking about sickness and health",
@@ -3361,7 +3361,7 @@
   },
   {
     "id": 421,
-    "english": "I get out of bed about 7 oclock every morning.",
+    "english": "I get out of bed about 7 o'clock every morning.",
     "chinese": "我每天早上大约7点起床。",
     "audio": "levels/primary/audio/sentence_421.mp3",
     "unit": "Talking about daily habits",
@@ -3409,7 +3409,7 @@
   },
   {
     "id": 427,
-    "english": "Then, its usually time to wake up my little brother.",
+    "english": "Then, it's usually time to wake up my little brother.",
     "chinese": "然后，通常该叫醒弟弟了。",
     "audio": "levels/primary/audio/sentence_427.mp3",
     "unit": "Talking about daily habits",
@@ -3417,7 +3417,7 @@
   },
   {
     "id": 428,
-    "english": "He cant dress himself yet because hes too young.",
+    "english": "He can't dress himself yet because he's too young.",
     "chinese": "他还太小，不会自己穿衣服。",
     "audio": "levels/primary/audio/sentence_428.mp3",
     "unit": "Talking about daily habits",
@@ -3433,7 +3433,7 @@
   },
   {
     "id": 430,
-    "english": "He tries to button his own shirt, but he cant do it.",
+    "english": "He tries to button his own shirt, but he can't do it.",
     "chinese": "他试着自己扣衬衫扣子，但扣不上。",
     "audio": "levels/primary/audio/sentence_430.mp3",
     "unit": "Talking about daily habits",
@@ -3457,7 +3457,7 @@
   },
   {
     "id": 433,
-    "english": "Im always tired when I come home from work.",
+    "english": "I'm always tired when I come home from work.",
     "chinese": "下班回家时我总是很累。",
     "audio": "levels/primary/audio/sentence_433.mp3",
     "unit": "Talking about daily habits",
@@ -3497,7 +3497,7 @@
   },
   {
     "id": 438,
-    "english": "I think youre mistaken about that.",
+    "english": "I think you're mistaken about that.",
     "chinese": "我觉得你搞错了。",
     "audio": "levels/primary/audio/sentence_438.mp3",
     "unit": "Getting other people's opinions and ideas",
@@ -3521,7 +3521,7 @@
   },
   {
     "id": 441,
-    "english": "Do you think its going to rain tomorrow?",
+    "english": "Do you think it's going to rain tomorrow?",
     "chinese": "你觉得明天会下雨吗？",
     "audio": "levels/primary/audio/sentence_441.mp3",
     "unit": "Getting other people's opinions and ideas",
@@ -3529,7 +3529,7 @@
   },
   {
     "id": 442,
-    "english": "I dont know whether it will rain or not.",
+    "english": "I don't know whether it will rain or not.",
     "chinese": "我不知道会不会下雨。",
     "audio": "levels/primary/audio/sentence_442.mp3",
     "unit": "Getting other people's opinions and ideas",
@@ -3537,7 +3537,7 @@
   },
   {
     "id": 443,
-    "english": "In my opinion, thats an excellent idea.",
+    "english": "In my opinion, that's an excellent idea.",
     "chinese": "在我看来，那是个好主意。",
     "audio": "levels/primary/audio/sentence_443.mp3",
     "unit": "Getting other people's opinions and ideas",
@@ -3553,7 +3553,7 @@
   },
   {
     "id": 445,
-    "english": "Hes tired because he worked hard all day today.",
+    "english": "He's tired because he worked hard all day today.",
     "chinese": "他累是因为他今天辛苦工作了一整天。",
     "audio": "levels/primary/audio/sentence_445.mp3",
     "unit": "Getting other people's opinions and ideas",
@@ -3609,7 +3609,7 @@
   },
   {
     "id": 452,
-    "english": "I doubt that Ill do anything tomorrow.",
+    "english": "I doubt that I'll do anything tomorrow.",
     "chinese": "我估计明天我什么也不做。",
     "audio": "levels/primary/audio/sentence_452.mp3",
     "unit": "Making plans",
@@ -3625,7 +3625,7 @@
   },
   {
     "id": 454,
-    "english": "I imagine Ill do some work instead of going to the movies.",
+    "english": "I imagine I'll do some work instead of going to the movies.",
     "chinese": "我想我会做点工作，而不去看电影。",
     "audio": "levels/primary/audio/sentence_454.mp3",
     "unit": "Making plans",
@@ -3641,7 +3641,7 @@
   },
   {
     "id": 456,
-    "english": "Theres nothing to do because tomorrow is a holiday.",
+    "english": "There's nothing to do because tomorrow is a holiday.",
     "chinese": "没什么可做的，因为明天是假日。",
     "audio": "levels/primary/audio/sentence_456.mp3",
     "unit": "Making plans",
@@ -3649,7 +3649,7 @@
   },
   {
     "id": 457,
-    "english": "Whats your brother planning to do tomorrow?",
+    "english": "What's your brother planning to do tomorrow?",
     "chinese": "你哥哥明天打算做什么？",
     "audio": "levels/primary/audio/sentence_457.mp3",
     "unit": "Making plans",
@@ -3657,7 +3657,7 @@
   },
   {
     "id": 458,
-    "english": "He cant decide what to do.",
+    "english": "He can't decide what to do.",
     "chinese": "他无法决定做什么。",
     "audio": "levels/primary/audio/sentence_458.mp3",
     "unit": "Making plans",
@@ -3665,7 +3665,7 @@
   },
   {
     "id": 459,
-    "english": "Its difficult to make a decision without knowing all the facts.",
+    "english": "It's difficult to make a decision without knowing all the facts.",
     "chinese": "不了解全部事实，很难做决定。",
     "audio": "levels/primary/audio/sentence_459.mp3",
     "unit": "Making plans",
@@ -3681,7 +3681,7 @@
   },
   {
     "id": 461,
-    "english": "Thats a good idea.",
+    "english": "That's a good idea.",
     "chinese": "那是个好主意。",
     "audio": "levels/primary/audio/sentence_461.mp3",
     "unit": "Making plans",
@@ -3689,7 +3689,7 @@
   },
   {
     "id": 462,
-    "english": "Im hoping to spend a few days in the mountains.",
+    "english": "I'm hoping to spend a few days in the mountains.",
     "chinese": "我希望在山里待几天。",
     "audio": "levels/primary/audio/sentence_462.mp3",
     "unit": "Making plans",
@@ -3705,7 +3705,7 @@
   },
   {
     "id": 464,
-    "english": "If theres a chance youll go, Id like to go with you.",
+    "english": "If there's a chance you'll go, I'd like to go with you.",
     "chinese": "如果你有机会去，我想和你一起去。",
     "audio": "levels/primary/audio/sentence_464.mp3",
     "unit": "Making plans",
@@ -3721,7 +3721,7 @@
   },
   {
     "id": 466,
-    "english": "Im anxious to know what your decision is.",
+    "english": "I'm anxious to know what your decision is.",
     "chinese": "我急于知道你的决定。",
     "audio": "levels/primary/audio/sentence_466.mp3",
     "unit": "Making decisions",
@@ -3729,7 +3729,7 @@
   },
   {
     "id": 467,
-    "english": "Im confident youve made the right choice.",
+    "english": "I'm confident you've made the right choice.",
     "chinese": "我相信你做出了正确选择。",
     "audio": "levels/primary/audio/sentence_467.mp3",
     "unit": "Making decisions",
@@ -3761,7 +3761,7 @@
   },
   {
     "id": 471,
-    "english": "Ive definitely decided to go to California.",
+    "english": "I've definitely decided to go to California.",
     "chinese": "我决定去加利福尼亚。",
     "audio": "levels/primary/audio/sentence_471.mp3",
     "unit": "Making decisions",
@@ -3769,7 +3769,7 @@
   },
   {
     "id": 472,
-    "english": "He didnt want to say anything to influence my decision.",
+    "english": "He didn't want to say anything to influence my decision.",
     "chinese": "他不想说什么来影响我的决定。",
     "audio": "levels/primary/audio/sentence_472.mp3",
     "unit": "Making decisions",
@@ -3785,7 +3785,7 @@
   },
   {
     "id": 474,
-    "english": "I assume youve decided against buying a new car.",
+    "english": "I assume you've decided against buying a new car.",
     "chinese": "我猜你决定不买新车了。",
     "audio": "levels/primary/audio/sentence_474.mp3",
     "unit": "Making decisions",
@@ -3817,7 +3817,7 @@
   },
   {
     "id": 478,
-    "english": "He knows its inconvenient, but he wants to go anyway.",
+    "english": "He knows it's inconvenient, but he wants to go anyway.",
     "chinese": "他知道不方便，但还是想去。",
     "audio": "levels/primary/audio/sentence_478.mp3",
     "unit": "Making decisions",
@@ -3833,7 +3833,7 @@
   },
   {
     "id": 480,
-    "english": "She insists that it doesnt make any difference to her.",
+    "english": "She insists that it doesn't make any difference to her.",
     "chinese": "她坚持说这对她没影响。",
     "audio": "levels/primary/audio/sentence_480.mp3",
     "unit": "Making decisions",
@@ -3849,7 +3849,7 @@
   },
   {
     "id": 482,
-    "english": "If I have enough money, Im going to take a trip abroad.",
+    "english": "If I have enough money, I'm going to take a trip abroad.",
     "chinese": "如果钱够，我打算出国旅行。",
     "audio": "levels/primary/audio/sentence_482.mp3",
     "unit": "Going places",
@@ -3865,7 +3865,7 @@
   },
   {
     "id": 484,
-    "english": "Its faster to go by plane than by boat.",
+    "english": "It's faster to go by plane than by boat.",
     "chinese": "坐飞机比坐船快。",
     "audio": "levels/primary/audio/sentence_484.mp3",
     "unit": "Going places",
@@ -3873,7 +3873,7 @@
   },
   {
     "id": 485,
-    "english": "Whats the quickest way to get there?",
+    "english": "What's the quickest way to get there?",
     "chinese": "到那里最快的方式是什么？",
     "audio": "levels/primary/audio/sentence_485.mp3",
     "unit": "Going places",
@@ -3897,7 +3897,7 @@
   },
   {
     "id": 488,
-    "english": "Im leaving tomorrow, but I havent packed my suitcases yet.",
+    "english": "I'm leaving tomorrow, but I haven't packed my suitcases yet.",
     "chinese": "我明天出发，但还没收拾行李。",
     "audio": "levels/primary/audio/sentence_488.mp3",
     "unit": "Going places",
@@ -3905,7 +3905,7 @@
   },
   {
     "id": 489,
-    "english": "Im going by air. I like flying.",
+    "english": "I'm going by air. I like flying.",
     "chinese": "我坐飞机去，我喜欢飞行。",
     "audio": "levels/primary/audio/sentence_489.mp3",
     "unit": "Going places",
@@ -3953,7 +3953,7 @@
   },
   {
     "id": 495,
-    "english": "Lets go out to the airport. The plane landed ten minutes ago.",
+    "english": "Let's go out to the airport. The plane landed ten minutes ago.",
     "chinese": "我们去机场吧，飞机十分钟前降落了。",
     "audio": "levels/primary/audio/sentence_495.mp3",
     "unit": "Going places",
@@ -3961,7 +3961,7 @@
   },
   {
     "id": 496,
-    "english": "Im going shopping because I need to buy some clothes.",
+    "english": "I'm going shopping because I need to buy some clothes.",
     "chinese": "我去购物，因为需要买些衣服。",
     "audio": "levels/primary/audio/sentence_496.mp3",
     "unit": "Going shopping",
@@ -3969,7 +3969,7 @@
   },
   {
     "id": 497,
-    "english": "If this shirt doesnt fit, may I bring it back later?",
+    "english": "If this shirt doesn't fit, may I bring it back later?",
     "chinese": "如果这件衬衫不合身，我可以稍后退货吗？",
     "audio": "levels/primary/audio/sentence_497.mp3",
     "unit": "Going shopping",
@@ -3993,7 +3993,7 @@
   },
   {
     "id": 500,
-    "english": "This dress is made of silk, isnt it?",
+    "english": "This dress is made of silk, isn't it?",
     "chinese": "这条裙子是丝绸做的，对吧？",
     "audio": "levels/primary/audio/sentence_500.mp3",
     "unit": "Going shopping",
@@ -4001,7 +4001,7 @@
   },
   {
     "id": 501,
-    "english": "Id like to try on this sweater.",
+    "english": "I'd like to try on this sweater.",
     "chinese": "我想试穿这件毛衣。",
     "audio": "levels/primary/audio/sentence_501.mp3",
     "unit": "Going shopping",
@@ -4009,7 +4009,7 @@
   },
   {
     "id": 502,
-    "english": "Im interested in buying a new car.",
+    "english": "I'm interested in buying a new car.",
     "chinese": "我有兴趣买辆新车。",
     "audio": "levels/primary/audio/sentence_502.mp3",
     "unit": "Going shopping",
@@ -4017,7 +4017,7 @@
   },
   {
     "id": 503,
-    "english": "Whats the price of that electric iron?",
+    "english": "What's the price of that electric iron?",
     "chinese": "那个电熨斗多少钱？",
     "audio": "levels/primary/audio/sentence_503.mp3",
     "unit": "Going shopping",
@@ -4041,7 +4041,7 @@
   },
   {
     "id": 506,
-    "english": "Thats a beautiful leather wallet, but it costs too much.",
+    "english": "That's a beautiful leather wallet, but it costs too much.",
     "chinese": "那是个漂亮的皮钱包，但太贵了。",
     "audio": "levels/primary/audio/sentence_506.mp3",
     "unit": "Going shopping",
@@ -4089,7 +4089,7 @@
   },
   {
     "id": 512,
-    "english": "Id like a bowl of tomato soup, please.",
+    "english": "I'd like a bowl of tomato soup, please.",
     "chinese": "请给我来一碗番茄汤。",
     "audio": "levels/primary/audio/sentence_512.mp3",
     "unit": "Eating in a restaurant",
@@ -4129,7 +4129,7 @@
   },
   {
     "id": 517,
-    "english": "Ill have mashed potatoes and green beans.",
+    "english": "I'll have mashed potatoes and green beans.",
     "chinese": "我要土豆泥和青豆。",
     "audio": "levels/primary/audio/sentence_517.mp3",
     "unit": "Eating in a restaurant",
@@ -4193,7 +4193,7 @@
   },
   {
     "id": 525,
-    "english": "We invited two guests to dinner, but they didnt come.",
+    "english": "We invited two guests to dinner, but they didn't come.",
     "chinese": "我们邀请了两位客人来吃晚饭，但他们没来。",
     "audio": "levels/primary/audio/sentence_525.mp3",
     "unit": "Eating in a restaurant",
@@ -4209,7 +4209,7 @@
   },
   {
     "id": 527,
-    "english": "The feature started at 9 oclock and ended at 11:30.",
+    "english": "The feature started at 9 o'clock and ended at 11:30.",
     "chinese": "正片9点开始，11点半结束。",
     "audio": "levels/primary/audio/sentence_527.mp3",
     "unit": "Going out for the evening",
@@ -4297,7 +4297,7 @@
   },
   {
     "id": 538,
-    "english": "We dont go dancing very often.",
+    "english": "We don't go dancing very often.",
     "chinese": "我们不常去跳舞。",
     "audio": "levels/primary/audio/sentence_538.mp3",
     "unit": "Going out for the evening",
@@ -4313,7 +4313,7 @@
   },
   {
     "id": 540,
-    "english": "Im not accustomed to going out after dark.",
+    "english": "I'm not accustomed to going out after dark.",
     "chinese": "我不习惯天黑后出门。",
     "audio": "levels/primary/audio/sentence_540.mp3",
     "unit": "Going out for the evening",
@@ -4321,7 +4321,7 @@
   },
   {
     "id": 541,
-    "english": "Id like to make an appointment to see Mr. Cooper.",
+    "english": "I'd like to make an appointment to see Mr. Cooper.",
     "chinese": "我想预约见库珀先生。",
     "audio": "levels/primary/audio/sentence_541.mp3",
     "unit": "Talking about movies",
@@ -4337,7 +4337,7 @@
   },
   {
     "id": 543,
-    "english": "Your appointment will be next Thursday at 10 oclock.",
+    "english": "Your appointment will be next Thursday at 10 o'clock.",
     "chinese": "你的预约是下周四10点。",
     "audio": "levels/primary/audio/sentence_543.mp3",
     "unit": "Talking about movies",
@@ -4369,7 +4369,7 @@
   },
   {
     "id": 547,
-    "english": "Im going to call the employment agency for a job.",
+    "english": "I'm going to call the employment agency for a job.",
     "chinese": "我要打电话给职业介绍所找工作。",
     "audio": "levels/primary/audio/sentence_547.mp3",
     "unit": "Talking about movies",
@@ -4393,7 +4393,7 @@
   },
   {
     "id": 550,
-    "english": "Im going to call a plumber to come this afternoon.",
+    "english": "I'm going to call a plumber to come this afternoon.",
     "chinese": "我要打电话叫水管工今天下午来。",
     "audio": "levels/primary/audio/sentence_550.mp3",
     "unit": "Talking about movies",
@@ -4401,7 +4401,7 @@
   },
   {
     "id": 551,
-    "english": "I couldnt keep the appointment because I was sick.",
+    "english": "I couldn't keep the appointment because I was sick.",
     "chinese": "我因为生病没能赴约。",
     "audio": "levels/primary/audio/sentence_551.mp3",
     "unit": "Talking about movies",
@@ -4409,7 +4409,7 @@
   },
   {
     "id": 552,
-    "english": "Im a new employee. I was hired yesterday.",
+    "english": "I'm a new employee. I was hired yesterday.",
     "chinese": "我是新员工，昨天刚被录用。",
     "audio": "levels/primary/audio/sentence_552.mp3",
     "unit": "Talking about movies",
@@ -4425,7 +4425,7 @@
   },
   {
     "id": 554,
-    "english": "Lets make a date to go shopping next Thursday.",
+    "english": "Let's make a date to go shopping next Thursday.",
     "chinese": "我们约下周四去购物吧。",
     "audio": "levels/primary/audio/sentence_554.mp3",
     "unit": "Talking about movies",
@@ -4449,7 +4449,7 @@
   },
   {
     "id": 557,
-    "english": "The doctor discovered that Im a little overweight.",
+    "english": "The doctor discovered that I'm a little overweight.",
     "chinese": "医生发现我有点超重。",
     "audio": "levels/primary/audio/sentence_557.mp3",
     "unit": "Talking about the theatre",
@@ -4553,7 +4553,7 @@
   },
   {
     "id": 570,
-    "english": "Its just a mosquito bite. Theres nothing to worry about.",
+    "english": "It's just a mosquito bite. There's nothing to worry about.",
     "chinese": "只是蚊子咬的，没什么好担心的。",
     "audio": "levels/primary/audio/sentence_570.mp3",
     "unit": "Talking about the theatre",
@@ -4633,7 +4633,7 @@
   },
   {
     "id": 580,
-    "english": "Who is this? I dont recognize your voice.",
+    "english": "Who is this? I don't recognize your voice.",
     "chinese": "你是谁？我听不出你的声音。",
     "audio": "levels/primary/audio/sentence_580.mp3",
     "unit": "Talking about concerts and music",
@@ -4665,7 +4665,7 @@
   },
   {
     "id": 584,
-    "english": "Put the receiver closer to your mouth. I cant hear you.",
+    "english": "Put the receiver closer to your mouth. I can't hear you.",
     "chinese": "把听筒靠近嘴边，我听不见你说话。",
     "audio": "levels/primary/audio/sentence_584.mp3",
     "unit": "Talking about concerts and music",
@@ -4681,7 +4681,7 @@
   },
   {
     "id": 586,
-    "english": "How long has it been since youve heard from your uncle?",
+    "english": "How long has it been since you've heard from your uncle?",
     "chinese": "你多久没收到你叔叔的信了？",
     "audio": "levels/primary/audio/sentence_586.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4697,7 +4697,7 @@
   },
   {
     "id": 588,
-    "english": "I cant recall how long its been.",
+    "english": "I can't recall how long it's been.",
     "chinese": "我记不清有多久了。",
     "audio": "levels/primary/audio/sentence_588.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4705,7 +4705,7 @@
   },
   {
     "id": 589,
-    "english": "Im always disappointed when I dont get any mail.",
+    "english": "I'm always disappointed when I don't get any mail.",
     "chinese": "收不到信时我总是很失望。",
     "audio": "levels/primary/audio/sentence_589.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4713,7 +4713,7 @@
   },
   {
     "id": 590,
-    "english": "I feel guilty because I havent written her lately.",
+    "english": "I feel guilty because I haven't written her lately.",
     "chinese": "我感到内疚，因为最近没给她写信。",
     "audio": "levels/primary/audio/sentence_590.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4729,7 +4729,7 @@
   },
   {
     "id": 592,
-    "english": "The postman always comes at 2 oclock.",
+    "english": "The postman always comes at 2 o'clock.",
     "chinese": "邮递员总是两点来。",
     "audio": "levels/primary/audio/sentence_592.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4737,7 +4737,7 @@
   },
   {
     "id": 593,
-    "english": "I wrote to my uncle last night. I couldnt put it off any longer.",
+    "english": "I wrote to my uncle last night. I couldn't put it off any longer.",
     "chinese": "昨晚我给我叔叔写了信。我不能再拖了。",
     "audio": "levels/primary/audio/sentence_593.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4753,7 +4753,7 @@
   },
   {
     "id": 595,
-    "english": "I didnt know whether to send the letter airmail or not.",
+    "english": "I didn't know whether to send the letter airmail or not.",
     "chinese": "我不知道是否该寄航空信。",
     "audio": "levels/primary/audio/sentence_595.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4769,7 +4769,7 @@
   },
   {
     "id": 597,
-    "english": "Dont forget to put stamps on the letter before you mail it.",
+    "english": "Don't forget to put stamps on the letter before you mail it.",
     "chinese": "寄信前别忘了贴邮票。",
     "audio": "levels/primary/audio/sentence_597.mp3",
     "unit": "Talking about museums and art galleries",
@@ -4825,7 +4825,7 @@
   },
   {
     "id": 604,
-    "english": "It was a terrible experience, and I wont forget it.",
+    "english": "It was a terrible experience, and I won't forget it.",
     "chinese": "那是一次可怕的经历，我不会忘记。",
     "audio": "levels/primary/audio/sentence_604.mp3",
     "unit": "Talking about library services",
@@ -4897,7 +4897,7 @@
   },
   {
     "id": 613,
-    "english": "I cant recall the exact circumstances.",
+    "english": "I can't recall the exact circumstances.",
     "chinese": "我记不清具体的情况了。",
     "audio": "levels/primary/audio/sentence_613.mp3",
     "unit": "Talking about library services",
@@ -4937,7 +4937,7 @@
   },
   {
     "id": 618,
-    "english": "This split-level house is for rent. Its a bargain.",
+    "english": "This split-level house is for rent. It's a bargain.",
     "chinese": "这栋错层式房子出租，很划算。",
     "audio": "levels/primary/audio/sentence_618.mp3",
     "unit": "Talking about hobbies",
@@ -4977,7 +4977,7 @@
   },
   {
     "id": 623,
-    "english": "Weve got to get a bed and a dresser for the bedroom.",
+    "english": "We've got to get a bed and a dresser for the bedroom.",
     "chinese": "我们得给卧室买张床和梳妆台。",
     "audio": "levels/primary/audio/sentence_623.mp3",
     "unit": "Talking about hobbies",
@@ -4993,7 +4993,7 @@
   },
   {
     "id": 625,
-    "english": "Theyve already turned on the electricity. The house is ready.",
+    "english": "They've already turned on the electricity. The house is ready.",
     "chinese": "他们已经通了电，房子可以住了。",
     "audio": "levels/primary/audio/sentence_625.mp3",
     "unit": "Talking about hobbies",
@@ -5001,7 +5001,7 @@
   },
   {
     "id": 626,
-    "english": "Im worried about the appearance of the floor.",
+    "english": "I'm worried about the appearance of the floor.",
     "chinese": "我担心地板的外观。",
     "audio": "levels/primary/audio/sentence_626.mp3",
     "unit": "Talking about hobbies",
@@ -5033,7 +5033,7 @@
   },
   {
     "id": 630,
-    "english": "The house needs painting. Its in bad condition.",
+    "english": "The house needs painting. It's in bad condition.",
     "chinese": "房子需要粉刷。状况很差。",
     "audio": "levels/primary/audio/sentence_630.mp3",
     "unit": "Talking about hobbies",
@@ -5049,7 +5049,7 @@
   },
   {
     "id": 632,
-    "english": "Im going to wear my blue suit. Is that all right?",
+    "english": "I'm going to wear my blue suit. Is that all right?",
     "chinese": "我打算穿我的蓝色西装。可以吗？",
     "audio": "levels/primary/audio/sentence_632.mp3",
     "unit": "Talking about photography",
@@ -5081,7 +5081,7 @@
   },
   {
     "id": 636,
-    "english": "Ive got to get this shirt washed and ironed.",
+    "english": "I've got to get this shirt washed and ironed.",
     "chinese": "我得把这件衬衫洗了并熨烫。",
     "audio": "levels/primary/audio/sentence_636.mp3",
     "unit": "Talking about photography",
@@ -5089,7 +5089,7 @@
   },
   {
     "id": 637,
-    "english": "All my suits are dirty. I dont have anything to wear.",
+    "english": "All my suits are dirty. I don't have anything to wear.",
     "chinese": "我所有的西装都脏了。我没衣服穿了。",
     "audio": "levels/primary/audio/sentence_637.mp3",
     "unit": "Talking about photography",
@@ -5097,7 +5097,7 @@
   },
   {
     "id": 638,
-    "english": "Youd better wear a light jacket. Its chilly today.",
+    "english": "You'd better wear a light jacket. It's chilly today.",
     "chinese": "你最好穿一件轻便夹克。今天很冷。",
     "audio": "levels/primary/audio/sentence_638.mp3",
     "unit": "Talking about photography",
@@ -5105,7 +5105,7 @@
   },
   {
     "id": 639,
-    "english": "This dress doesnt fit me anymore.",
+    "english": "This dress doesn't fit me anymore.",
     "chinese": "这件连衣裙不再合身了。",
     "audio": "levels/primary/audio/sentence_639.mp3",
     "unit": "Talking about photography",
@@ -5113,7 +5113,7 @@
   },
   {
     "id": 640,
-    "english": "I guess Ive outgrown this pair of trousers.",
+    "english": "I guess I've outgrown this pair of trousers.",
     "chinese": "我想我穿不下这条裤子了。",
     "audio": "levels/primary/audio/sentence_640.mp3",
     "unit": "Talking about photography",
@@ -5121,7 +5121,7 @@
   },
   {
     "id": 641,
-    "english": "These shoes are worn-out. Theyve lasted a long time.",
+    "english": "These shoes are worn-out. They've lasted a long time.",
     "chinese": "这双鞋已经磨损了。它们已经穿了很久。",
     "audio": "levels/primary/audio/sentence_641.mp3",
     "unit": "Talking about photography",
@@ -5129,7 +5129,7 @@
   },
   {
     "id": 642,
-    "english": "I cant fasten this collar button.",
+    "english": "I can't fasten this collar button.",
     "chinese": "我系不上这个领扣。",
     "audio": "levels/primary/audio/sentence_642.mp3",
     "unit": "Talking about photography",
@@ -5137,7 +5137,7 @@
   },
   {
     "id": 643,
-    "english": "Why dont you get dressed now? Put on your work clothes.",
+    "english": "Why don't you get dressed now? Put on your work clothes.",
     "chinese": "你为什么不现在穿好衣服？穿上你的工作服。",
     "audio": "levels/primary/audio/sentence_643.mp3",
     "unit": "Talking about photography",
@@ -5153,7 +5153,7 @@
   },
   {
     "id": 645,
-    "english": "I didnt notice you were wearing your new hat.",
+    "english": "I didn't notice you were wearing your new hat.",
     "chinese": "我没注意到你戴着你的新帽子。",
     "audio": "levels/primary/audio/sentence_645.mp3",
     "unit": "Talking about photography",
@@ -5177,7 +5177,7 @@
   },
   {
     "id": 648,
-    "english": "I wont argue with you, but I think youre being unfair.",
+    "english": "I won't argue with you, but I think you're being unfair.",
     "chinese": "我不想和你争，但我觉得你不公平。",
     "audio": "levels/primary/audio/sentence_648.mp3",
     "unit": "Talking about television",
@@ -5185,7 +5185,7 @@
   },
   {
     "id": 649,
-    "english": "Thats a liberal point of view.",
+    "english": "That's a liberal point of view.",
     "chinese": "那是开明的观点。",
     "audio": "levels/primary/audio/sentence_649.mp3",
     "unit": "Talking about television",
@@ -5201,7 +5201,7 @@
   },
   {
     "id": 651,
-    "english": "I dont see any point in discussing the question any further.",
+    "english": "I don't see any point in discussing the question any further.",
     "chinese": "我觉得没必要再讨论这个问题了。",
     "audio": "levels/primary/audio/sentence_651.mp3",
     "unit": "Talking about television",
@@ -5241,7 +5241,7 @@
   },
   {
     "id": 656,
-    "english": "Please forgive me. I didnt mean to start an argument.",
+    "english": "Please forgive me. I didn't mean to start an argument.",
     "chinese": "请原谅我，我不是有意挑起争论的。",
     "audio": "levels/primary/audio/sentence_656.mp3",
     "unit": "Talking about television",
@@ -5281,7 +5281,7 @@
   },
   {
     "id": 661,
-    "english": "If it doesnt rain tomorrow, I think Ill go shopping.",
+    "english": "If it doesn't rain tomorrow, I think I'll go shopping.",
     "chinese": "如果明天不下雨，我想去购物。",
     "audio": "levels/primary/audio/sentence_661.mp3",
     "unit": "Talking about radio and records",
@@ -5289,7 +5289,7 @@
   },
   {
     "id": 662,
-    "english": "Theres a possibility well go, but it all depends on the weather.",
+    "english": "There's a possibility well go, but it all depends on the weather.",
     "chinese": "我们可能会去，但要看天气。",
     "audio": "levels/primary/audio/sentence_662.mp3",
     "unit": "Talking about radio and records",
@@ -5297,7 +5297,7 @@
   },
   {
     "id": 663,
-    "english": "If I have time tomorrow, I think Ill get a haircut.",
+    "english": "If I have time tomorrow, I think I'll get a haircut.",
     "chinese": "如果明天有时间，我想去理发。",
     "audio": "levels/primary/audio/sentence_663.mp3",
     "unit": "Talking about radio and records",
@@ -5321,7 +5321,7 @@
   },
   {
     "id": 666,
-    "english": "If I get my work finished in time , Ill leave for New York Monday.",
+    "english": "If I get my work finished in time , I'll leave for New York Monday.",
     "chinese": "如果我按时完成工作，周一就去纽约。",
     "audio": "levels/primary/audio/sentence_666.mp3",
     "unit": "Talking about radio and records",
@@ -5329,7 +5329,7 @@
   },
   {
     "id": 667,
-    "english": "Suppose you couldnt go on the trip. How would you feel?",
+    "english": "Suppose you couldn't go on the trip. How would you feel?",
     "chinese": "假设你不能去旅行，你会怎么想？",
     "audio": "levels/primary/audio/sentence_667.mp3",
     "unit": "Talking about radio and records",
@@ -5337,7 +5337,7 @@
   },
   {
     "id": 668,
-    "english": "What would you say if I told you I couldnt go with you?",
+    "english": "What would you say if I told you I couldn't go with you?",
     "chinese": "如果我告诉你我不能跟你去，你会怎么说？",
     "audio": "levels/primary/audio/sentence_668.mp3",
     "unit": "Talking about radio and records",
@@ -5345,7 +5345,7 @@
   },
   {
     "id": 669,
-    "english": "If I buy the car, Ill have to borrow some money.",
+    "english": "If I buy the car, I'll have to borrow some money.",
     "chinese": "如果我买这辆车，就得借些钱。",
     "audio": "levels/primary/audio/sentence_669.mp3",
     "unit": "Talking about radio and records",
@@ -5353,7 +5353,7 @@
   },
   {
     "id": 670,
-    "english": "If I went with you, Id have to be back by six oclock.",
+    "english": "If I went with you, I'd have to be back by six o'clock.",
     "chinese": "如果我跟你去，六点前得回来。",
     "audio": "levels/primary/audio/sentence_670.mp3",
     "unit": "Talking about radio and records",
@@ -5361,7 +5361,7 @@
   },
   {
     "id": 671,
-    "english": "One of these days, Id like to take a vacation.",
+    "english": "One of these days, I'd like to take a vacation.",
     "chinese": "哪天我想休个假。",
     "audio": "levels/primary/audio/sentence_671.mp3",
     "unit": "Talking about radio and records",
@@ -5369,7 +5369,7 @@
   },
   {
     "id": 672,
-    "english": "As soon as I can, Im going to change jobs.",
+    "english": "As soon as I can, I'm going to change jobs.",
     "chinese": "我一有机会就换工作。",
     "audio": "levels/primary/audio/sentence_672.mp3",
     "unit": "Talking about radio and records",
@@ -5377,7 +5377,7 @@
   },
   {
     "id": 673,
-    "english": "Theres a chance he wont be able to be home for Christmas.",
+    "english": "There's a chance he won't be able to be home for Christmas.",
     "chinese": "他有可能无法回家过圣诞节。",
     "audio": "levels/primary/audio/sentence_673.mp3",
     "unit": "Talking about radio and records",
@@ -5401,7 +5401,7 @@
   },
   {
     "id": 676,
-    "english": "What would you have done last night if you hadnt had to study?",
+    "english": "What would you have done last night if you hadn't had to study?",
     "chinese": "如果昨晚你不需要学习，你会做什么？",
     "audio": "levels/primary/audio/sentence_676.mp3",
     "unit": "Asking about mail",
@@ -5409,7 +5409,7 @@
   },
   {
     "id": 677,
-    "english": "I would have gone on the picnic if it hadnt rained.",
+    "english": "I would have gone on the picnic if it hadn't rained.",
     "chinese": "如果没下雨，我就去野餐了。",
     "audio": "levels/primary/audio/sentence_677.mp3",
     "unit": "Asking about mail",
@@ -5433,7 +5433,7 @@
   },
   {
     "id": 680,
-    "english": "Would he have seen you if you hadnt waved to him? If he had only had enough money, he would have bought that house. I wish you had called me back the next day, as I had asked you to.",
+    "english": "Would he have seen you if you hadn't waved to him? If he had only had enough money, he would have bought that house. I wish you had called me back the next day, as I had asked you to.",
     "chinese": "如果你没向他挥手，他会看到你吗？如果他钱够，就买那栋房子了。我希望你第二天能像我要你做的那样给我回电话。",
     "audio": "levels/primary/audio/sentence_680.mp3",
     "unit": "Asking about mail",
@@ -5521,7 +5521,7 @@
   },
   {
     "id": 691,
-    "english": "What is it you dont like about winter weather?",
+    "english": "What is it you don't like about winter weather?",
     "chinese": "你不喜欢冬天的天气什么？",
     "audio": "levels/primary/audio/sentence_691.mp3",
     "unit": "Writing letters",
@@ -5529,7 +5529,7 @@
   },
   {
     "id": 692,
-    "english": "I dont like it when the weather gets real cold.",
+    "english": "I don't like it when the weather gets real cold.",
     "chinese": "我不喜欢天气变得很冷的时候。",
     "audio": "levels/primary/audio/sentence_692.mp3",
     "unit": "Writing letters",
@@ -5537,7 +5537,7 @@
   },
   {
     "id": 693,
-    "english": "I cant stand summer weather.",
+    "english": "I can't stand summer weather.",
     "chinese": "我受不了夏天的天气。",
     "audio": "levels/primary/audio/sentence_693.mp3",
     "unit": "Writing letters",
@@ -5545,7 +5545,7 @@
   },
   {
     "id": 694,
-    "english": "The thing I dont like about driving is all the traffic on the road.",
+    "english": "The thing I don't like about driving is all the traffic on the road.",
     "chinese": "我不喜欢开车的一点是路上的交通。",
     "audio": "levels/primary/audio/sentence_694.mp3",
     "unit": "Writing letters",
@@ -5553,7 +5553,7 @@
   },
   {
     "id": 695,
-    "english": "He doesnt like the idea of going to bed early.",
+    "english": "He doesn't like the idea of going to bed early.",
     "chinese": "他不喜欢早睡的想法。",
     "audio": "levels/primary/audio/sentence_695.mp3",
     "unit": "Writing letters",
@@ -5561,7 +5561,7 @@
   },
   {
     "id": 696,
-    "english": "I like to play tennis, but Im not a very good player.",
+    "english": "I like to play tennis, but I'm not a very good player.",
     "chinese": "我喜欢打网球，但我打得不太好。",
     "audio": "levels/primary/audio/sentence_696.mp3",
     "unit": "Writing letters",
@@ -5569,7 +5569,7 @@
   },
   {
     "id": 697,
-    "english": "I dont like spinach even though I know its good for me.",
+    "english": "I don't like spinach even though I know it's good for me.",
     "chinese": "我不喜欢菠菜，尽管我知道它对我有好处。",
     "audio": "levels/primary/audio/sentence_697.mp3",
     "unit": "Writing letters",
@@ -5577,7 +5577,7 @@
   },
   {
     "id": 698,
-    "english": "Im afraid youre being too particular about your food.",
+    "english": "I'm afraid you're being too particular about your food.",
     "chinese": "恐怕你对食物太挑剔了。",
     "audio": "levels/primary/audio/sentence_698.mp3",
     "unit": "Writing letters",
@@ -5593,7 +5593,7 @@
   },
   {
     "id": 700,
-    "english": "She doesnt like anything I do or say.",
+    "english": "She doesn't like anything I do or say.",
     "chinese": "她不喜欢我做的或说的任何事。",
     "audio": "levels/primary/audio/sentence_700.mp3",
     "unit": "Writing letters",
@@ -5609,7 +5609,7 @@
   },
   {
     "id": 702,
-    "english": "Whats your favorite pastime?",
+    "english": "What's your favorite pastime?",
     "chinese": "你最喜欢的消遣是什么？",
     "audio": "levels/primary/audio/sentence_702.mp3",
     "unit": "Writing letters",
@@ -5625,7 +5625,7 @@
   },
   {
     "id": 704,
-    "english": "I didnt like the taste of the medicine, but I took it anyway.",
+    "english": "I didn't like the taste of the medicine, but I took it anyway.",
     "chinese": "我不喜欢药的味道，但我还是吃了。",
     "audio": "levels/primary/audio/sentence_704.mp3",
     "unit": "Writing letters",
@@ -5641,7 +5641,7 @@
   },
   {
     "id": 706,
-    "english": "If you want my advice, I dont think you should go.",
+    "english": "If you want my advice, I don't think you should go.",
     "chinese": "要我说，你不该去。",
     "audio": "levels/primary/audio/sentence_706.mp3",
     "unit": "Countries and nationalities",
@@ -5657,7 +5657,7 @@
   },
   {
     "id": 708,
-    "english": "Its only a suggestion, and you can do what you please.",
+    "english": "It's only a suggestion, and you can do what you please.",
     "chinese": "只是个建议，你随意。",
     "audio": "levels/primary/audio/sentence_708.mp3",
     "unit": "Countries and nationalities",
@@ -5673,7 +5673,7 @@
   },
   {
     "id": 710,
-    "english": "If you dont like it , I wish you would say so.",
+    "english": "If you don't like it , I wish you would say so.",
     "chinese": "你要是不喜欢，希望你说出来。",
     "audio": "levels/primary/audio/sentence_710.mp3",
     "unit": "Countries and nationalities",
@@ -5681,7 +5681,7 @@
   },
   {
     "id": 711,
-    "english": "Please dont take offense. I only wanted to tell you what I think.",
+    "english": "Please don't take offense. I only wanted to tell you what I think.",
     "chinese": "请别见怪，我只是想告诉你我的想法。",
     "audio": "levels/primary/audio/sentence_711.mp3",
     "unit": "Countries and nationalities",
@@ -5689,7 +5689,7 @@
   },
   {
     "id": 712,
-    "english": "In my opinion, the house isnt worth the price theyre asking.",
+    "english": "In my opinion, the house isn't worth the price they're asking.",
     "chinese": "我觉得这房子不值他们要的价。",
     "audio": "levels/primary/audio/sentence_712.mp3",
     "unit": "Countries and nationalities",
@@ -5705,7 +5705,7 @@
   },
   {
     "id": 714,
-    "english": "Its none of my business, but I think you ought to work harder.",
+    "english": "It's none of my business, but I think you ought to work harder.",
     "chinese": "不关我事，但我觉得你该更努力。",
     "audio": "levels/primary/audio/sentence_714.mp3",
     "unit": "Countries and nationalities",
@@ -5721,7 +5721,7 @@
   },
   {
     "id": 716,
-    "english": "If you dont take my advice, youll be sorry.",
+    "english": "If you don't take my advice, you'll be sorry.",
     "chinese": "不听我劝，你会后悔的。",
     "audio": "levels/primary/audio/sentence_716.mp3",
     "unit": "Countries and nationalities",
@@ -5729,7 +5729,7 @@
   },
   {
     "id": 717,
-    "english": "Ive always tried not to interfere in your affairs.",
+    "english": "I've always tried not to interfere in your affairs.",
     "chinese": "我一直尽量不干涉你的事。",
     "audio": "levels/primary/audio/sentence_717.mp3",
     "unit": "Countries and nationalities",
@@ -5737,7 +5737,7 @@
   },
   {
     "id": 718,
-    "english": "Im old enough to make up my own mind.",
+    "english": "I'm old enough to make up my own mind.",
     "chinese": "我够大了，能自己做主。",
     "audio": "levels/primary/audio/sentence_718.mp3",
     "unit": "Countries and nationalities",
@@ -5753,7 +5753,7 @@
   },
   {
     "id": 720,
-    "english": "He wont pay attention to anybody. Youre just wasting your breath.",
+    "english": "He won't pay attention to anybody. You're just wasting your breath.",
     "chinese": "他谁的话都不听，你白费口舌。",
     "audio": "levels/primary/audio/sentence_720.mp3",
     "unit": "Countries and nationalities",
@@ -5785,7 +5785,7 @@
   },
   {
     "id": 724,
-    "english": "Im afraid it was a bother for you to do this.",
+    "english": "I'm afraid it was a bother for you to do this.",
     "chinese": "恐怕这事麻烦你了。",
     "audio": "levels/primary/audio/sentence_724.mp3",
     "unit": "Geography and landscape",
@@ -5793,7 +5793,7 @@
   },
   {
     "id": 725,
-    "english": "It wasnt any bother. I was glad to do it.",
+    "english": "It wasn't any bother. I was glad to do it.",
     "chinese": "不麻烦，我很乐意。",
     "audio": "levels/primary/audio/sentence_725.mp3",
     "unit": "Geography and landscape",
@@ -5801,7 +5801,7 @@
   },
   {
     "id": 726,
-    "english": "Theres just one last favor I need to ask of you.",
+    "english": "There's just one last favor I need to ask of you.",
     "chinese": "我只需请你帮最后一个忙。",
     "audio": "levels/primary/audio/sentence_726.mp3",
     "unit": "Geography and landscape",
@@ -5809,7 +5809,7 @@
   },
   {
     "id": 727,
-    "english": "Id be happy to help you in any way I can.",
+    "english": "I'd be happy to help you in any way I can.",
     "chinese": "我愿意尽力帮你。",
     "audio": "levels/primary/audio/sentence_727.mp3",
     "unit": "Geography and landscape",
@@ -5825,7 +5825,7 @@
   },
   {
     "id": 729,
-    "english": "Would you be so kind as to open this window for me? Its stuck.",
+    "english": "Would you be so kind as to open this window for me? It's stuck.",
     "chinese": "你能帮我打开这扇窗吗？它卡住了。",
     "audio": "levels/primary/audio/sentence_729.mp3",
     "unit": "Geography and landscape",
@@ -5833,7 +5833,7 @@
   },
   {
     "id": 730,
-    "english": "If theres anything else I can do, please let me know.",
+    "english": "If there's anything else I can do, please let me know.",
     "chinese": "如果还有我能做的事，请告诉我。",
     "audio": "levels/primary/audio/sentence_730.mp3",
     "unit": "Geography and landscape",
@@ -5841,7 +5841,7 @@
   },
   {
     "id": 731,
-    "english": "This is the last time Ill ever ask you to do anything for me.",
+    "english": "This is the last time I'll ever ask you to do anything for me.",
     "chinese": "这是我最后一次请你为我做事。",
     "audio": "levels/primary/audio/sentence_731.mp3",
     "unit": "Geography and landscape",
@@ -5849,7 +5849,7 @@
   },
   {
     "id": 732,
-    "english": "I certainly didnt intend to cause you so much inconvenience.",
+    "english": "I certainly didn't intend to cause you so much inconvenience.",
     "chinese": "我绝不是有意给你添这么多麻烦。",
     "audio": "levels/primary/audio/sentence_732.mp3",
     "unit": "Geography and landscape",
@@ -5857,7 +5857,7 @@
   },
   {
     "id": 733,
-    "english": "Hell always be indebted to you for what youve done.",
+    "english": "Hell always be indebted to you for what you've done.",
     "chinese": "他会永远感激你所做的一切。",
     "audio": "levels/primary/audio/sentence_733.mp3",
     "unit": "Geography and landscape",
@@ -5873,7 +5873,7 @@
   },
   {
     "id": 735,
-    "english": "Id appreciate it if you would turn out the lights. Im sleepy.",
+    "english": "I'd appreciate it if you would turn out the lights. I'm sleepy.",
     "chinese": "如果你能关灯我会很感激。我困了。",
     "audio": "levels/primary/audio/sentence_735.mp3",
     "unit": "Geography and landscape",
@@ -5881,7 +5881,7 @@
   },
   {
     "id": 736,
-    "english": "I didnt realize the time had passed so quickly.",
+    "english": "I didn't realize the time had passed so quickly.",
     "chinese": "我没意识到时间过得这么快。",
     "audio": "levels/primary/audio/sentence_736.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5889,7 +5889,7 @@
   },
   {
     "id": 737,
-    "english": "Ive got a lot of things to do before I can leave.",
+    "english": "I've got a lot of things to do before I can leave.",
     "chinese": "我走之前还有很多事要做。",
     "audio": "levels/primary/audio/sentence_737.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5897,7 +5897,7 @@
   },
   {
     "id": 738,
-    "english": "For one thing, Ive got to drop by the bank to get some money.",
+    "english": "For one thing, I've got to drop by the bank to get some money.",
     "chinese": "首先，我得去银行取点钱。",
     "audio": "levels/primary/audio/sentence_738.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5905,7 +5905,7 @@
   },
   {
     "id": 739,
-    "english": "Itll take almost all my savings to buy the ticket.",
+    "english": "It'll take almost all my savings to buy the ticket.",
     "chinese": "买这张票几乎要花光我所有的积蓄。",
     "audio": "levels/primary/audio/sentence_739.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5929,7 +5929,7 @@
   },
   {
     "id": 742,
-    "english": "Its a good thing you reminded me to take my heavy coat.",
+    "english": "It's a good thing you reminded me to take my heavy coat.",
     "chinese": "幸好你提醒我带上厚外套。",
     "audio": "levels/primary/audio/sentence_742.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5937,7 +5937,7 @@
   },
   {
     "id": 743,
-    "english": "I never would have thought of it if you hadnt mentioned it.",
+    "english": "I never would have thought of it if you hadn't mentioned it.",
     "chinese": "要不是你提起，我根本想不到。",
     "audio": "levels/primary/audio/sentence_743.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5945,7 +5945,7 @@
   },
   {
     "id": 744,
-    "english": "Ill see you off at the airport.",
+    "english": "I'll see you off at the airport.",
     "chinese": "我会去机场送你。",
     "audio": "levels/primary/audio/sentence_744.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5953,7 +5953,7 @@
   },
   {
     "id": 745,
-    "english": "Theyre calling your flight now. You barely have time to make it.",
+    "english": "They're calling your flight now. You barely have time to make it.",
     "chinese": "他们正在呼叫你的航班。你几乎没时间赶上了。",
     "audio": "levels/primary/audio/sentence_745.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5961,7 +5961,7 @@
   },
   {
     "id": 746,
-    "english": "Youd better run or youre going to be left behind.",
+    "english": "You'd better run or you're going to be left behind.",
     "chinese": "你最好跑起来，否则就要落后了。",
     "audio": "levels/primary/audio/sentence_746.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5969,7 +5969,7 @@
   },
   {
     "id": 747,
-    "english": "Dont forget to cable to let us know you arrived safely.",
+    "english": "Don't forget to cable to let us know you arrived safely.",
     "chinese": "别忘了发电报通知我们你已安全到达。",
     "audio": "levels/primary/audio/sentence_747.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5977,7 +5977,7 @@
   },
   {
     "id": 748,
-    "english": "Im sure Ive forgotten something, but its too late now.",
+    "english": "I'm sure I've forgotten something, but it's too late now.",
     "chinese": "我肯定忘了什么东西，但现在太晚了。",
     "audio": "levels/primary/audio/sentence_748.mp3",
     "unit": "Talking about the U.S.A.",
@@ -5993,7 +5993,7 @@
   },
   {
     "id": 750,
-    "english": "You dont have to pay any duty on personal belongings. [1] Countries and nationalities",
+    "english": "You don't have to pay any duty on personal belongings. [1] Countries and nationalities",
     "chinese": "个人物品无需缴税。[1] 国家和国籍",
     "audio": "levels/primary/audio/sentence_750.mp3",
     "unit": "Talking about the U.S.A.",
@@ -6001,7 +6001,7 @@
   },
   {
     "id": 751,
-    "english": "Whats your nationality? Are you American?",
+    "english": "What's your nationality? Are you American?",
     "chinese": "你是什么国籍？你是美国人吗？",
     "audio": "levels/primary/audio/sentence_751.mp3",
     "unit": "Talking about different places",
@@ -6017,7 +6017,7 @@
   },
   {
     "id": 753,
-    "english": "Im an American by birth.",
+    "english": "I'm an American by birth.",
     "chinese": "我生来就是美国人。",
     "audio": "levels/primary/audio/sentence_753.mp3",
     "unit": "Talking about different places",
@@ -6025,7 +6025,7 @@
   },
   {
     "id": 754,
-    "english": "I was born in Spain, but Im a citizen of France.",
+    "english": "I was born in Spain, but I'm a citizen of France.",
     "chinese": "我出生在西班牙，但我是法国公民。",
     "audio": "levels/primary/audio/sentence_754.mp3",
     "unit": "Talking about different places",
@@ -6041,7 +6041,7 @@
   },
   {
     "id": 756,
-    "english": "Whats the area of the Congo in square miles?",
+    "english": "What's the area of the Congo in square miles?",
     "chinese": "刚果的面积是多少平方英里？",
     "audio": "levels/primary/audio/sentence_756.mp3",
     "unit": "Talking about different places",
@@ -6105,7 +6105,7 @@
   },
   {
     "id": 764,
-    "english": "Today we celebrate our day of independence. Its a national holiday.",
+    "english": "Today we celebrate our day of independence. It's a national holiday.",
     "chinese": "今天我们庆祝独立日，这是全国性假日。",
     "audio": "levels/primary/audio/sentence_764.mp3",
     "unit": "Talking about different places",
@@ -6113,7 +6113,7 @@
   },
   {
     "id": 765,
-    "english": "My home is in the capital. Its a cosmopolitan city.",
+    "english": "My home is in the capital. It's a cosmopolitan city.",
     "chinese": "我家在首都，那是个国际化大都市。",
     "audio": "levels/primary/audio/sentence_765.mp3",
     "unit": "Talking about different places",
@@ -6129,7 +6129,7 @@
   },
   {
     "id": 767,
-    "english": "Its a beautiful country with many large lakes.",
+    "english": "It's a beautiful country with many large lakes.",
     "chinese": "这是一个美丽的国家，有许多大湖。",
     "audio": "levels/primary/audio/sentence_767.mp3",
     "unit": "Asking about people and places",
@@ -6209,7 +6209,7 @@
   },
   {
     "id": 777,
-    "english": "Whats the longest river in the United States?",
+    "english": "What's the longest river in the United States?",
     "chinese": "美国最长的河流是哪条？",
     "audio": "levels/primary/audio/sentence_777.mp3",
     "unit": "Asking about people and places",
@@ -6241,7 +6241,7 @@
   },
   {
     "id": 781,
-    "english": "Children enter school at the age of five, dont they?",
+    "english": "Children enter school at the age of five, don't they?",
     "chinese": "孩子五岁上学，对吗？",
     "audio": "levels/primary/audio/sentence_781.mp3",
     "unit": "Talking about likes and dislikes",
@@ -6297,7 +6297,7 @@
   },
   {
     "id": 788,
-    "english": "Im a graduate of Yale University. I have a Bachelor of Arts degree.",
+    "english": "I'm a graduate of Yale University. I have a Bachelor of Arts degree.",
     "chinese": "我毕业于耶鲁大学。我有文学学士学位。",
     "audio": "levels/primary/audio/sentence_788.mp3",
     "unit": "Talking about likes and dislikes",
@@ -6313,7 +6313,7 @@
   },
   {
     "id": 790,
-    "english": "This is my first year of college. Im a freshman.",
+    "english": "This is my first year of college. I'm a freshman.",
     "chinese": "这是我大学第一年。我是新生。",
     "audio": "levels/primary/audio/sentence_790.mp3",
     "unit": "Talking about likes and dislikes",
@@ -6353,7 +6353,7 @@
   },
   {
     "id": 795,
-    "english": "John has extracurricular activities. Hes on the football team.",
+    "english": "John has extracurricular activities. He's on the football team.",
     "chinese": "约翰有课外活动。他在足球队。",
     "audio": "levels/primary/audio/sentence_795.mp3",
     "unit": "Talking about likes and dislikes",
@@ -6361,7 +6361,7 @@
   },
   {
     "id": 796,
-    "english": "Im a federal employee. I work for the Department of Labor.",
+    "english": "I'm a federal employee. I work for the Department of Labor.",
     "chinese": "我是联邦雇员。我在劳工部工作。",
     "audio": "levels/primary/audio/sentence_796.mp3",
     "unit": "Asking about likes and dislikes",
@@ -6377,7 +6377,7 @@
   },
   {
     "id": 798,
-    "english": "As soon as I complete my training, Im going to be a bank teller.",
+    "english": "As soon as I complete my training, I'm going to be a bank teller.",
     "chinese": "培训一结束，我就去当银行出纳员。",
     "audio": "levels/primary/audio/sentence_798.mp3",
     "unit": "Asking about likes and dislikes",
@@ -6401,7 +6401,7 @@
   },
   {
     "id": 801,
-    "english": "I like painting, but I wouldnt want it to be my lifes work.",
+    "english": "I like painting, but I wouldn't want it to be my lifes work.",
     "chinese": "我喜欢画画，但不想把它当作终身事业。",
     "audio": "levels/primary/audio/sentence_801.mp3",
     "unit": "Asking about likes and dislikes",
@@ -6457,7 +6457,7 @@
   },
   {
     "id": 808,
-    "english": "He always takes pride in his work. Hes very efficient.",
+    "english": "He always takes pride in his work. He's very efficient.",
     "chinese": "他总是对工作很自豪，效率很高。",
     "audio": "levels/primary/audio/sentence_808.mp3",
     "unit": "Asking about likes and dislikes",
@@ -6465,7 +6465,7 @@
   },
   {
     "id": 809,
-    "english": "Mr. Smith is a politician. Hes running for election as governor.",
+    "english": "Mr. Smith is a politician. He's running for election as governor.",
     "chinese": "史密斯先生是政治家，正在竞选州长。",
     "audio": "levels/primary/audio/sentence_809.mp3",
     "unit": "Asking about likes and dislikes",
@@ -6537,7 +6537,7 @@
   },
   {
     "id": 818,
-    "english": "On many farms youll find cows and chickens.",
+    "english": "On many farms you'll find cows and chickens.",
     "chinese": "在许多农场，你能看到牛和鸡。",
     "audio": "levels/primary/audio/sentence_818.mp3",
     "unit": "Talking about abilities",
@@ -6609,7 +6609,7 @@
   },
   {
     "id": 827,
-    "english": "Ive always thought photography would be an interesting hobby.",
+    "english": "I've always thought photography would be an interesting hobby.",
     "chinese": "我一直认为摄影会是个有趣的爱好。",
     "audio": "levels/primary/audio/sentence_827.mp3",
     "unit": "Asking about abilities",
@@ -6673,7 +6673,7 @@
   },
   {
     "id": 835,
-    "english": "Ive gotten interested in hi-fi. Im building my own equipment.",
+    "english": "I've gotten interested in hi-fi. I'm building my own equipment.",
     "chinese": "我对高保真音响产生了兴趣。我正在自己组装设备。",
     "audio": "levels/primary/audio/sentence_835.mp3",
     "unit": "Asking about abilities",
@@ -6681,7 +6681,7 @@
   },
   {
     "id": 836,
-    "english": "Hes not a professional. He plays the piano for the fun of it.",
+    "english": "He's not a professional. He plays the piano for the fun of it.",
     "chinese": "他不是专业的。他弹钢琴是为了好玩。",
     "audio": "levels/primary/audio/sentence_836.mp3",
     "unit": "Asking about abilities",
@@ -6689,7 +6689,7 @@
   },
   {
     "id": 837,
-    "english": "Ive heard of unusual hobbies, but Ive never heard of that one.",
+    "english": "I've heard of unusual hobbies, but I've never heard of that one.",
     "chinese": "我听说过不寻常的爱好，但从没听说过那个。",
     "audio": "levels/primary/audio/sentence_837.mp3",
     "unit": "Asking about abilities",
@@ -6697,7 +6697,7 @@
   },
   {
     "id": 838,
-    "english": "The trouble with photography is that its an expensive hobby.",
+    "english": "The trouble with photography is that it's an expensive hobby.",
     "chinese": "摄影的麻烦在于它是个昂贵的爱好。",
     "audio": "levels/primary/audio/sentence_838.mp3",
     "unit": "Asking about abilities",
@@ -6721,7 +6721,7 @@
   },
   {
     "id": 841,
-    "english": "Baseball is my favorite sport. Whats your favorite?",
+    "english": "Baseball is my favorite sport. What's your favorite?",
     "chinese": "棒球是我最喜欢的运动。你最喜欢什么？",
     "audio": "levels/primary/audio/sentence_841.mp3",
     "unit": "Making comparisons",
@@ -6769,7 +6769,7 @@
   },
   {
     "id": 847,
-    "english": "I like fishing and hunting, but I dont like swimming.",
+    "english": "I like fishing and hunting, but I don't like swimming.",
     "chinese": "我喜欢钓鱼和打猎，但不喜欢游泳。",
     "audio": "levels/primary/audio/sentence_847.mp3",
     "unit": "Making comparisons",
@@ -6841,7 +6841,7 @@
   },
   {
     "id": 856,
-    "english": "I sent in a subscription to that magazine. Its put out every week.",
+    "english": "I sent in a subscription to that magazine. It's put out every week.",
     "chinese": "我订阅了那本杂志，它每周出版一期。",
     "audio": "levels/primary/audio/sentence_856.mp3",
     "unit": "Asking questions about quantity",
@@ -6873,7 +6873,7 @@
   },
   {
     "id": 860,
-    "english": "I havent seen the latest issue of the magazine. Is it out yet?",
+    "english": "I haven't seen the latest issue of the magazine. Is it out yet?",
     "chinese": "我还没看到最新一期杂志，出版了吗？",
     "audio": "levels/primary/audio/sentence_860.mp3",
     "unit": "Asking questions about quantity",
@@ -6881,7 +6881,7 @@
   },
   {
     "id": 861,
-    "english": "Whats the total circulation of this newspaper?",
+    "english": "What's the total circulation of this newspaper?",
     "chinese": "这份报纸的总发行量是多少？",
     "audio": "levels/primary/audio/sentence_861.mp3",
     "unit": "Asking questions about quantity",
@@ -6889,7 +6889,7 @@
   },
   {
     "id": 862,
-    "english": "Im looking for the classified section. Have you seen it?",
+    "english": "I'm looking for the classified section. Have you seen it?",
     "chinese": "我在找分类广告版，你看到了吗？",
     "audio": "levels/primary/audio/sentence_862.mp3",
     "unit": "Asking questions about quantity",
@@ -6913,7 +6913,7 @@
   },
   {
     "id": 865,
-    "english": "There wasnt much news in the paper today.",
+    "english": "There wasn't much news in the paper today.",
     "chinese": "今天报纸上没什么新闻。",
     "audio": "levels/primary/audio/sentence_865.mp3",
     "unit": "Asking questions about quantity",
@@ -6969,7 +6969,7 @@
   },
   {
     "id": 872,
-    "english": "I don t get a good picture on my TV set. Theres something wrong.",
+    "english": "I don t get a good picture on my TV set. There's something wrong.",
     "chinese": "我的电视画面不好，出了问题。",
     "audio": "levels/primary/audio/sentence_872.mp3",
     "unit": "Talking about past events",
@@ -6985,7 +6985,7 @@
   },
   {
     "id": 874,
-    "english": "Please turn the radio up. Its too low.",
+    "english": "Please turn the radio up. It's too low.",
     "chinese": "请把收音机调大，声音太小了。",
     "audio": "levels/primary/audio/sentence_874.mp3",
     "unit": "Talking about past events",
@@ -6993,7 +6993,7 @@
   },
   {
     "id": 875,
-    "english": "Whats on following the news and weather? Do you have a TV guide?",
+    "english": "What's on following the news and weather? Do you have a TV guide?",
     "chinese": "新闻和天气之后是什么节目？你有电视指南吗？",
     "audio": "levels/primary/audio/sentence_875.mp3",
     "unit": "Talking about past events",
@@ -7025,7 +7025,7 @@
   },
   {
     "id": 879,
-    "english": "I couldnt hear the program because there was too much static.",
+    "english": "I couldn't hear the program because there was too much static.",
     "chinese": "我听不清节目，因为静电干扰太大。",
     "audio": "levels/primary/audio/sentence_879.mp3",
     "unit": "Talking about past events",
@@ -7041,7 +7041,7 @@
   },
   {
     "id": 881,
-    "english": "The next time I buy a TV set , Im going to buy a portable model.",
+    "english": "The next time I buy a TV set , I'm going to buy a portable model.",
     "chinese": "下次买电视，我要买个便携式的。",
     "audio": "levels/primary/audio/sentence_881.mp3",
     "unit": "Talking about past events",
@@ -7057,7 +7057,7 @@
   },
   {
     "id": 883,
-    "english": "Youd get better TV reception if you had an outside antenna.",
+    "english": "You'd get better TV reception if you had an outside antenna.",
     "chinese": "如果你有室外天线，电视接收效果会更好。",
     "audio": "levels/primary/audio/sentence_883.mp3",
     "unit": "Talking about past events",
@@ -7081,7 +7081,7 @@
   },
   {
     "id": 886,
-    "english": "Whats your favorite kind of music? Do you like jazz?",
+    "english": "What's your favorite kind of music? Do you like jazz?",
     "chinese": "你最喜欢哪种音乐？喜欢爵士乐吗？",
     "audio": "levels/primary/audio/sentence_886.mp3",
     "unit": "Talking about plans and decisions",
@@ -7089,7 +7089,7 @@
   },
   {
     "id": 887,
-    "english": "Hes a composer of serious music. I like his music a lot.",
+    "english": "He's a composer of serious music. I like his music a lot.",
     "chinese": "他是一位严肃音乐作曲家。我非常喜欢他的音乐。",
     "audio": "levels/primary/audio/sentence_887.mp3",
     "unit": "Talking about plans and decisions",
@@ -7121,7 +7121,7 @@
   },
   {
     "id": 891,
-    "english": "Ive never heard that piece before. Who wrote it?",
+    "english": "I've never heard that piece before. Who wrote it?",
     "chinese": "我从没听过那首曲子。是谁写的？",
     "audio": "levels/primary/audio/sentence_891.mp3",
     "unit": "Talking about plans and decisions",
@@ -7145,7 +7145,7 @@
   },
   {
     "id": 894,
-    "english": "Ive never read a more stirring story.",
+    "english": "I've never read a more stirring story.",
     "chinese": "我从没读过比这更激动人心的故事。",
     "audio": "levels/primary/audio/sentence_894.mp3",
     "unit": "Talking about plans and decisions",
@@ -7161,7 +7161,7 @@
   },
   {
     "id": 896,
-    "english": "This poetry is realistic. l dont care for it very much.",
+    "english": "This poetry is realistic. l don't care for it very much.",
     "chinese": "这首诗很写实。我不太喜欢。",
     "audio": "levels/primary/audio/sentence_896.mp3",
     "unit": "Talking about plans and decisions",

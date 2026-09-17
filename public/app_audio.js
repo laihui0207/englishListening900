@@ -562,7 +562,7 @@ class ListeningPractice {
                 currentIndex: this.currentIndex,
                 timestamp: new Date().toISOString()
             };
-            localStorage.setItem('listeningPracticeProgress', JSON.stringify(progress));
+            localStorage.setItem(`listeningPracticeProgress_${this.currentLevel}`, JSON.stringify(progress));
         } catch (error) {
             console.error('Error saving progress:', error);
         }
@@ -574,7 +574,7 @@ class ListeningPractice {
         }
 
         try {
-            const saved = localStorage.getItem('listeningPracticeProgress');
+            const saved = localStorage.getItem(`listeningPracticeProgress_${this.currentLevel}`);
             if (saved) {
                 const progress = JSON.parse(saved);
                 if (progress.currentIndex >= 0 && progress.currentIndex < this.sentences.length) {
