@@ -6,17 +6,27 @@
 
 ```
 demo/
-├── index.html              # 主页面
-├── app_audio.js           # 前端逻辑
-├── server.js              # 后端服务器
-├── sentences_data.json    # 通用级别数据（250句）
-├── sentences_primary.json # 小学级别数据（900句，English 900）
-├── audio/
-│   ├── general/          # 通用级别音频文件
-│   └── primary/          # 小学级别音频文件
-└── scripts/
-    ├── translate_primary.js        # 翻译脚本
-    └── generate_primary_audio.js   # 音频生成脚本
+├── server.js              # 后端入口
+├── src/                   # 后端模块
+│   ├── db.js
+│   ├── audio-gen.js
+│   ├── ai-analyze.js
+│   ├── ai-teacher.js
+│   └── llm.js
+├── public/                # 前端静态文件
+│   ├── index.html
+│   ├── app_audio.js
+│   └── ...
+├── levels/                # 分级数据与音频
+│   ├── general/
+│   │   ├── sentences.json
+│   │   ├── audio.zip      # 音频包（git 只提交此文件）
+│   │   └── audio/         # 解压后的 mp3（本地/容器内）
+│   └── primary/
+│       ├── sentences.json
+│       ├── audio.zip
+│       └── audio/
+└── scripts/               # 数据生成脚本
 
 ## 学习级别
 
@@ -73,12 +83,40 @@ cd scripts
 node generate_primary_audio.js
 ```
 
+### 解压音频文件（首次克隆后必须执行）
+
+git 只存储 zip 包，mp3 文件不入库。克隆后需手动解压：
+
+```bash
+cd levels/general  && unzip -q audio.zip -d audio
+cd levels/primary  && unzip -q audio.zip -d audio
+```
+
 ### 启动服务器
 ```bash
 node server.js
 ```
 
 访问 http://localhost:3000
+
+## Docker 部署
+
+Dockerfile 在构建时自动解压音频 zip，无需手动操作：
+
+```bash
+docker build -t english-practice .
+docker run -d -p 3000:3000 -v $(pwd)/data:/app/data english-practice
+```
+
+或使用 docker-compose：
+
+```bash
+docker-compose up -d
+```
+
+> 音频文件（`*.mp3`）已加入 `.gitignore`，仅 `audio.zip` 提交到 git。  
+> 如需重新生成音频，运行 `scripts/generate_primary_audio.js` 后重新打包：  
+> `cd levels/general && zip -r audio.zip audio/ && cd ../primary && zip -r audio.zip audio/`
 
 ## 数据格式
 

@@ -6,3 +6,6 @@ data/audio/
 server.log
 npm-debug.log*
 .env
+
+# 音频 mp3 不入库，只提交 zip 包
+levels/**/*.mp3
