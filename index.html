@@ -42,6 +42,39 @@
             opacity: 0.9;
         }
 
+        .level-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .level-tab {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .level-tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .level-tab.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+
         .badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
@@ -169,6 +202,18 @@
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.75em;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-left: 6px;
         }
 
         .btn-play {
@@ -331,6 +376,35 @@
 
         .btn-play-dictation:hover {
             opacity: 0.85;
+        }
+
+        .result-indicator {
+            margin-left: 12px;
+            font-size: 2em;
+            flex-shrink: 0;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .result-indicator.correct {
+            color: #10b981;
+        }
+
+        .result-indicator.incorrect {
+            color: #ef4444;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .settings {
@@ -1044,7 +1118,15 @@
             <span class="badge">✨ 高质量真人发音版</span>
         </div>
 
+        <!-- 级别选择 -->
+        <div class="level-tabs">
+            <button class="level-tab" data-level="primary">📚 小学</button>
+            <button class="level-tab" data-level="junior">📘 初中</button>
+            <button class="level-tab active" data-level="general">📗 通用</button>
+        </div>
+
         <div class="card">
+
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -1067,22 +1149,23 @@
 
             <div class="dictation-container" id="dictationContainer">
                 <div class="dictation-inputs" id="dictationInputs">
+                    <div class="result-indicator" id="resultIndicator"></div>
                     <button class="btn-play-dictation" id="btnPlayDictation">🔊</button>
                 </div>
             </div>
 
             <div class="audio-controls">
-                <button class="btn-play" id="btnPlay">▶️ 播放</button>
-                <button class="btn-repeat" id="btnRepeat">🔄 重播</button>
+                <button class="btn-play" id="btnPlay">▶️ 播放 <kbd>Space</kbd></button>
+                <button class="btn-repeat" id="btnRepeat">🔄 重播 <kbd>R</kbd></button>
             </div>
 
             <div class="toggle-row">
-                <button class="btn-toggle" id="btnToggle">👁️ 显示原文</button>
+                <button class="btn-toggle" id="btnToggle">👁️ 显示原文 <kbd>S</kbd></button>
                 <button class="btn-hint" id="btnHint">💡 提示</button>
             </div>
 
             <div class="misunderstood-row">
-                <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂</button>
+                <button class="btn-misunderstood" id="btnMisunderstood">😕 我没有听懂 <kbd>M</kbd></button>
             </div>
 
             <button class="btn-understood" id="btnUnderstood">✅ 已听懂（从列表移除）</button>

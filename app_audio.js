@@ -8,6 +8,10 @@ class ListeningPractice {
         this.isTextVisible = false;
         this.isPlaying = false;
 
+        // 级别管理
+        this.currentLevel = localStorage.getItem('practice_level') || 'general';
+        this.units = []; // 单元列表（小学级别）
+
         // 音频设置
         this.audioVolume = 1.0;
         this.audioRate = 1.0;
@@ -76,6 +80,9 @@ class ListeningPractice {
         this.btnJump = document.getElementById('btnJump');
         this.autoSaveToggle = document.getElementById('autoSaveToggle');
 
+        // 级别切换
+        this.levelTabs = document.querySelectorAll('.level-tab');
+
         // 未听懂功能相关元素
         this.btnMisunderstood = document.getElementById('btnMisunderstood');
         this.btnHint = document.getElementById('btnHint');
@@ -95,18 +102,25 @@ class ListeningPractice {
         // 听写输入
         this.dictationInputs = document.getElementById('dictationInputs');
         this.btnPlayDictation = document.getElementById('btnPlayDictation');
+        this.resultIndicator = document.getElementById('resultIndicator');
     }
 
     async loadSentences() {
         try {
             this.loadingStatus.textContent = '正在加载句子数据...';
 
-            const response = await fetch('sentences_data.json');
+            // 使用新的 API 端点加载对应级别的数据
+            const response = await fetch(`/api/sentences-data?level=${this.currentLevel}`);
             if (!response.ok) {
                 throw new Error('无法加载句子数据');
             }
 
-            const data = await response.json();
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || '数据加载失败');
+            }
+
+            const data = result.data;
             this.sentences = data;
             this.allSentences = [...data]; // 保存完整列表
 
@@ -115,9 +129,9 @@ class ListeningPractice {
             if (customSentences.length > 0) {
                 this.sentences = this.sentences.concat(customSentences);
                 this.allSentences = [...this.sentences]; // 更新完整列表
-                this.loadingStatus.textContent = `✓ 已加载 ${data.length} 个句子（高质量音频） + ${customSentences.length} 个自定义句子`;
+                this.loadingStatus.textContent = `✓ 已加载 ${data.length} 个句子（${result.level}级别） + ${customSentences.length} 个自定义句子`;
             } else {
-                this.loadingStatus.textContent = `✓ 已加载 ${this.sentences.length} 个句子（高质量音频）`;
+                this.loadingStatus.textContent = `✓ 已加载 ${this.sentences.length} 个句子（${result.level}级别）`;
             }
 
             // 若有句子语音仍在生成中，启动轮询刷新
@@ -156,7 +170,47 @@ class ListeningPractice {
         this.updateDisplay();
     }
 
+    // 提取单元信息
+    async switchLevel(level) {
+        if (this.currentLevel === level) return;
+
+        this.currentLevel = level;
+        localStorage.setItem('practice_level', level);
+
+        // 重置进度
+        this.currentIndex = 0;
+        this._lastSentenceIndex = -1; // 强制重建听写输入框
+        this.isTextVisible = false;
+        this.misunderstoodSentences.clear();
+
+        // 重新加载数据
+        await this.loadSentences();
+
+        // 更新显示
+        this.updateDisplay();
+        this.updateMisunderstoodStats();
+    }
+
     setupEventListeners() {
+        // 级别切换
+        this.levelTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const level = tab.dataset.level;
+                this.levelTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.switchLevel(level);
+            });
+        });
+
+        // 初始化级别 tab 状态
+        this.levelTabs.forEach(tab => {
+            if (tab.dataset.level === this.currentLevel) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+
         // 播放按钮
         this.btnPlay.addEventListener('click', () => this.playCurrentSentence());
 
@@ -391,6 +445,16 @@ class ListeningPractice {
 
     toggleText() {
         this.isTextVisible = !this.isTextVisible;
+
+        // 如果是显示原文，且用户有输入内容，则进行判断
+        if (this.isTextVisible) {
+            this.checkDictation();
+        } else {
+            // 隐藏原文时清除判断结果
+            this.resultIndicator.textContent = '';
+            this.resultIndicator.className = 'result-indicator';
+        }
+
         this.updateDisplay();
     }
 
@@ -400,6 +464,9 @@ class ListeningPractice {
             this.isTextVisible = false;
             this.audio.pause();
             this.isPlaying = false;
+            // 清除判断结果
+            this.resultIndicator.textContent = '';
+            this.resultIndicator.className = 'result-indicator';
             this.updateDisplay();
             this.saveProgress();
             this.saveModeProgress(); // 保存模式进度
@@ -414,6 +481,9 @@ class ListeningPractice {
             this.isTextVisible = false;
             this.audio.pause();
             this.isPlaying = false;
+            // 清除判断结果
+            this.resultIndicator.textContent = '';
+            this.resultIndicator.className = 'result-indicator';
             this.updateDisplay();
             this.saveProgress();
             this.saveModeProgress(); // 保存模式进度
@@ -440,6 +510,9 @@ class ListeningPractice {
         this.isTextVisible = false;
         this.audio.pause();
         this.isPlaying = false;
+        // 清除判断结果
+        this.resultIndicator.textContent = '';
+        this.resultIndicator.className = 'result-indicator';
         this.updateDisplay();
         this.saveProgress();
         this.saveModeProgress(); // 保存模式进度
@@ -555,10 +628,10 @@ class ListeningPractice {
             // 在正常模式下显示"我没有听懂"按钮
             this.btnMisunderstood.style.display = 'block';
             if (isMisunderstood) {
-                this.btnMisunderstood.textContent = '✓ 已标记为未听懂';
+                this.btnMisunderstood.innerHTML = '✓ 已标记为未听懂';
                 this.btnMisunderstood.classList.add('marked');
             } else {
-                this.btnMisunderstood.textContent = '😕 我没有听懂';
+                this.btnMisunderstood.innerHTML = '😕 我没有听懂 <kbd>M</kbd>';
                 this.btnMisunderstood.classList.remove('marked');
             }
         }
@@ -587,12 +660,12 @@ class ListeningPractice {
                 `;
             }
             this.sentenceDisplay.classList.remove('sentence-hidden');
-            this.btnToggle.textContent = '🙈 隐藏原文';
+            this.btnToggle.innerHTML = '🙈 隐藏原文 <kbd>S</kbd>';
             this.btnToggle.classList.remove('hidden');
         } else {
             this.sentenceDisplay.textContent = '点击"显示原文"查看句子';
             this.sentenceDisplay.classList.add('sentence-hidden');
-            this.btnToggle.textContent = '👁️ 显示原文';
+            this.btnToggle.innerHTML = '👁️ 显示原文 <kbd>S</kbd>';
             this.btnToggle.classList.add('hidden');
         }
 
@@ -605,7 +678,7 @@ class ListeningPractice {
         if (this.isPlaying) {
             this.btnPlay.textContent = '⏸️ 暂停';
         } else {
-            this.btnPlay.textContent = '▶️ 播放';
+            this.btnPlay.innerHTML = '▶️ 播放 <kbd>Space</kbd>';
         }
     }
 
@@ -643,6 +716,44 @@ class ListeningPractice {
         const utt = new SpeechSynthesisUtterance(word);
         utt.lang = 'en-US';
         window.speechSynthesis.speak(utt);
+    }
+
+    checkDictation() {
+        const inputs = this.dictationInputs.querySelectorAll('.word-input');
+
+        // 如果没有输入框或所有输入框都为空，不显示判断结果
+        if (inputs.length === 0) return;
+
+        const userWords = Array.from(inputs)
+            .map(input => input.value.trim().toLowerCase())
+            .filter(word => word.length > 0);
+
+        // 如果用户没有输入任何内容，不显示判断结果
+        if (userWords.length === 0) {
+            this.resultIndicator.textContent = '';
+            this.resultIndicator.className = 'result-indicator';
+            return;
+        }
+
+        // 获取当前句子的正确答案
+        const sentence = this.sentences[this.currentIndex];
+        const correctText = sentence.english.toLowerCase();
+
+        // 提取正确答案中的单词（移除标点符号）
+        const correctWords = correctText.match(/[a-z'-]+/g) || [];
+
+        // 比较用户输入和正确答案
+        const isCorrect = userWords.length === correctWords.length &&
+                         userWords.every((word, index) => word === correctWords[index]);
+
+        // 显示结果
+        if (isCorrect) {
+            this.resultIndicator.textContent = '✓';
+            this.resultIndicator.className = 'result-indicator correct';
+        } else {
+            this.resultIndicator.textContent = '✗';
+            this.resultIndicator.className = 'result-indicator incorrect';
+        }
     }
 
     playDictationInputs() {

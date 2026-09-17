@@ -412,6 +412,39 @@ app.delete('/api/settings/apikey', requireAuth, (req, res) => {
   res.json({ success: true });
 });
 
+// 获取不同级别的句子数据（小学/初中/通用）
+app.get('/api/sentences-data', (req, res) => {
+  const level = req.query.level || 'general';
+  let dataFile;
+
+  switch (level) {
+    case 'primary':
+      dataFile = 'sentences_primary.json';
+      break;
+    case 'junior':
+      // 初中复用通用数据
+      dataFile = 'sentences_data.json';
+      break;
+    case 'general':
+    default:
+      dataFile = 'sentences_data.json';
+      break;
+  }
+
+  const filePath = path.join(__dirname, dataFile);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ success: false, error: '数据文件不存在' });
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    res.json({ success: true, data, level });
+  } catch (error) {
+    console.error(`读取 ${dataFile} 失败:`, error);
+    res.status(500).json({ success: false, error: '读取数据失败' });
+  }
+});
+
 // 托管静态前端
 app.use(express.static(path.join(__dirname)));
 
