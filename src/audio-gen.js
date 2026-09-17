@@ -5,7 +5,7 @@ const path = require('path');
 const db = require('./db');
 
 const VOICE = 'en-US-AriaNeural';
-const AUDIO_ROOT = process.env.AUDIO_ROOT || path.join(__dirname, 'data', 'audio');
+const AUDIO_ROOT = process.env.AUDIO_ROOT || path.join(__dirname, '..', 'data', 'audio');
 
 // 音频文件路径：data/audio/<userId>/<sentenceId>.mp3
 function audioPath(userId, sentenceId) {

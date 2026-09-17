@@ -3,18 +3,16 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db');
-const audioGen = require('./audio-gen');
-const aiAnalyze = require('./ai-analyze');
-const aiTeacher = require('./ai-teacher');
+const db = require('./src/db');
+const audioGen = require('./src/audio-gen');
+const aiAnalyze = require('./src/ai-analyze');
+const aiTeacher = require('./src/ai-teacher');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '5mb' }));
 
-// HTML 文件不缓存（JS/CSS 等静态资源仍走浏览器缓存）
-// JS 文件用启动时间戳作为版本号，通过重写 HTML 里的 script src 实现缓存破坏
 const BUILD_TS = Date.now();
 
 app.use((req, res, next) => {
@@ -25,11 +23,10 @@ app.use((req, res, next) => {
 });
 
 // 拦截 HTML 文件，动态注入版本戳到 .js 引用
-const fs2 = fs;
 app.get('*.html', (req, res, next) => {
-  const file = path.join(__dirname, req.path);
-  if (!fs2.existsSync(file)) return next();
-  let html = fs2.readFileSync(file, 'utf8');
+  const file = path.join(__dirname, 'public', req.path);
+  if (!fs.existsSync(file)) return next();
+  let html = fs.readFileSync(file, 'utf8');
   html = html.replace(/(src="[^"]+\.js)(")/g, `$1?v=${BUILD_TS}$2`);
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -415,23 +412,11 @@ app.delete('/api/settings/apikey', requireAuth, (req, res) => {
 // 获取不同级别的句子数据（小学/初中/通用）
 app.get('/api/sentences-data', (req, res) => {
   const level = req.query.level || 'general';
-  let dataFile;
 
-  switch (level) {
-    case 'primary':
-      dataFile = 'sentences_primary.json';
-      break;
-    case 'junior':
-      // 初中复用通用数据
-      dataFile = 'sentences_data.json';
-      break;
-    case 'general':
-    default:
-      dataFile = 'sentences_data.json';
-      break;
-  }
+  // 初中复用通用数据
+  const dataLevel = level === 'junior' ? 'general' : level;
+  const filePath = path.join(__dirname, 'levels', dataLevel, 'sentences.json');
 
-  const filePath = path.join(__dirname, dataFile);
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, error: '数据文件不存在' });
   }
@@ -440,12 +425,18 @@ app.get('/api/sentences-data', (req, res) => {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     res.json({ success: true, data, level });
   } catch (error) {
-    console.error(`读取 ${dataFile} 失败:`, error);
+    console.error(`读取 levels/${dataLevel}/sentences.json 失败:`, error);
     res.status(500).json({ success: false, error: '读取数据失败' });
   }
 });
 
-// 托管静态前端
+// 根路径明确指向 public/index.html
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// 托管静态前端（public/）+ 音频/数据（根目录）
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname)));
 
 app.listen(PORT, () => {

@@ -50,7 +50,7 @@ ${sentences.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 }
 
 async function main() {
-  const dataPath = path.join(__dirname, '..', 'sentences_primary.json');
+  const dataPath = path.join(__dirname, '..', 'levels', 'primary', 'sentences.json');
   const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
   console.log(`Total sentences: ${data.length}`);

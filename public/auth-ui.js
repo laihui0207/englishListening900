@@ -76,8 +76,8 @@
     if (!window.Auth.isLoggedIn()) { openModal(); return; }
     settingsError.textContent = '';
     settingsApiKey.value = '';
-    llmBaseUrl.value = '';
-    llmModel.value = '';
+    if (llmBaseUrl) llmBaseUrl.value = '';
+    if (llmModel) llmModel.value = '';
     settingsCurrent.style.display = 'none';
     // 恢复语音自动播放勾选状态
     const ttsAutoPlay = document.getElementById('ttsAutoPlay');
@@ -87,8 +87,8 @@
       const { data } = await settingsApi('/settings/llm', 'GET');
       const p = data.provider || 'openai';
       setActiveTab(p);
-      llmBaseUrl.value = data.baseUrl || '';
-      llmModel.value = data.model || '';
+      if (llmBaseUrl) llmBaseUrl.value = data.baseUrl || '';
+      if (llmModel) llmModel.value = data.model || '';
       if (data.hasApiKey) {
         settingsMasked.textContent = data.apiKey;
         settingsCurrent.style.display = 'flex';
@@ -106,8 +106,8 @@
     try {
       await settingsApi('/settings/llm', 'PUT', {
         provider: activeProvider,
-        baseUrl: llmBaseUrl.value.trim(),
-        model: llmModel.value.trim(),
+        baseUrl: llmBaseUrl ? llmBaseUrl.value.trim() : '',
+        model: llmModel ? llmModel.value.trim() : '',
         apiKey: settingsApiKey.value.trim(),
       });
       settingsModal.classList.remove('show');
@@ -132,10 +132,11 @@
     }
   }
 
+  authUser.addEventListener('click', () => {
+    if (window.Auth.isLoggedIn() && settingsModal) openSettings();
+  });
+
   if (settingsModal) {
-    authUser.addEventListener('click', () => {
-      if (window.Auth.isLoggedIn()) openSettings();
-    });
     document.querySelectorAll('.llm-tab').forEach((btn) => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.p));
     });

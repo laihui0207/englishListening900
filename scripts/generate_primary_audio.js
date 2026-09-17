@@ -1,5 +1,5 @@
 // 为小学级别句子生成 TTS 音频
-// 使用 edge-tts 生成 audio/primary/sentence_NNN.mp3
+// 使用 edge-tts 生成 levels/primary/audio/sentence_NNN.mp3
 
 const fs = require('fs');
 const path = require('path');
@@ -7,7 +7,7 @@ const { spawn } = require('child_process');
 
 const VOICE = 'en-US-AriaNeural';
 const OUTPUT_DIR = path.join(__dirname, '..', 'audio', 'primary');
-const DATA_FILE = path.join(__dirname, '..', 'sentences_primary.json');
+const DATA_FILE = path.join(__dirname, '..', 'levels', 'primary', 'sentences.json');
 
 // 串行生成队列
 let queue = Promise.resolve();

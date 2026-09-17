@@ -62,7 +62,7 @@ const commonTranslations = {
 };
 
 function main() {
-  const dataPath = path.join(__dirname, '..', 'sentences_primary.json');
+  const dataPath = path.join(__dirname, '..', 'levels', 'primary', 'sentences.json');
   const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
   let filled = 0;

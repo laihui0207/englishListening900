@@ -3,7 +3,7 @@ const { DatabaseSync } = require('node:sqlite');
 const crypto = require('crypto');
 const path = require('path');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'app.db');
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'app.db');
 
 const db = new DatabaseSync(DB_PATH);
 db.exec('PRAGMA journal_mode = WAL'); // 更好的并发读写

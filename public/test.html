@@ -69,6 +69,8 @@ body {
 .settings-current { background: #f0f4ff; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; color: #444; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .settings-current code { font-family: monospace; color: #667eea; }
 .btn-delete-key { background: #f44336; color: white; padding: 6px 14px; font-size: 12px; white-space: nowrap; cursor: pointer; }
+.llm-tab { font-size: 13px; padding: 8px 16px; border: 1.5px solid #d0d0e0; border-radius: 8px; background: white; color: #555; cursor: pointer; transition: all 0.2s; }
+.llm-tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent; }
 @media (max-width: 600px) {
   .navbar { flex-direction: column; align-items: stretch; }
   .nav-menu, .nav-auth { justify-content: center; }
@@ -201,19 +203,31 @@ h1 { font-size: 26px; color: #333; margin-bottom: 8px; text-align: center; }
 </div>
 
 <div class="auth-modal" id="settingsModal">
-  <div class="auth-box">
+  <div class="auth-box" style="max-width:560px">
     <h2>⚙️ 设置</h2>
     <div class="auth-error" id="settingsError"></div>
-    <div class="settings-hint">
-      AI 弱项分析使用 DeepSeek 大模型，需要你自己的 API Key。
-      前往 <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek 开放平台</a> 免费获取。Key 仅保存在你的账号下。
+
+    <div style="display:flex;gap:6px;margin-bottom:16px">
+      <button class="llm-tab active" data-p="openai">DeepSeek / OpenAI</button>
+      <button class="llm-tab" data-p="ollama">Ollama（本地）</button>
     </div>
+
+    <div class="settings-hint" id="llmHint"></div>
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">Base URL</label>
+    <input type="text" id="llmBaseUrl" placeholder="留空使用默认地址" autocomplete="off" style="margin-bottom:10px">
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">Model Name</label>
+    <input type="text" id="llmModel" placeholder="留空使用默认模型" autocomplete="off" style="margin-bottom:10px">
+
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:4px">API Key</label>
     <div class="settings-current" id="settingsCurrent" style="display:none;">
       <span>当前 Key：<code id="settingsMasked"></code></span>
       <button class="btn-delete-key" id="btnDeleteKey">删除</button>
     </div>
-    <input type="password" id="settingsApiKey" placeholder="输入 DeepSeek API Key (sk-...)" autocomplete="off">
-    <button class="primary" id="btnSaveKey">保存</button>
+    <input type="password" id="settingsApiKey" placeholder="输入 API Key" autocomplete="off">
+
+    <button class="primary" id="btnSaveKey" style="margin-top:12px">保存</button>
     <div class="auth-switch"><a id="settingsClose">关闭</a></div>
   </div>
 </div>

@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const AUDIO_DIR = path.join(__dirname, '..', 'audio', 'primary');
-const DATA_FILE = path.join(__dirname, '..', 'sentences_primary.json');
+const AUDIO_DIR = path.join(__dirname, '..', 'levels', 'primary', 'audio');
+const DATA_FILE = path.join(__dirname, '..', 'levels', 'primary', 'sentences.json');
 
 const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
 const total = data.length;

@@ -155,7 +155,7 @@ class ListeningPractice {
 
         } catch (error) {
             console.error('Error loading sentences:', error);
-            this.loadingStatus.textContent = '❌ 加载失败，请检查 sentences_data.json 文件';
+            this.loadingStatus.textContent = '❌ 加载失败，请检查数据文件';
             this.loadDefaultSentences();
         }
     }
