@@ -2,6 +2,8 @@
 // 快照就是整份 shapes 数组的引用；shapes 全程不可变更新，存引用零成本
 //   past   [旧 → 新] 可撤销的历史状态
 //   future [新 → 旧] 撤销后可重做的状态，任何新写入都会清空它
+// 包在 IIFE 里：create / push 这类通用名不能泄漏到浏览器全局作用域
+(function () {
 
 function create(cap) {
   return { past: [], future: [], cap: cap > 0 ? cap : 100 };
@@ -39,3 +41,5 @@ const WBHistory = { create, push, undo, redo, canUndo, canRedo };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = WBHistory;
 if (typeof window !== 'undefined') window.WBHistory = WBHistory;
+
+})();

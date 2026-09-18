@@ -331,6 +331,52 @@ function anchorPoints(shape) {
   ];
 }
 
+// ---------- 对齐点（点阵网格） ----------
+// 格点按世界坐标固定间距铺开；缩得太小时按 2 倍逐级放粗，
+// 保证屏幕上点距不低于 minPx，否则点阵糊成一片、吸附也失去意义
+const GRID_BASE = 20;
+
+function gridStep(scale, base, minPx) {
+  const b = base > 0 ? base : GRID_BASE;
+  const m = minPx == null ? 16 : minPx;
+  const k = scale > 0 ? scale : 1;
+  let step = b;
+  while (step * k < m) step *= 2;
+  return step;
+}
+
+// 单值吸附到最近格点。末尾 + 0 把 -0 归成 0（Math.round(-0.2) 是 -0）
+function snapToGrid(v, step) {
+  if (!(step > 0)) return v;
+  return Math.round(v / step) * step + 0;
+}
+
+function snapPoint(p, step) {
+  return { x: snapToGrid(p.x, step), y: snapToGrid(p.y, step) };
+}
+
+// 整组平移吸附：让组包围盒左上角落到格点上，返回修正后的位移。
+// 吸的是包围盒而非指针：否则组与格点的相对偏移会随抓取位置变化
+function snapDelta(box, dx, dy, step) {
+  if (!box || !(step > 0)) return { dx, dy };
+  return {
+    dx: snapToGrid(box.x1 + dx, step) - box.x1,
+    dy: snapToGrid(box.y1 + dy, step) - box.y1,
+  };
+}
+
+// [from, to] 内的全部格点坐标（含两端）。按下标乘步长而非 v += step，
+// 避免浮点累积漂移；数量上限兜底，误传超小 step 时不会卡死
+const GRID_MAX_COORDS = 4096;
+function gridCoords(from, to, step) {
+  if (!(step > 0) || to < from) return [];
+  const start = Math.ceil(from / step) * step + 0;
+  const n = Math.floor((to - start) / step) + 1;
+  if (n <= 0) return [];
+  const count = Math.min(n, GRID_MAX_COORDS);
+  return Array.from({ length: count }, (_, i) => start + i * step);
+}
+
 const GEOM = {
   bbox, bboxUnrotated, bboxAll, unionBox, hitShape, hitTest,
   normBox, boxesIntersect, pointInBox, shapesInBox,
@@ -338,6 +384,7 @@ const GEOM = {
   translateShape, resizeShape,
   HANDLES, handlePoints, handleAt, applyHandle,
   anchorPoints, ANCHOR_NAMES,
+  GRID_BASE, gridStep, snapToGrid, snapPoint, snapDelta, gridCoords,
   MIN_SCALE, MAX_SCALE, toWorld, toScreen, zoomAt, viewportBox, centerOn, fitTransform,
 };
 

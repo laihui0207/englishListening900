@@ -8,6 +8,7 @@ if (typeof window !== 'undefined') {
   const mini = document.getElementById('minimap');
   const mctx = mini.getContext('2d');
   const textInput = document.getElementById('textInput');
+  const nodeInput = document.getElementById('nodeInput'); // 导图节点的多行编辑框
   const hint = document.getElementById('hint');
   const zoomLabel = document.getElementById('zoomLabel');
 
@@ -16,6 +17,10 @@ if (typeof window !== 'undefined') {
   let color = '#333333';
   let width = 3;
   let view = { scale: 1, x: 0, y: 0 };
+  // 对齐点：点阵网格 + 吸附。开关记在本机，刷新后保持
+  const GRID_KEY = 'wbSnapGrid';
+  let gridOn = false;
+  try { gridOn = localStorage.getItem(GRID_KEY) === 'true'; } catch (e) {}
 
   // 选中集用 id 而非下标：删除图形后失效 id 自然不匹配，
   // 不需要像下标那样在每次删除后重映射整个选中集
@@ -136,6 +141,38 @@ if (typeof window !== 'undefined') {
     }
     return best;
   }
+
+  // ---------- 对齐点（点阵网格） ----------
+  // 格距随缩放走：屏幕上看到什么点就吸到什么点
+  const gridStep = () => G.gridStep(view.scale);
+  // 开关关着就原样返回，各调用处不用再判断
+  const snapP = (p) => (gridOn ? G.snapPoint(p, gridStep()) : p);
+  const GRID_DOT_COLOR = 'rgba(102,126,234,0.35)';
+
+  // 只画主画布；小地图和导出走 drawShape 循环，不带格点（格点是辅助线，不是内容）
+  function drawGrid() {
+    if (!gridOn) return;
+    const step = gridStep();
+    const vp = G.viewportBox(view, canvas.clientWidth, canvas.clientHeight);
+    const xs = G.gridCoords(vp.x1, vp.x2, step);
+    const ys = G.gridCoords(vp.y1, vp.y2, step);
+    const r = 1.2 / view.scale; // 屏幕上恒为约 1.2px
+    ctx.save();
+    ctx.fillStyle = GRID_DOT_COLOR;
+    ctx.beginPath();
+    for (const x of xs) {
+      for (const y of ys) {
+        ctx.moveTo(x + r, y); // 断开子路径，否则相邻圆之间会连出细线
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+      }
+    }
+    ctx.fill();
+    ctx.beginPath(); // save/restore 不保存路径，不清掉会被后面的 clip() 吃进去
+    ctx.restore();
+  }
+
+  // 导图不吸附：节点位置由自动布局决定，改文字就会按中心重排，吸格点没有意义
+  const hasMindNode = (list) => list.some((s) => s.type === 'mind-node');
 
   // resolve anchor position from shape id + anchor name (for connected arrows)
   function anchorPos(shapeId, anchorName) {
@@ -461,7 +498,14 @@ if (typeof window !== 'undefined') {
     c.font = `${bold}${fontSize}px -apple-system, "Microsoft YaHei", sans-serif`;
     c.textAlign = 'center';
     c.textBaseline = 'middle';
-    c.fillText(s.label, cx, cy);
+    if (s.type === 'mind-node' && MIND_UI) {
+      // 多行：整块居中，行高与 nodeSize 的口径一致
+      const lines = MIND_UI.linesFor(s);
+      const lh = fontSize * window.MIND.STYLE.lineH;
+      lines.forEach((ln, i) => c.fillText(ln, cx, cy + (i - (lines.length - 1) / 2) * lh));
+    } else {
+      c.fillText(s.label, cx, cy);
+    }
     c.restore();
   }
 
@@ -494,6 +538,7 @@ if (typeof window !== 'undefined') {
     const py = (wy) => b.y1 + (1 - (wy - yMin) / (yMax - yMin)) * ph;
 
     c.save();
+    c.beginPath(); // 不清路径的话，裁剪区会并上前面残留的路径（格点、上一帧的曲线）
     c.rect(b.x1, b.y1, pw, ph);
     c.clip();
 
@@ -652,6 +697,7 @@ if (typeof window !== 'undefined') {
     ctx.setTransform(r, 0, 0, r, 0, 0);
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     ctx.setTransform(view.scale * r, 0, 0, view.scale * r, view.x * r, view.y * r);
+    drawGrid();
     for (const s of shapes) drawShape(ctx, s);
     if (draft) drawShape(ctx, draft);
     if (!draft) drawSelection();
@@ -787,11 +833,21 @@ if (typeof window !== 'undefined') {
       return;
     }
 
-    if (tool === 'text') { openTextInput(p, sp); return; }
-    if (tool === 'math') { openMathInput(p, sp); return; }
-    if (tool === 'plot') { openPlotInput(p); return; }
+    // 对齐点开着：落点先吸到格点（文字 / 公式 / 曲线 / 导图根 / 图形起点）。
+    // 选择工具的命中判断仍用原始指针 p，否则点到图形边缘会被吸走选不中
+    const q = snapP(p);
+    if (tool === 'text') {
+      // 文字的 y 是基线，吸附要按包围盒顶边（基线 − 字高）算：
+      // 整组移动是按包围盒吸附的，基准不一致的话文字一拖就偏离格点
+      const size = width * 6 + 8;
+      const qt = gridOn ? { x: q.x, y: G.snapToGrid(p.y - size, gridStep()) + size } : p;
+      openTextInput(qt, G.toScreen(view, qt.x, qt.y));
+      return;
+    }
+    if (tool === 'math') { openMathInput(q, sp); return; }
+    if (tool === 'plot') { openPlotInput(q); return; }
     if (tool === 'mindmap') {
-      // 点哪里放哪里：中心主题落在点击处，然后回到选择工具继续编辑
+      // 点哪里放哪里：中心主题落在点击处（导图不吸格点），然后回到选择工具继续编辑
       setTool('select', document.querySelector('[data-tool="select"]'));
       if (MIND_UI) MIND_UI.placeRoot(p);
       return;
@@ -807,7 +863,7 @@ if (typeof window !== 'undefined') {
       if (h) {
         drag = {
           mode: 'resize', handle: h, startBox: box,
-          orig: selShapes(),
+          orig: selShapes(), before: shapes,
         };
         return;
       }
@@ -875,11 +931,17 @@ if (typeof window !== 'undefined') {
       return;
     }
 
-    // 画图工具
+    // 画图工具。画笔是手绘，不吸附。
+    // 箭头起点跟终点同一规则：图形锚点优先、其次格点；吸到锚点就记下连接，图形移动时起点跟着走
     drag = { mode: 'draw' };
+    const s0 = ARROW_TOOL_TYPES.has(tool) ? findSnap(p.x, p.y, null) : null;
+    const start = s0 || q;
     draft = tool === 'pen'
       ? { type: 'pen', color, width, points: [[p.x, p.y]] }
-      : { type: tool, color, width, x: p.x, y: p.y, w: 0, h: 0 };
+      : {
+        type: tool, color, width, x: start.x, y: start.y, w: 0, h: 0,
+        ...(s0 ? { fromId: s0.shapeId, fromAnchor: s0.anchor } : {}),
+      };
     redraw();
   }
 
@@ -929,13 +991,14 @@ if (typeof window !== 'undefined') {
         draft = { ...draft, points: [...draft.points, [p.x, p.y]] };
       } else if (ARROW_TOOL_TYPES.has(draft.type)) {
         // snap end point to nearby anchor
+        // 图形锚点优先，其次格点
         const snap = findSnap(p.x, p.y, null);
         snapHint = snap;
-        const ex = snap ? snap.x : p.x;
-        const ey = snap ? snap.y : p.y;
-        draft = { ...draft, w: ex - draft.x, h: ey - draft.y };
+        const end = snap || snapP(p);
+        draft = { ...draft, w: end.x - draft.x, h: end.y - draft.y };
       } else {
-        draft = { ...draft, w: p.x - draft.x, h: p.y - draft.y };
+        const q = snapP(p);
+        draft = { ...draft, w: q.x - draft.x, h: q.y - draft.y };
       }
     } else if (drag.mode === 'eraser') {
       eraseAt(p);
@@ -945,12 +1008,19 @@ if (typeof window !== 'undefined') {
       const inBox = G.shapesInBox(visibleShapes(), marquee).map((s) => s.id);
       sel = drag.add ? [...new Set([...drag.base, ...inBox])] : inBox;
     } else if (drag.mode === 'move') {
-      // 整组平移：每个图形都从快照重算，不累积误差
-      const dx = p.x - drag.px;
-      const dy = p.y - drag.py;
-      const moved = new Map(drag.orig.map((s) => [s.id, G.translateShape(s, dx, dy)]));
-      shapes = shapes.map((s) => moved.get(s.id) || s);
-      updateConnectedArrows(drag.orig.map((s) => s.id));
+      // 整组平移：每个图形都从快照重算，不累积误差。
+      // 对齐点开着时吸的是组包围盒左上角，组内相对位置不变
+      const raw = { dx: p.x - drag.px, dy: p.y - drag.py };
+      const snapMove = gridOn && !hasMindNode(drag.orig);
+      const { dx, dy } = snapMove ? G.snapDelta(G.bboxAll(drag.orig), raw.dx, raw.dy, gridStep()) : raw;
+      if (dx === 0 && dy === 0) {
+        // 吸附后没动：回到拖动前的同一引用，松手时 snapshot 认得出来，不记空撤销
+        shapes = drag.before;
+      } else {
+        const moved = new Map(drag.orig.map((s) => [s.id, G.translateShape(s, dx, dy)]));
+        shapes = shapes.map((s) => moved.get(s.id) || s);
+        updateConnectedArrows(drag.orig.map((s) => s.id));
+      }
     } else if (drag.mode === 'mind-drag') {
       // 拖导图节点：整棵子树跟着指针走，同时实时算落点
       const dx = p.x - drag.px;
@@ -967,10 +1037,16 @@ if (typeof window !== 'undefined') {
       }
     } else if (drag.mode === 'resize') {
       // 整组缩放：所有图形按同一对包围盒映射，组内相对位置保持不变
-      const nb = G.applyHandle(drag.startBox, drag.handle, p.x, p.y, 4 / view.scale);
-      const sized = new Map(drag.orig.map((s) => [s.id, G.resizeShape(s, drag.startBox, nb)]));
-      shapes = shapes.map((s) => sized.get(s.id) || s);
-      updateConnectedArrows(drag.orig.map((s) => s.id));
+      const hp = snapP(p); // 拖的那个角吸到格点
+      const nb = G.applyHandle(drag.startBox, drag.handle, hp.x, hp.y, 4 / view.scale);
+      const sb = drag.startBox;
+      if (nb.x1 === sb.x1 && nb.y1 === sb.y1 && nb.x2 === sb.x2 && nb.y2 === sb.y2) {
+        shapes = drag.before; // 手柄吸回原角：尺寸没变，不记空撤销
+      } else {
+        const sized = new Map(drag.orig.map((s) => [s.id, G.resizeShape(s, drag.startBox, nb)]));
+        shapes = shapes.map((s) => sized.get(s.id) || s);
+        updateConnectedArrows(drag.orig.map((s) => s.id));
+      }
     } else if (drag.mode === 'rotate') {
       const mouseAngle = Math.atan2(p.y - drag.cy, p.x - drag.cx);
       const delta = mouseAngle - drag.startMouseAngle;
@@ -1054,7 +1130,6 @@ if (typeof window !== 'undefined') {
   }
 
   function commitText() {
-    if (MIND_UI && MIND_UI.isEditing()) { pendingText = null; MIND_UI.commitNodeEditor(); return; }
     if (!pendingText) return;
     const text = textInput.value.trim();
     if (text) {
@@ -1072,17 +1147,19 @@ if (typeof window !== 'undefined') {
   // 中文输入法：候选词确认的回车 / Tab 不能当成提交。
   // Chrome 给 keyCode 229，Firefox 给 isComposing，Safari 先发 compositionend 再发回车，
   // 所以标志要延一拍再清
+  // 两个输入框不会同时聚焦，共用一个组合标志
   let imeComposing = false;
-  textInput.addEventListener('compositionstart', () => { imeComposing = true; });
-  textInput.addEventListener('compositionend', () => {
-    setTimeout(() => {
-      imeComposing = false;
-      if (MIND_UI) MIND_UI.onEditorInput(); // 组合期间跳过的重排在这里补上
-    }, 0);
-  });
+  const imeGuard = (el, onEnd) => {
+    el.addEventListener('compositionstart', () => { imeComposing = true; });
+    el.addEventListener('compositionend', () => {
+      setTimeout(() => { imeComposing = false; if (onEnd) onEnd(); }, 0);
+    });
+  };
+  const inIme = (e) => e.isComposing || e.keyCode === 229 || imeComposing;
+
+  imeGuard(textInput);
   textInput.addEventListener('keydown', (e) => {
-    if (e.isComposing || e.keyCode === 229 || imeComposing) return;
-    if (MIND_UI && MIND_UI.onEditorKey(e)) return; // 导图节点编辑：回车 / Tab / Esc
+    if (inIme(e)) return;
     if (e.key === 'Enter') { e.preventDefault(); commitText(); }
     if (e.key === 'Escape') {
       pendingText = null;
@@ -1090,9 +1167,14 @@ if (typeof window !== 'undefined') {
       redraw();
     }
   });
-  // 拼音组合期间不重排，避免节点宽度随候选字母抖动
-  textInput.addEventListener('input', () => { if (MIND_UI && !imeComposing) MIND_UI.onEditorInput(); });
   textInput.addEventListener('blur', commitText);
+
+  // 导图节点的多行编辑框：回车提交、Shift+回车换行、Tab 加子、Esc 取消（按键逻辑在 MIND_UI）
+  imeGuard(nodeInput, () => { if (MIND_UI) MIND_UI.onEditorInput(); }); // 组合期间跳过的重排在这里补上
+  nodeInput.addEventListener('keydown', (e) => { if (!inIme(e) && MIND_UI) MIND_UI.onEditorKey(e); });
+  // 拼音组合期间不重排，避免节点宽度随候选字母抖动
+  nodeInput.addEventListener('input', () => { if (MIND_UI && !imeComposing) MIND_UI.onEditorInput(); });
+  nodeInput.addEventListener('blur', () => { if (MIND_UI) MIND_UI.commitNodeEditor(); });
 
   // ---------- 公式输入 ----------
   // 单独一个输入框：公式需要 LaTeX 源码可见、可回改，跟普通文本的即时所见即所得不同
@@ -1213,7 +1295,7 @@ if (typeof window !== 'undefined') {
   let spaceDown = false;
   window.addEventListener('keydown', (e) => {
     // 输入框内不触发画布快捷键，否则 Delete/空格会被画布吞掉
-    if (e.target === textInput || e.target === mathField
+    if (e.target === textInput || e.target === nodeInput || e.target === mathField
       || e.target === askField || e.target === quizReply
       || e.target === plotExprs || e.target.closest('.shape-props')) return;
     // 撤销 / 重做：整个白板的快照栈
@@ -2387,6 +2469,20 @@ if (typeof window !== 'undefined') {
     }
   };
 
+  // 对齐点开关：点阵可见 + 吸附一起开关
+  const btnGrid = document.getElementById('btnGrid');
+  function setGrid(on) {
+    gridOn = on;
+    btnGrid.classList.toggle('active', on);
+    btnGrid.setAttribute('aria-pressed', String(on));
+    try { localStorage.setItem(GRID_KEY, String(on)); } catch (e) {}
+    hint.textContent = on ? '已开启对齐点：绘图、移动、缩放时吸附到格点（画笔、导图不吸附）' : (HINTS[tool] || '');
+    redraw();
+  }
+  btnGrid.addEventListener('click', () => setGrid(!gridOn));
+  btnGrid.classList.toggle('active', gridOn);
+  btnGrid.setAttribute('aria-pressed', String(gridOn));
+
   document.getElementById('colorPick').addEventListener('input', (e) => {
     color = e.target.value;
     // 有选中就整组改色，比逐个重画省事
@@ -2568,7 +2664,7 @@ if (typeof window !== 'undefined') {
     setSel: (v) => { sel = v; updateSelInfo(); },
     getView: () => view,
     setView: (v) => { view = v; },
-    canvas, ctx, textInput, hint, FONT,
+    canvas, ctx, editorEl: nodeInput, hint, FONT,
     addShapes, markDirty, redraw, updateConnectedArrows,
     // 新建空节点又取消：把「创建」那条撤销记录一并撤回，不留痕
     undoCreate: () => { const r = H.undo(history, shapes); if (r) { history = r.hist; committed = r.state; shapes = r.state; } },

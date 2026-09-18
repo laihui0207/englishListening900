@@ -8,6 +8,11 @@
 //   label / labelSize / labelColor / color(描边=分支色=连线色) / width / fillColor
 // 父子连线不落盘，渲染时按 parentId 派生
 // 坐标一律世界坐标；文字测量函数 measureW(text, size, bold) 由调用方注入，保持本文件可测
+// label 可以多行：显式换行用 \n，超过 STYLE.maxW 的行自动折行（wrapLabel）
+// 整个文件包在 IIFE 里：浏览器下各 <script> 共享全局作用域，顶层 const 会和 whiteboard.js 的 G 等重名
+(function () {
+
+const MG = typeof require !== 'undefined' ? require('./whiteboard-geom') : window.GEOM;
 
 const TYPE = 'mind-node';
 const isNode = (s) => !!s && s.type === TYPE;
@@ -19,6 +24,8 @@ const STYLE = {
     { labelSize: 15, padX: 14, padY: 8, minW: 96, minH: 40, width: 2, fill: '#ffffff' },
     { labelSize: 14, padX: 12, padY: 8, minW: 88, minH: 38, width: 2, fill: '#ffffff' },
   ],
+  maxW: 260,     // 节点最大宽度，文字超过就折行
+  lineH: 1.4,    // 行高 = 字号 × lineH，绘制与编辑框共用
   hGap: 64,      // 父右缘到子左缘的水平距离
   vGap: 16,      // 兄弟子树之间的垂直间距
   minDx: 24,     // 连线控制点离端点的最小水平外伸
@@ -165,14 +172,57 @@ function repair(shapes) {
   return patch.size ? applyPatch(out, patch) : out;
 }
 
+// ---------- 文字折行 ----------
+// 一段文字按 maxTextW 折成若干行：中日韩字符可在任意处断，拉丁词回退到最后一个空格；
+// 整行无空格时就地断（对应 CSS 的 overflow-wrap: break-word）。单个字符比行宽还宽时不再切分
+function wrapParagraph(text, size, bold, maxTextW, measureW) {
+  if (text === '') return [''];
+  const lines = [];
+  let line = '';
+  let lastBreak = -1; // line 内最后一个可断点之后的位置
+  for (const ch of text) {
+    const next = line + ch;
+    if (line !== '' && measureW(next, size, bold) > maxTextW) {
+      if (ch === ' ') {
+        // 撑爆的是空格本身：正好在词边界，整行保留、空格丢掉
+        lines.push(line.trimEnd());
+        line = '';
+      } else if (MG.isCJK(ch) || lastBreak < 0) {
+        lines.push(line);
+        line = ch;
+      } else {
+        lines.push(line.slice(0, lastBreak).trimEnd());
+        line = line.slice(lastBreak) + ch;
+      }
+      lastBreak = -1;
+    } else {
+      line = next;
+    }
+    if (ch === ' ' || MG.isCJK(ch)) lastBreak = line.length;
+  }
+  if (line) lines.push(line);
+  return lines.length ? lines : [''];
+}
+
+// 完整标签 → 行数组：先按显式换行切段，每段再按宽度折行。空标签返回 ['']
+function wrapLabel(label, size, bold, maxTextW, measureW) {
+  const paras = String(label == null ? '' : label).replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  for (const p of paras) out.push(...wrapParagraph(p, size, bold, maxTextW, measureW));
+  return out;
+}
+
 // ---------- 尺寸与颜色 ----------
 
+// 返回 { w, h, lines }：宽取最长行，高按行数；空标签占一行的高度
 function nodeSize(label, depth, measureW) {
   const st = depthStyle(depth);
-  const textW = label ? measureW(label, st.labelSize, !!st.bold) : 0;
+  const lines = wrapLabel(label, st.labelSize, !!st.bold, STYLE.maxW - 2 * st.padX, measureW);
+  const textW = label ? Math.max(...lines.map((l) => measureW(l, st.labelSize, !!st.bold))) : 0;
   return {
     w: Math.max(st.minW, Math.ceil(textW + 2 * st.padX)),
-    h: Math.max(st.minH, Math.ceil(st.labelSize * 1.4 + 2 * st.padY)),
+    h: Math.max(st.minH, Math.ceil(lines.length * st.labelSize * STYLE.lineH + 2 * st.padY)),
+    lines,
   };
 }
 
@@ -487,10 +537,12 @@ function mapBox(nodes) {
 const MIND = {
   TYPE, isNode, STYLE, depthStyle,
   index, children, visibleChildren, mapNodes, descendants, descendantCount, repair,
-  nodeSize, branchColor, rootSpec, childSpec, siblingSpec,
+  wrapLabel, nodeSize, branchColor, rootSpec, childSpec, siblingSpec,
   layout, edgePoints, edgeCtrl, nodeHandles, handleAt, mapBox,
   distToBox, dropTarget, samePlace, reparentPlan,
 };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = MIND;
 if (typeof window !== 'undefined') window.MIND = MIND;
+
+})();

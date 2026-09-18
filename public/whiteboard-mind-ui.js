@@ -7,12 +7,12 @@
 
   const PLUS_PX = 10; // 节点旁小按钮的屏幕半径
   const DRAG_START_PX = 6; // 超过这个距离才算拖动，避免手抖把单击吃掉
-  const HINT_EDIT = '输入文字后回车 · 悬停节点点 ＋ 加下一级、－ 折叠 · Tab 加子 · Enter 加同级 · 双击改文字 · Delete 删分支 · 拖节点换位置/层级 · 拖中心主题移动整图';
+  const HINT_EDIT = '输入文字后回车，Shift+回车换行 · 悬停节点点 ＋ 加下一级、－ 折叠 · Tab 加子 · Enter 加同级 · 双击改文字 · Delete 删分支 · 拖节点换位置/层级';
 
   function create(deps) {
     const {
       getShapes, setShapes, getSel, setSel, getView, setView,
-      canvas, ctx, textInput, hint, FONT,
+      canvas, ctx, editorEl, hint, FONT,
       addShapes, markDirty, redraw, updateConnectedArrows, undoCreate,
     } = deps;
 
@@ -42,6 +42,20 @@
     const nodeById = (id) => index().byId.get(id) || null;
     const depthOf = (id) => index().depth.get(id) || 0;
     const sizeFor = (s, label) => MIND.nodeSize(label, depthOf(s.id), measureW);
+
+    // 节点文字折成的行：每帧每个节点都要，按 字重|字号|内边距|文本 缓存
+    const wrapCache = new Map();
+    function linesFor(s) {
+      if (!s.label) return [];
+      const st = MIND.depthStyle(depthOf(s.id));
+      const key = `${st.bold ? 'b' : 'n'}|${s.labelSize}|${st.padX}|${s.label}`;
+      const hit = wrapCache.get(key);
+      if (hit) return hit;
+      const lines = MIND.wrapLabel(s.label, s.labelSize, !!st.bold, MIND.STYLE.maxW - 2 * st.padX, measureW);
+      if (wrapCache.size > 2000) wrapCache.clear();
+      wrapCache.set(key, lines);
+      return lines;
+    }
     // 按钮世界半径：屏幕恒定，但缩到很小时两个按钮加起来不能碰到子节点（hGap）
     const handleR = () => Math.min(PLUS_PX / getView().scale, MIND.STYLE.hGap / 6);
     const patchOne = (id, fn) => setShapes(getShapes().map((s) => (s.id === id ? fn(s) : s)));
@@ -341,7 +355,8 @@
         const d = idx.depth.get(id) || 0;
         const st = MIND.depthStyle(d);
         if (s.labelSize === st.labelSize) continue;
-        list.push({ id, labelSize: st.labelSize, ...MIND.nodeSize(s.label, d, measureW) });
+        const { w, h } = MIND.nodeSize(s.label, d, measureW); // 只取尺寸，lines 不落盘
+        list.push({ id, labelSize: st.labelSize, w, h });
       }
       if (list.length) patchMany(list);
     }
@@ -469,7 +484,8 @@
     }
 
     // ---------- 原地编辑 ----------
-    // 复用 #textInput：拿到光标和中文输入法。节点模式下加 .mm-node 覆写尺寸样式
+    // 用 #nodeInput（textarea）原地编辑：拿到光标和中文输入法，Shift+回车换行。
+    // 尺寸、字号、行高、内边距全按当前节点换算，让输入框里的折行与画布一致
 
     let editing = null; // { id, mapId, old, isNew }
     const isEditing = () => !!editing;
@@ -480,15 +496,15 @@
       const s = nodeById(id);
       if (!s) return;
       editing = { id, mapId: s.mapId, old: s.label, isNew: !!o.isNew };
-      textInput.classList.add('mm-node');
-      textInput.value = s.label;
-      textInput.style.display = 'block';
+      editorEl.classList.add('mm-node');
+      editorEl.value = s.label;
+      editorEl.style.display = 'block';
       syncNodeEditorBox();
       const focus = () => {
         if (!editing || editing.id !== id) return;
-        textInput.focus();
-        if (o.selectAll) textInput.select();
-        else textInput.setSelectionRange(textInput.value.length, textInput.value.length);
+        editorEl.focus();
+        if (o.selectAll) editorEl.select();
+        else editorEl.setSelectionRange(editorEl.value.length, editorEl.value.length);
       };
       focus();
       // 同一次 mousedown 的默认焦点转移会抢走焦点，下一轮再聚一次
@@ -502,16 +518,25 @@
       const s = nodeById(editing.id);
       if (!s) { cancelNodeEditor(); return; }
       const view = getView();
+      const k = view.scale;
       const sp = G.toScreen(view, s.x, s.y);
-      const st = textInput.style;
+      const ds = MIND.depthStyle(depthOf(s.id));
+      // 行数按输入框里的当前文字算（打字过程中 s.h 已由 onEditorInput 同步）
+      const n = MIND.wrapLabel(editorEl.value, s.labelSize, !!ds.bold, MIND.STYLE.maxW - 2 * ds.padX, measureW).length;
+      const fs = Math.max(12, s.labelSize * k);
+      const lh = fs * MIND.STYLE.lineH;
+      const st = editorEl.style;
       st.left = sp.x + 'px';
       st.top = sp.y + 'px';
-      st.width = s.w * view.scale + 'px';
-      st.height = s.h * view.scale + 'px';
-      st.font = (s.parentId == null ? 'bold ' : '') + FONT(Math.max(12, s.labelSize * view.scale));
+      st.width = s.w * k + 'px';
+      st.height = s.h * k + 'px';
+      st.font = (s.parentId == null ? 'bold ' : '') + FONT(fs);
+      st.lineHeight = lh + 'px';
+      // 文字块在框内垂直居中，与画布的绘制一致；水平留 2px 余量防止浮点差异让浏览器多折一行
+      st.padding = `${Math.max(0, (s.h * k - n * lh) / 2)}px ${Math.max(0, ds.padX * k - 2)}px`;
       st.color = s.labelColor || MIND.STYLE.textColor;
       st.borderColor = s.parentId == null ? '#667eea' : s.color;
-      st.borderRadius = cornerR(s) * view.scale + 'px';
+      st.borderRadius = cornerR(s) * k + 'px';
     }
 
     // 边打字边变宽、兄弟让位；文字本身到提交时才写回
@@ -519,7 +544,7 @@
       if (!editing) return;
       const s = nodeById(editing.id);
       if (!s) return;
-      const { w, h } = sizeFor(s, textInput.value);
+      const { w, h } = sizeFor(s, editorEl.value);
       if (w === s.w && h === s.h) return;
       patchOne(s.id, (x) => ({ ...x, w, h }));
       relayout(s.mapId);
@@ -532,18 +557,21 @@
     function closeEditor() {
       const st = editing;
       editing = null;
-      textInput.blur();
-      textInput.classList.remove('mm-node');
-      const s = textInput.style;
+      editorEl.blur();
+      editorEl.classList.remove('mm-node');
+      const s = editorEl.style;
       s.display = 'none';
-      s.width = ''; s.height = ''; s.borderColor = ''; s.borderRadius = '';
-      textInput.value = '';
+      s.width = ''; s.height = ''; s.borderColor = ''; s.borderRadius = ''; s.padding = ''; s.lineHeight = '';
+      editorEl.value = '';
       return st;
     }
 
+    // 提交前整理：换行归一、去掉首尾空白与每行尾部空格
+    const cleanLabel = (v) => String(v).replace(/\r\n?/g, '\n').split('\n').map((l) => l.trimEnd()).join('\n').trim();
+
     function commitNodeEditor() {
       if (!editing) return;
-      const text = textInput.value.trim();
+      const text = cleanLabel(editorEl.value);
       const st = closeEditor();
       const s = nodeById(st.id);
       if (!s) { redraw(); return; }
@@ -579,9 +607,10 @@
       redraw();
     }
 
-    // 编辑态按键（由 textInput 的 keydown 转来，输入法组合期间调用方已拦掉）
+    // 编辑态按键（由 editorEl 的 keydown 转来，输入法组合期间调用方已拦掉）
     function onEditorKey(e) {
       if (!editing) return false;
+      if (e.key === 'Enter' && e.shiftKey) return false; // Shift+回车：交给 textarea 插入换行
       if (e.key === 'Enter') { e.preventDefault(); commitNodeEditor(); return true; }
       if (e.key === 'Escape') { e.preventDefault(); cancelNodeEditor(); return true; }
       if (e.key === 'Tab' && !e.shiftKey) {
@@ -608,7 +637,7 @@
     }
 
     return {
-      HINT_EDIT, DRAG_START_PX, measureW, relayout, resizeToLabel, ensureVisible,
+      HINT_EDIT, DRAG_START_PX, measureW, linesFor, relayout, resizeToLabel, ensureVisible,
       selGroup, hasMindSel, branchIds, isHidden, visibleShapes,
       placeRoot, addChild, addSibling, removeShapes, afterEraser, toggleCollapse,
       updateHover, clearHover, handleAt, clickHandle,

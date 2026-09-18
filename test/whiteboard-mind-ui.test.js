@@ -31,7 +31,7 @@ function makeHarness() {
     getSel: () => sel, setSel: (v) => { sel = v; },
     getView: () => view, setView: (v) => { view = v; },
     canvas: { clientWidth: 1000, clientHeight: 600 },
-    ctx, textInput, hint: { textContent: '' }, FONT: (s) => `${s}px x`,
+    ctx, editorEl: textInput, hint: { textContent: '' }, FONT: (s) => `${s}px x`,
     addShapes: (list, link) => {
       let withIds = list.map((s) => ({ ...s, id: nextId++ }));
       if (link) withIds = link(withIds);
@@ -485,6 +485,49 @@ const key = (k, extra) => ({ key: k, preventDefault() { this.prevented = true; }
   h.ui.dragUpdate(l.id, { x: B4.x + 5, y: B4.y + 5 });
   h.ui.cancelDrag();
   assert.strictEqual(h.ui.endDrag(l.id, h.shapes), false, '取消后 endDrag 无落点');
+}
+
+// -------- 多行文字：Shift+回车放行、换行归一、高按行数、输入框贴合 --------
+{
+  const h = makeHarness();
+  const root = h.ui.placeRoot({ x: 300, y: 200 }); h.ui.commitNodeEditor();
+  const a = h.ui.addChild(root.id, 'right');
+  // Shift+Enter 不接管（textarea 自己插换行）
+  const se = key('Enter', { shiftKey: true });
+  assert.strictEqual(h.ui.onEditorKey(se), false);
+  assert.ok(!se.prevented);
+  assert.ok(h.ui.isEditing(), 'Shift+回车不提交');
+  // 两行文字：高按两行、输入框高度 / 行高 / 内边距同步
+  const h1 = h.byId(a.id).h;
+  h.textInput.value = '第一行\n第二行';
+  h.ui.onEditorInput();
+  const A = h.byId(a.id);
+  assert.strictEqual(A.h, Math.ceil(2 * 15 * 1.4 + 16), '两行高度');
+  assert.ok(A.h > h1);
+  assert.strictEqual(h.textInput.style.height, A.h + 'px', '输入框高度跟节点');
+  assert.strictEqual(h.textInput.style.lineHeight, 15 * 1.4 + 'px', '行高 = 字号 × 1.4');
+  // 上下内边距 = (h - 行数×行高)/2 = padY = 8；左右 = padX - 2px 余量 = 12
+  assert.strictEqual(h.textInput.style.padding, '8px 12px', '文字块在框内垂直居中');
+  // 提交：CRLF 归一、行尾空格去掉、首尾空白去掉
+  h.textInput.value = '  第一行  \r\n第二行\r\n\r\n';
+  h.ui.commitNodeEditor();
+  assert.strictEqual(h.byId(a.id).label, '第一行\n第二行');
+  assert.deepStrictEqual(h.ui.linesFor(h.byId(a.id)), ['第一行', '第二行']);
+  // 自动折行：长标签的行数与 nodeSize 一致，节点宽不超上限
+  h.ui.openNodeEditor(a.id);
+  h.textInput.value = '字'.repeat(60);
+  h.ui.commitNodeEditor();
+  const A2 = h.byId(a.id);
+  assert.ok(A2.w <= MIND.STYLE.maxW);
+  // 桩测量每字 10px，深度 1 行宽 260 - 28 = 232 → 每行 23 字 → 60 字 3 行
+  assert.strictEqual(h.ui.linesFor(A2).length, Math.ceil(60 / Math.floor((MIND.STYLE.maxW - 28) / 10)), '折行行数');
+  assert.strictEqual(A2.h, Math.ceil(h.ui.linesFor(A2).length * 15 * 1.4 + 16));
+  // 空标签 → 无行
+  assert.deepStrictEqual(h.ui.linesFor({ ...A2, label: '' }), []);
+  // 兄弟让位：多行节点下方的兄弟不重叠
+  const b = h.ui.addChild(root.id, 'right'); h.textInput.value = 'B'; h.ui.commitNodeEditor();
+  const A3 = h.byId(a.id), B = h.byId(b.id);
+  assert.ok(B.y >= A3.y + A3.h + MIND.STYLE.vGap - 1e-6, '多行节点与兄弟保持间距');
 }
 
 // -------- abortNodeEditor：只关框不写数据 --------

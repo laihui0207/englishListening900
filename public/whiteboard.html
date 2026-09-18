@@ -51,6 +51,8 @@ body {
 .tool-btn.active {
   background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;
 }
+/* 开/关型按钮（如对齐点）：浅色"已开启"态，跟互斥的当前工具渐变区分开 */
+.tool-btn.toggle.active { background: #f0f0ff; color: #667eea; border-color: #667eea; }
 /* 工具栏里的线性图标：跟随文字颜色，选中时随 .active 变白 */
 .tool-btn .tool-icon {
   vertical-align: -3px; fill: none; stroke: currentColor; stroke-width: 2;
@@ -200,10 +202,14 @@ body {
   background: rgba(255,255,255,0.92); border: 2px solid #667eea; border-radius: 6px;
   padding: 2px 6px; outline: none; min-width: 140px;
 }
-/* 思维导图节点原地编辑：输入框贴合节点尺寸，边框色跟分支色（由 JS 内联） */
-#textInput.mm-node {
-  min-width: 0; box-sizing: border-box; padding: 0 6px; text-align: center;
-  background: #fff; border-width: 2px;
+/* 思维导图节点原地编辑：多行文本框贴合节点尺寸，位置 / 字号 / 行高 / 内边距 / 边框色由 JS 内联。
+   折行规则与画布一致：中日韩任意处可断、拉丁词按空格断、整词过长就地断 */
+#nodeInput {
+  display: none; position: absolute; z-index: 6; box-sizing: border-box;
+  margin: 0; resize: none; overflow: hidden; outline: none;
+  background: #fff; border: 2px solid #667eea; text-align: center;
+  font-family: -apple-system, "Microsoft YaHei", sans-serif;
+  white-space: pre-wrap; overflow-wrap: break-word; word-break: normal;
 }
 /* 默认左下角。拖动后由 JS 写 left/top 覆盖 */
 .minimap-box {
@@ -595,6 +601,7 @@ body {
     <span class="zoom-label" id="zoomLabel">100%</span>
     <button class="tool-btn" id="btnFit">🔍 适应内容</button>
     <button class="tool-btn" id="btnReset">⤢ 100%</button>
+    <button class="tool-btn toggle" id="btnGrid" aria-pressed="false" title="对齐点：显示点阵网格，绘图 / 移动 / 缩放时吸附到格点"><svg class="tool-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="5" cy="5" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="19" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="19" cy="19" r="1"/></svg> 对齐点</button>
 
     <div class="tool-sep"></div>
 
@@ -612,6 +619,7 @@ body {
   <div class="canvas-wrap">
     <canvas id="board"></canvas>
     <input id="textInput" type="text" autocomplete="off" enterkeyhint="done" maxlength="200">
+    <textarea id="nodeInput" rows="1" autocomplete="off" enterkeyhint="done" maxlength="200" placeholder="输入…"></textarea>
     <div class="minimap-box" id="minimapBox">
       <div class="minimap-title" id="minimapTitle">全览 · 拖此移动</div>
       <canvas id="minimap"></canvas>

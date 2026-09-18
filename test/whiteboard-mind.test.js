@@ -106,10 +106,38 @@ function relayout(shapes) {
 
 // ---------- nodeSize ----------
 {
-  assert.deepStrictEqual(M.nodeSize('', 1, measure), { w: 96, h: 40 }, '空标签取最小尺寸');
+  const empty = M.nodeSize('', 1, measure);
+  assert.deepStrictEqual([empty.w, empty.h, empty.lines], [96, 40, ['']], '空标签取最小尺寸、占一行');
   const s = M.nodeSize('十个字十个字十个字十', 1, measure); // 10 * 15 * 0.6 = 90
   assert.strictEqual(s.w, 90 + 28);
+  assert.deepStrictEqual(s.lines, ['十个字十个字十个字十']);
   assert.strictEqual(M.nodeSize('x', 0, measure).h, 46, '根高 = max(46, ceil(18*1.4+20))');
+
+  // 多行：显式换行 → 两行，高按行数；宽取最长行
+  const two = M.nodeSize('短\n这一行长一些再长一些', 1, measure); // 第二行 10 字 = 90px，超过 minW
+  assert.deepStrictEqual(two.lines, ['短', '这一行长一些再长一些']);
+  assert.strictEqual(two.w, Math.ceil(10 * 15 * 0.6 + 28), '宽取最长行');
+  assert.strictEqual(two.h, Math.ceil(2 * 15 * 1.4 + 16), '高按两行');
+  // 自动折行：深度 1 行宽上限 260 - 28 = 232，每字 9px → 25 字一行
+  const long = M.nodeSize('字'.repeat(60), 1, measure);
+  assert.strictEqual(long.lines.length, 3, '60 字折成 3 行');
+  assert.ok(long.lines.every((l) => l.length <= 25), '每行不超过行宽');
+  assert.strictEqual(long.lines.join(''), '字'.repeat(60), '折行不丢字');
+  assert.ok(long.w <= M.STYLE.maxW, '节点不超过最大宽');
+  // 空行保留
+  assert.deepStrictEqual(M.nodeSize('a\n\nb', 2, measure).lines, ['a', '', 'b']);
+  // CRLF 归一
+  assert.deepStrictEqual(M.wrapLabel('a\r\nb', 14, false, 200, measure), ['a', 'b']);
+  // 拉丁词按空格回退
+  const latin = M.wrapLabel('hello world foo', 10, false, 6 * 11, measure); // 每字 6px，行宽 66 = 11 字
+  assert.deepStrictEqual(latin, ['hello world', 'foo']);
+  // 整词过长就地断
+  assert.deepStrictEqual(M.wrapLabel('abcdefghij', 10, false, 6 * 4, measure), ['abcd', 'efgh', 'ij']);
+  // 中英混排：中文处可断
+  assert.deepStrictEqual(M.wrapLabel('中文abc', 10, false, 6 * 3, measure), ['中文', 'abc']);
+  // 单字比行宽还宽：不切分、不死循环
+  assert.deepStrictEqual(M.wrapLabel('字', 10, false, 1, measure), ['字']);
+  assert.deepStrictEqual(M.wrapLabel(null, 10, false, 100, measure), ['']);
   assert.strictEqual(M.depthStyle(0).labelSize, 18);
   assert.strictEqual(M.depthStyle(1).labelSize, 15);
   assert.strictEqual(M.depthStyle(5).labelSize, 14, '深层取最后一项');

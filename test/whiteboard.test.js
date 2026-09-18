@@ -319,4 +319,54 @@ const p2 = G.toScreen({ scale: ft.scale, x: ft.x, y: ft.y }, 100, 50);
 assert.ok(p1.x >= -0.01 && p1.y >= -0.01 && p2.x <= 200.01 && p2.y <= 200.01, 'fit 后内容不出界');
 assert.deepStrictEqual(G.fitTransform(null, 100, 100), { scale: 1, x: 0, y: 0 });
 
+// ---------- 对齐点（点阵网格 + 吸附） ----------
+
+// 格距：100% 用基础格距；缩小后按 2 倍放粗，屏幕点距不低于 minPx；放大不细分
+assert.strictEqual(G.gridStep(1), G.GRID_BASE, '100% 时用基础格距');
+assert.strictEqual(G.gridStep(8), G.GRID_BASE, '放大不细分，格距不变');
+assert.strictEqual(G.gridStep(0.5, 20, 16), 40, '50% 时 20*0.5=10px<16px → 放粗到 40');
+assert.strictEqual(G.gridStep(0.1, 20, 16), 160, '10% 时逐级翻倍到 160');
+assert.ok(G.gridStep(0.3, 20, 16) * 0.3 >= 16, '放粗后屏幕点距不低于 minPx');
+assert.strictEqual(G.gridStep(0, 20, 16), 20, '非法 scale 不死循环，按 1 处理');
+
+// 单值吸附：四舍五入到最近格点，负数与半格边界都要对
+assert.strictEqual(G.snapToGrid(29, 20), 20);
+assert.strictEqual(G.snapToGrid(31, 20), 40);
+assert.strictEqual(G.snapToGrid(-29, 20), -20);
+assert.strictEqual(G.snapToGrid(-31, 20), -40);
+assert.ok(Object.is(G.snapToGrid(-3, 20), 0), '吸到原点得 +0 而非 -0');
+assert.strictEqual(G.snapToGrid(37, 0), 37, '格距非法时原样返回');
+assert.deepStrictEqual(G.snapPoint({ x: 29, y: -31 }, 20), { x: 20, y: -40 });
+
+// 整组平移吸附：吸的是包围盒左上角，不是指针
+const grp = { x1: 13, y1: 7, x2: 63, y2: 47 };
+const d1 = G.snapDelta(grp, 10, 10, 20);
+assert.deepStrictEqual(d1, { dx: 7, dy: 13 }, '13+10=23→20, 7+10=17→20');
+near(grp.x1 + d1.dx, 20, '吸附后左上角 x 落在格点');
+near(grp.y1 + d1.dy, 20, '吸附后左上角 y 落在格点');
+assert.deepStrictEqual(G.snapDelta(null, 5, 6, 20), { dx: 5, dy: 6 }, '无包围盒（空组）不吸附');
+assert.deepStrictEqual(G.snapDelta(grp, 5, 6, 0), { dx: 5, dy: 6 }, '格距非法不吸附');
+// 组内相对位置不变：两图形按同一位移平移
+const pair = [
+  { type: 'rect', x: 13, y: 7, w: 10, h: 10 },
+  { type: 'rect', x: 43, y: 7, w: 20, h: 40 },
+];
+const dd = G.snapDelta(G.bboxAll(pair), 10, 10, 20);
+const movedPair = pair.map((s) => G.translateShape(s, dd.dx, dd.dy));
+near(movedPair[1].x - movedPair[0].x, 30, '整组吸附后间距不变');
+near(G.bboxAll(movedPair).x1, 20, '整组左上角落在格点');
+
+// 视口内的格点坐标：含两端，不含区间外
+assert.deepStrictEqual(G.gridCoords(0, 60, 20), [0, 20, 40, 60], '两端都是格点时都含');
+assert.deepStrictEqual(G.gridCoords(-25, 25, 20), [-20, 0, 20], '跨原点');
+assert.deepStrictEqual(G.gridCoords(1, 19, 20), [], '区间内没有格点');
+assert.deepStrictEqual(G.gridCoords(10, 5, 20), [], '反向区间');
+assert.deepStrictEqual(G.gridCoords(0, 10, 0), [], '格距非法');
+assert.ok(Object.is(G.gridCoords(-5, 5, 20)[0], 0), '原点处不产生 -0');
+// 按下标乘步长：多步后末尾格点仍精确
+const many = G.gridCoords(0, 100, 0.5);
+assert.strictEqual(many.length, 201);
+assert.strictEqual(many[many.length - 1], 100, '末尾格点精确');
+assert.ok(G.gridCoords(0, 1e9, 1).length <= 4096, '超大范围有上限兜底');
+
 console.log('whiteboard geometry: all assertions passed');
