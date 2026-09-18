@@ -26,10 +26,13 @@ if (typeof window !== 'undefined') {
   let marquee = null;      // 框选矩形（世界坐标）
   let pendingText = null;
   let pendingMath = null;
+  let MIND_UI = null;      // 思维导图交互层，闭包末尾创建（见「思维导图」一节）
 
   // 所有图形都经此落盘，id 只在这一处分配
-  function addShapes(list) {
-    const withIds = list.map((s) => ({ ...s, id: nextId++ }));
+  // link 可选：拿到真实 id 后再补引用字段（导图根的 mapId = 自己的 id）
+  function addShapes(list, link) {
+    let withIds = list.map((s) => ({ ...s, id: nextId++ }));
+    if (link) withIds = link(withIds);
     shapes = [...shapes, ...withIds];
     markDirty();
     return withIds;
@@ -40,8 +43,12 @@ if (typeof window !== 'undefined') {
   function applyEraser(p, radius) {
     let changed = false;
     const next = [];
+    // 擦到导图节点时它的整棵子树一起走：否则折叠着的后代会在松手前弹出来闪一下
+    const cascade = new Set();
 
     for (const s of shapes) {
+      // 折叠起来的导图节点看不见，橡皮擦不到
+      if (s.type === 'mind-node' && MIND_UI && MIND_UI.isHidden(s.id)) { next.push(s); continue; }
       if (s.type === 'pen') {
         // 把笔迹按"在圆内"的点切断，产生 0 到多条新笔迹
         const segs = splitPenByEraser(s.points, p, radius);
@@ -62,13 +69,17 @@ if (typeof window !== 'undefined') {
         if (b && circleHitsBox(p, radius, b)) {
           changed = true;
           sel = sel.filter((id) => id !== s.id);
+          if (s.type === 'mind-node' && MIND_UI) for (const id of MIND_UI.branchIds([s.id])) cascade.add(id);
         } else {
           next.push(s);
         }
       }
     }
 
-    return changed ? next : null;
+    if (!changed) return null;
+    if (!cascade.size) return next;
+    sel = sel.filter((id) => !cascade.has(id));
+    return next.filter((s) => !cascade.has(s.id));
   }
 
   // 把 pen points 切成若干段，圆内的点丢弃。
@@ -116,7 +127,7 @@ if (typeof window !== 'undefined') {
   function findSnap(px, py, excludeId) {
     const r = SNAP_RADIUS_PX / view.scale;
     let best = null, bestD = r;
-    for (const s of shapes) {
+    for (const s of visibleShapes()) {
       if (s.id === excludeId) continue;
       for (const a of G.anchorPoints(s)) {
         const d = Math.hypot(a.x - px, a.y - py);
@@ -165,6 +176,10 @@ if (typeof window !== 'undefined') {
   const isSel = (s) => sel.includes(s.id);
   const selShapes = () => shapes.filter(isSel);
   const selBox = () => G.bboxAll(selShapes());
+  // 拖动用的选中组：选中导图节点时把整棵图带上
+  const groupShapes = () => (MIND_UI ? MIND_UI.selGroup() : selShapes());
+  // 点选 / 框选 / 包围盒只看得见的图形：折叠起来的导图节点不参与
+  const visibleShapes = () => (MIND_UI ? MIND_UI.visibleShapes() : shapes);
 
   // 选中数量提示 + 删除按钮的可用状态
   function updateSelInfo() {
@@ -173,8 +188,16 @@ if (typeof window !== 'undefined') {
     btnDelSel.disabled = n === 0;
     if (typeof syncPropsPanel === 'function') syncPropsPanel();
   }
-  // 按 id 改写图形，找不到就原样返回
-  const patch = (id, fn) => { shapes = shapes.map((s) => (s.id === id ? fn(s) : s)); markDirty(); };
+  // 删除选中：导图节点连带整棵子树（由 MIND_UI 处理），其他图形整组删除
+  function removeSelected() {
+    if (sel.length === 0) return;
+    if (MIND_UI) { MIND_UI.removeShapes(sel); return; }
+    shapes = shapes.filter((s) => !isSel(s));
+    sel = [];
+    updateSelInfo();
+    markDirty();
+    redraw();
+  }
 
   const mathBox = document.getElementById('mathBox');
   const mathField = document.getElementById('mathField');
@@ -259,14 +282,18 @@ if (typeof window !== 'undefined') {
     if (!s || s.type !== 'math') return;
     renderMath(s.tex, s.color, s.width / 3)
       .then(({ img }) => {
-        // 保持用户已调整过的尺寸，只换贴图
-        patch(id, (x) => ({ ...x, img }));
+        // 保持用户已调整过的尺寸，只换贴图。换贴图不算一次编辑：
+        // 直接赋值并同步撤销基线，不经 patch/markDirty
+        const same = shapes === committed;
+        shapes = shapes.map((x) => (x.id === id ? { ...x, img } : x));
+        if (same) committed = shapes;
         redraw();
       })
       .catch((err) => { hint.textContent = '⚠️ ' + err.message; });
   }
 
   function resize() {
+    if (MIND_UI) MIND_UI.syncNodeEditorBox(); // 窗口变化时编辑框跟着节点
     const r = dpr();
     canvas.width = Math.round(canvas.clientWidth * r);
     canvas.height = Math.round(canvas.clientHeight * r);
@@ -383,12 +410,22 @@ if (typeof window !== 'undefined') {
       if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
       c.stroke();
       drawShapeLabel(c, s, b);
-    } else if (s.type === 'round-rect') {
+    } else if (s.type === 'round-rect' || s.type === 'mind-node') {
+      const isMind = s.type === 'mind-node';
+      // 折叠起来的节点整棵不画（连它的入边一起）；主画布 / 小地图 / 导出三处循环都走这里
+      if (isMind && MIND_UI && MIND_UI.isHidden(s.id)) return;
+      // 导图节点先画到父节点的入边：颜色 / 线宽已在上面按 s.color / s.width 设好
+      if (isMind && MIND_UI) MIND_UI.drawEdge(c, s);
       const b = G.bboxUnrotated(s);
-      const r = Math.min((b.x2 - b.x1) * 0.15, (b.y2 - b.y1) * 0.15, 18);
+      const bh = b.y2 - b.y1;
+      // 导图：根是胶囊形，分支圆角 10；普通圆角矩形按比例
+      const r = isMind
+        ? (s.parentId == null ? bh / 2 : Math.min(10, bh / 2))
+        : Math.min((b.x2 - b.x1) * 0.15, bh * 0.15, 18);
       c.beginPath();
-      c.roundRect(b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1, r);
-      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
+      c.roundRect(b.x1, b.y1, b.x2 - b.x1, bh, r);
+      const fill = isMind ? (s.fillColor || '#fff') : s.fillColor;
+      if (fill) { c.fillStyle = fill; c.fill(); }
       c.stroke();
       drawShapeLabel(c, s, b);
     } else if (s.type === 'text') {
@@ -416,10 +453,12 @@ if (typeof window !== 'undefined') {
   function drawShapeLabel(c, s, b) {
     if (!s.label) return;
     const cx = (b.x1 + b.x2) / 2, cy = (b.y1 + b.y2) / 2;
-    const fontSize = Math.max(12, Math.min((b.y2 - b.y1) * 0.28, 20));
+    // 导图节点字号固定（labelSize），普通图形随高度缩放
+    const fontSize = s.labelSize || Math.max(12, Math.min((b.y2 - b.y1) * 0.28, 20));
+    const bold = s.type === 'mind-node' && s.parentId == null ? 'bold ' : '';
     c.save();
     c.fillStyle = s.labelColor || s.color;
-    c.font = `${fontSize}px -apple-system, "Microsoft YaHei", sans-serif`;
+    c.font = `${bold}${fontSize}px -apple-system, "Microsoft YaHei", sans-serif`;
     c.textAlign = 'center';
     c.textBaseline = 'middle';
     c.fillText(s.label, cx, cy);
@@ -552,6 +591,9 @@ if (typeof window !== 'undefined') {
       }
     }
 
+    // 含导图节点的选中组：尺寸由文字决定，不给缩放手柄；高亮由 MIND_UI.drawOverlay 画
+    if (MIND_UI && MIND_UI.hasMindSel()) { ctx.restore(); return; }
+
     const box = G.bboxAll(picked);
     if (!box) { ctx.restore(); return; }
     ctx.lineWidth = 1.5 * k;
@@ -613,6 +655,7 @@ if (typeof window !== 'undefined') {
     for (const s of shapes) drawShape(ctx, s);
     if (draft) drawShape(ctx, draft);
     if (!draft) drawSelection();
+    if (!draft && MIND_UI) MIND_UI.drawOverlay(ctx); // 导图选中高亮 / 悬停「+」把手
     if (marquee) drawMarquee(marquee);
     // 橡皮圆预览
     if (tool === 'eraser' && eraserPos) {
@@ -665,7 +708,7 @@ if (typeof window !== 'undefined') {
 
     const vp = G.viewportBox(view, canvas.clientWidth, canvas.clientHeight);
     // 内容和视口一起 fit，否则画面移出内容区后小地图就没有参照物了
-    const box = G.unionBox(G.bboxAll(shapes), vp);
+    const box = G.unionBox(G.bboxAll(visibleShapes()), vp);
     if (!box) return;
     const t = G.fitTransform(box, w, h, 6);
 
@@ -697,7 +740,7 @@ if (typeof window !== 'undefined') {
   // ---------- 交互 ----------
 
   // ponytail: pen/text/math/plot don't need rotation; all {x,y,w,h} shapes do
-  const canRotate = (s) => s && !['pen','text','math','plot'].includes(s.type);
+  const canRotate = (s) => s && !['pen','text','math','plot','mind-node'].includes(s.type);
 
   function rotateHandlePos(box, k) {
     return { x: (box.x1 + box.x2) / 2, y: box.y1 - 20 * (k || 1) };
@@ -706,6 +749,7 @@ if (typeof window !== 'undefined') {
   function onDown(e) {
     // 输入中再次点击画布：先提交当前文本，再按这次点击继续处理
     if (pendingText) commitText();
+    if (MIND_UI && MIND_UI.isEditing()) MIND_UI.commitNodeEditor(); // 节点编辑同理：先提交再处理这次点击
     if (pendingMath) return; // 公式框是模态的，点画布不误触
     if (pendingPlot) return; // 曲线框同上
     // 阻止默认聚焦，否则焦点跑到 body，刚 focus 的 textInput 立刻 blur
@@ -721,10 +765,15 @@ if (typeof window !== 'undefined') {
     }
 
     if (tool === 'erase') {
-      const i = G.hitTest(shapes, p.x, p.y, tol);
+      const vis = visibleShapes();
+      const i = G.hitTest(vis, p.x, p.y, tol);
+      if (i >= 0 && vis[i].type === 'mind-node' && MIND_UI) {
+        MIND_UI.removeShapes([vis[i].id], { selectParent: false }); // 连带子树
+        return;
+      }
       if (i >= 0) {
-        const gone = shapes[i].id;
-        shapes = shapes.filter((_, idx) => idx !== i);
+        const gone = vis[i].id;
+        shapes = shapes.filter((s) => s.id !== gone);
         sel = sel.filter((id) => id !== gone);
         markDirty();
         redraw();
@@ -733,7 +782,7 @@ if (typeof window !== 'undefined') {
     }
 
     if (tool === 'eraser') {
-      drag = { mode: 'eraser', erased: false };
+      drag = { mode: 'eraser', erased: false, prev: shapes }; // prev：松手后找出被擦掉的导图节点
       eraseAt(p);
       return;
     }
@@ -741,11 +790,20 @@ if (typeof window !== 'undefined') {
     if (tool === 'text') { openTextInput(p, sp); return; }
     if (tool === 'math') { openMathInput(p, sp); return; }
     if (tool === 'plot') { openPlotInput(p); return; }
+    if (tool === 'mindmap') {
+      // 点哪里放哪里：中心主题落在点击处，然后回到选择工具继续编辑
+      setTool('select', document.querySelector('[data-tool="select"]'));
+      if (MIND_UI) MIND_UI.placeRoot(p);
+      return;
+    }
 
     if (tool === 'select') {
-      // 手柄优先于图形本体：整组外框的角
+      // 导图节点旁的小按钮优先：＋ 加下一级、－ 折叠、徽标展开
+      const hd = MIND_UI && MIND_UI.handleAt(p);
+      if (hd) { MIND_UI.clickHandle(hd); return; }
+      // 手柄优先于图形本体：整组外框的角。含导图节点的组不缩放
       const box = selBox();
-      const h = box && G.handleAt(box, p.x, p.y, tol);
+      const h = box && !(MIND_UI && MIND_UI.hasMindSel()) && G.handleAt(box, p.x, p.y, tol);
       if (h) {
         drag = {
           mode: 'resize', handle: h, startBox: box,
@@ -772,12 +830,13 @@ if (typeof window !== 'undefined') {
         }
       }
 
-      const i = G.hitTest(shapes, p.x, p.y, tol);
+      const vis = visibleShapes();
+      const i = G.hitTest(vis, p.x, p.y, tol);
       if (i < 0) {
         // 多选时外框内部（图形之间的行距/段距/栏距）也算拖动热区。
         // 否则点在空隙上会被当成"点空白"去平移画布，整组就拖不动了
         if (!e.shiftKey && sel.length > 1 && box && G.pointInBox(box, p.x, p.y, tol)) {
-          drag = { mode: 'move', px: p.x, py: p.y, orig: selShapes() };
+          drag = { mode: 'move', px: p.x, py: p.y, orig: groupShapes(), before: shapes };
           canvas.style.cursor = 'move';
           return;
         }
@@ -797,15 +856,21 @@ if (typeof window !== 'undefined') {
         return;
       }
 
-      const hitId = shapes[i].id;
+      const hitId = vis[i].id;
       if (e.shiftKey) {
         // Shift 点击：加入/移出选中集
         sel = sel.includes(hitId) ? sel.filter((id) => id !== hitId) : [...sel, hitId];
       } else if (!sel.includes(hitId)) {
         sel = [hitId]; // 点未选中的图形：换成它
       }
+      // 单选一个非根导图节点：拖它是换位置 / 换层级，不是搬整图（搬整图拖中心主题）
+      if (!e.shiftKey && MIND_UI && MIND_UI.canDragNode(vis[i]) && sel.length === 1 && sel[0] === hitId) {
+        drag = { mode: 'mind-drag', id: hitId, px: p.x, py: p.y, before: shapes, orig: MIND_UI.beginDrag(hitId), moved: false };
+        redraw();
+        return;
+      }
       // 点已选中的图形不改选中集，直接整组拖走
-      if (sel.length > 0) drag = { mode: 'move', px: p.x, py: p.y, orig: selShapes() };
+      if (sel.length > 0) drag = { mode: 'move', px: p.x, py: p.y, orig: groupShapes(), before: shapes };
       redraw();
       return;
     }
@@ -831,13 +896,16 @@ if (typeof window !== 'undefined') {
       if (tool === 'select' && !spaceDown) {
         const p = worldPos(e);
         const tol = 8 / view.scale;
+        // 导图：悬停节点显示「+」把手，停在把手上给手型光标
+        if (MIND_UI && MIND_UI.updateHover(p, tol)) redraw();
+        if (MIND_UI && MIND_UI.handleAt(p)) { canvas.style.cursor = 'pointer'; return; }
         const box = selBox();
-        const h = box && G.handleAt(box, p.x, p.y, tol);
+        const h = box && !(MIND_UI && MIND_UI.hasMindSel()) && G.handleAt(box, p.x, p.y, tol);
         // 光标要跟拖动热区一致：外框内部也是 move，否则看着是抓手却在移动图形
         const inGroup = sel.length > 1 && box && G.pointInBox(box, p.x, p.y, tol);
         canvas.style.cursor = h
           ? (h === 'nw' || h === 'se' ? 'nwse-resize' : 'nesw-resize')
-          : (inGroup || G.hitTest(shapes, p.x, p.y, tol) >= 0 ? 'move' : 'grab');
+          : (inGroup || G.hitTest(visibleShapes(), p.x, p.y, tol) >= 0 ? 'move' : 'grab');
       }
       return;
     }
@@ -874,7 +942,7 @@ if (typeof window !== 'undefined') {
     } else if (drag.mode === 'marquee') {
       marquee = G.normBox(drag.sx, drag.sy, p.x, p.y);
       // 实时反馈选中结果，松手前就能看到会选中什么
-      const inBox = G.shapesInBox(shapes, marquee).map((s) => s.id);
+      const inBox = G.shapesInBox(visibleShapes(), marquee).map((s) => s.id);
       sel = drag.add ? [...new Set([...drag.base, ...inBox])] : inBox;
     } else if (drag.mode === 'move') {
       // 整组平移：每个图形都从快照重算，不累积误差
@@ -883,6 +951,20 @@ if (typeof window !== 'undefined') {
       const moved = new Map(drag.orig.map((s) => [s.id, G.translateShape(s, dx, dy)]));
       shapes = shapes.map((s) => moved.get(s.id) || s);
       updateConnectedArrows(drag.orig.map((s) => s.id));
+    } else if (drag.mode === 'mind-drag') {
+      // 拖导图节点：整棵子树跟着指针走，同时实时算落点
+      const dx = p.x - drag.px;
+      const dy = p.y - drag.py;
+      if (!drag.moved && Math.hypot(dx, dy) > MIND_UI.DRAG_START_PX / view.scale) {
+        drag.moved = true;
+        canvas.style.cursor = 'grabbing';
+      }
+      if (drag.moved) {
+        const moved = new Map(drag.orig.map((s) => [s.id, G.translateShape(s, dx, dy)]));
+        shapes = shapes.map((s) => moved.get(s.id) || s);
+        updateConnectedArrows(drag.orig.map((s) => s.id));
+        MIND_UI.dragUpdate(drag.id, p);
+      }
     } else if (drag.mode === 'resize') {
       // 整组缩放：所有图形按同一对包围盒映射，组内相对位置保持不变
       const nb = G.applyHandle(drag.startBox, drag.handle, p.x, p.y, 4 / view.scale);
@@ -927,6 +1009,7 @@ if (typeof window !== 'undefined') {
       marquee = null;
     }
     if (drag.mode === 'eraser' && drag.erased) {
+      if (MIND_UI) MIND_UI.afterEraser(drag.prev); // 被擦掉的节点连带子树
       markDirty();
     }
     // 空白处按下但没拖动 = 单击空白，取消选中
@@ -941,6 +1024,13 @@ if (typeof window !== 'undefined') {
       }
     }
     if (drag.mode === 'move' || drag.mode === 'resize' || drag.mode === 'rotate') markDirty();
+    if (drag.mode === 'mind-drag') {
+      // 动过才落地（endDrag 自己 markDirty）；没动就是单击，shapes 没变
+      const applied = drag.moved ? MIND_UI.endDrag(drag.id, drag.before) : MIND_UI.endDrag(drag.id, shapes);
+      // 弹回原状时把撤销基线对齐到当前，别让拖动前的中途状态留在 committed 里
+      if (!applied && !snapPending) committed = shapes;
+      canvas.style.cursor = cursorFor(tool);
+    }
     drag = null;
     updateSelInfo();
     redraw();
@@ -964,6 +1054,7 @@ if (typeof window !== 'undefined') {
   }
 
   function commitText() {
+    if (MIND_UI && MIND_UI.isEditing()) { pendingText = null; MIND_UI.commitNodeEditor(); return; }
     if (!pendingText) return;
     const text = textInput.value.trim();
     if (text) {
@@ -978,7 +1069,20 @@ if (typeof window !== 'undefined') {
     redraw();
   }
 
+  // 中文输入法：候选词确认的回车 / Tab 不能当成提交。
+  // Chrome 给 keyCode 229，Firefox 给 isComposing，Safari 先发 compositionend 再发回车，
+  // 所以标志要延一拍再清
+  let imeComposing = false;
+  textInput.addEventListener('compositionstart', () => { imeComposing = true; });
+  textInput.addEventListener('compositionend', () => {
+    setTimeout(() => {
+      imeComposing = false;
+      if (MIND_UI) MIND_UI.onEditorInput(); // 组合期间跳过的重排在这里补上
+    }, 0);
+  });
   textInput.addEventListener('keydown', (e) => {
+    if (e.isComposing || e.keyCode === 229 || imeComposing) return;
+    if (MIND_UI && MIND_UI.onEditorKey(e)) return; // 导图节点编辑：回车 / Tab / Esc
     if (e.key === 'Enter') { e.preventDefault(); commitText(); }
     if (e.key === 'Escape') {
       pendingText = null;
@@ -986,6 +1090,8 @@ if (typeof window !== 'undefined') {
       redraw();
     }
   });
+  // 拼音组合期间不重排，避免节点宽度随候选字母抖动
+  textInput.addEventListener('input', () => { if (MIND_UI && !imeComposing) MIND_UI.onEditorInput(); });
   textInput.addEventListener('blur', commitText);
 
   // ---------- 公式输入 ----------
@@ -1110,20 +1216,36 @@ if (typeof window !== 'undefined') {
     if (e.target === textInput || e.target === mathField
       || e.target === askField || e.target === quizReply
       || e.target === plotExprs || e.target.closest('.shape-props')) return;
+    // 撤销 / 重做：整个白板的快照栈
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      if (e.shiftKey) redoBoard(); else undoBoard();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redoBoard(); return; }
+    // 拖动进行中：Esc 取消拖节点（回到拖动前），其他键一律不响应，避免删掉正在拖的东西
+    if (drag) {
+      if (e.key === 'Escape' && drag.mode === 'mind-drag') {
+        shapes = drag.before;
+        MIND_UI.cancelDrag();
+        drag = null;
+        canvas.style.cursor = cursorFor(tool);
+        redraw();
+      }
+      return;
+    }
+    // 单选导图节点时 Tab / Enter / F2 由导图接管；焦点在按钮上时不抢，否则按钮按不动
+    if (tool === 'select' && (e.target === document.body || e.target === canvas) && MIND_UI && MIND_UI.onKey(e)) return;
     if (e.code === 'Space') { spaceDown = true; canvas.style.cursor = 'grab'; e.preventDefault(); }
     if ((e.key === 'Delete' || e.key === 'Backspace') && sel.length > 0) {
       e.preventDefault();
-      shapes = shapes.filter((s) => !isSel(s)); // 整组删除
-      sel = [];
-      updateSelInfo();
-      markDirty();
-      redraw();
+      removeSelected(); // 整组删除；导图节点连带子树
     }
     if (e.key === 'Escape') { sel = []; updateSelInfo(); redraw(); }
     // Ctrl/Cmd+A 全选
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a' && tool === 'select') {
       e.preventDefault();
-      sel = shapes.map((s) => s.id);
+      sel = visibleShapes().map((s) => s.id);
       updateSelInfo();
       redraw();
     }
@@ -1141,16 +1263,25 @@ if (typeof window !== 'undefined') {
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
   canvas.addEventListener('mouseleave', () => {
     if (tool === 'eraser') { eraserPos = null; redraw(); }
+    if (MIND_UI && MIND_UI.clearHover()) redraw();
   });
 
   // 双击公式改 LaTeX：原地替换，保留位置和尺寸
   canvas.addEventListener('dblclick', (e) => {
     const p = worldPos(e);
-    const i = G.hitTest(shapes, p.x, p.y, 8 / view.scale);
-    if (i < 0 || shapes[i].type !== 'math') return;
-    const old = shapes[i];
+    const vis = visibleShapes();
+    const i = G.hitTest(vis, p.x, p.y, 8 / view.scale);
+    if (i >= 0 && vis[i].type === 'mind-node' && MIND_UI) {
+      // 双击导图节点：原地改文字
+      sel = [vis[i].id];
+      updateSelInfo();
+      MIND_UI.openNodeEditor(vis[i].id);
+      return;
+    }
+    if (i < 0 || vis[i].type !== 'math') return;
+    const old = vis[i];
     const b = G.bbox(old);
-    shapes = shapes.filter((_, idx) => idx !== i);
+    shapes = shapes.filter((s) => s.id !== old.id);
     sel = [];
     mathField.value = old.tex;
     openMathInput({ x: b.x1, y: b.y1 });
@@ -1161,6 +1292,7 @@ if (typeof window !== 'undefined') {
     e.preventDefault();
     const sp = screenPos(e);
     view = G.zoomAt(view, e.deltaY < 0 ? 1.1 : 1 / 1.1, sp.x, sp.y);
+    if (MIND_UI) MIND_UI.syncNodeEditorBox(); // 编辑中的节点输入框跟着缩放
     redraw();
   }, { passive: false });
 
@@ -1477,7 +1609,7 @@ if (typeof window !== 'undefined') {
 
   // 找落笔点：新板书摆在已有内容右侧（栏是向右生长的，摆下方会撞上）
   function nextFreeSpot() {
-    const box = G.bboxAll(shapes);
+    const box = G.bboxAll(visibleShapes());
     const vp = G.viewportBox(view, canvas.clientWidth, canvas.clientHeight);
     if (!box) return { x: vp.x1 + 50, y: vp.y1 + 50 };
     return { x: box.x2 + COL_GAP + 20, y: box.y1 };
@@ -2174,6 +2306,7 @@ if (typeof window !== 'undefined') {
     math: '点击画布位置后输入 LaTeX 公式；已有公式双击可改',
     erase: '点击某个图形即可单独删除它',
     eraser: '拖动擦除：画笔路径按点切割，其他图形整体删除',
+    mindmap: '点击画布放置中心主题；之后悬停节点点 ＋ 加下一级、－ 折叠，Tab 加子，Enter 加同级，双击改文字，拖节点换位置',
   };
 
   // select 下默认抓手：空白处按住就能拖画布
@@ -2195,6 +2328,7 @@ if (typeof window !== 'undefined') {
     tool = t;
     if (tool !== 'select') { sel = []; updateSelInfo(); }
     if (tool !== 'eraser') { eraserPos = null; }
+    if (MIND_UI) MIND_UI.clearHover();
     // Mark active on all plain data-tool buttons
     document.querySelectorAll('[data-tool]').forEach((b) => b.classList.remove('active'));
     if (triggerBtn) triggerBtn.classList.add('active');
@@ -2258,7 +2392,8 @@ if (typeof window !== 'undefined') {
     // 有选中就整组改色，比逐个重画省事
     if (sel.length > 0) {
       const ids = selShapes().filter((s) => s.type === 'math').map((s) => s.id);
-      shapes = shapes.map((s) => (isSel(s) ? { ...s, color } : s));
+      // 导图节点的颜色是分支色，不跟全局色板走（在属性面板里按支线改）
+      shapes = shapes.map((s) => (isSel(s) && s.type !== 'mind-node' ? { ...s, color } : s));
       // 公式颜色烧在 SVG 里，改属性不够，得重新渲染贴图
       for (const id of ids) reRenderMath(id);
       markDirty();
@@ -2268,7 +2403,7 @@ if (typeof window !== 'undefined') {
   document.getElementById('widthPick').addEventListener('input', (e) => {
     width = Number(e.target.value);
     if (sel.length > 0) {
-      shapes = shapes.map((s) => (isSel(s) ? { ...s, width } : s));
+      shapes = shapes.map((s) => (isSel(s) && s.type !== 'mind-node' ? { ...s, width } : s));
       markDirty();
       redraw();
     }
@@ -2285,7 +2420,7 @@ if (typeof window !== 'undefined') {
   const spNoFill = document.getElementById('spNoFill');
 
   // shape types that show the props panel
-  const PROPS_TYPES = new Set(['rect','ellipse','triangle','wide-ellipse','diamond','parallelogram','round-rect','line']);
+  const PROPS_TYPES = new Set(['rect','ellipse','triangle','wide-ellipse','diamond','parallelogram','round-rect','line','mind-node']);
 
   function syncPropsPanel() {
     const picked = selShapes().filter((s) => PROPS_TYPES.has(s.type));
@@ -2295,11 +2430,19 @@ if (typeof window !== 'undefined') {
     // position panel below the selection box, clamped inside canvas
     const box = G.bbox(s);
     if (!box) { shapeProps.classList.remove('show'); return; }
-    const sc = G.toScreen(view, (box.x1 + box.x2) / 2, box.y2);
     const wrap = canvas.getBoundingClientRect();
     const pw = 240, ph = 76;
-    let left = sc.x - pw / 2;
-    let top = sc.y + 12;
+    let left, top;
+    if (s.type === 'mind-node') {
+      // 导图节点：面板固定在画布右上角，放节点下方会盖住相邻的兄弟节点；编辑文字时先收起
+      if (MIND_UI && MIND_UI.isEditing()) { shapeProps.classList.remove('show'); return; }
+      left = wrap.width - pw - 8;
+      top = 8;
+    } else {
+      const sc = G.toScreen(view, (box.x1 + box.x2) / 2, box.y2);
+      left = sc.x - pw / 2;
+      top = sc.y + 12;
+    }
     left = Math.max(4, Math.min(left, wrap.width - pw - 4));
     top = Math.max(4, Math.min(top, wrap.height - ph - 4));
     shapeProps.style.left = left + 'px';
@@ -2316,20 +2459,34 @@ if (typeof window !== 'undefined') {
     spNoFill.classList.toggle('active', !hasFill);
   }
 
+  // 面板上连续拖滑块 / 逐字改文字合并成一条撤销记录；标签带上选中 id，换了目标就不合并
+  const spTag = (k) => `${k}:${sel.join(',')}`;
+
+  // 描边色 / 粗细对导图节点作用于整条支线（节点及其全部后代）
+  const branchTargets = () => {
+    const ids = new Set(sel);
+    if (MIND_UI) for (const id of MIND_UI.branchIds(sel)) ids.add(id);
+    return ids;
+  };
+
   spLabel.addEventListener('input', () => {
     shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, label: spLabel.value } : s));
-    markDirty(); redraw();
+    // 导图节点文字变了要按新宽度重排（面板只在单选时显示，这里最多一个）
+    if (MIND_UI) for (const s of selShapes()) if (s.type === 'mind-node') MIND_UI.resizeToLabel(s.id);
+    markDirty(spTag('sp-label')); redraw();
   });
 
   spStrokeColor.addEventListener('input', () => {
-    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, color: spStrokeColor.value } : s));
+    const ids = branchTargets();
+    shapes = shapes.map((s) => (ids.has(s.id) && PROPS_TYPES.has(s.type) ? { ...s, color: spStrokeColor.value } : s));
     spFillIcon.style.color = spFillColor.value;
-    markDirty(); redraw();
+    markDirty(spTag('sp-color')); redraw();
   });
 
   spStrokeWidth.addEventListener('input', () => {
-    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, width: Number(spStrokeWidth.value) } : s));
-    markDirty(); redraw();
+    const ids = branchTargets();
+    shapes = shapes.map((s) => (ids.has(s.id) && PROPS_TYPES.has(s.type) ? { ...s, width: Number(spStrokeWidth.value) } : s));
+    markDirty(spTag('sp-width')); redraw();
   });
 
   spFillColor.addEventListener('input', () => {
@@ -2337,7 +2494,7 @@ if (typeof window !== 'undefined') {
     shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, fillColor: fc } : s));
     spFillIcon.style.color = fc;
     spNoFill.classList.remove('active');
-    markDirty(); redraw();
+    markDirty(spTag('sp-fill')); redraw();
   });
 
   spNoFill.addEventListener('click', () => {
@@ -2347,25 +2504,14 @@ if (typeof window !== 'undefined') {
     markDirty(); redraw();
   });
 
-  document.getElementById('btnUndo').addEventListener('click', () => {
-    shapes = shapes.slice(0, -1);
-    sel = [];
-    updateSelInfo();
-    redraw();
-  });
+  document.getElementById('btnUndo').addEventListener('click', undoBoard);
+  document.getElementById('btnRedo').addEventListener('click', redoBoard);
 
-  btnDelSel.addEventListener('click', () => {
-    if (sel.length === 0) return;
-    shapes = shapes.filter((s) => !isSel(s));
-    sel = [];
-    updateSelInfo();
-    markDirty();
-    redraw();
-  });
+  btnDelSel.addEventListener('click', removeSelected);
 
   document.getElementById('btnClear').addEventListener('click', () => {
     if (shapes.length === 0) return;
-    if (!confirm('清空整个白板？此操作无法撤回。')) return;
+    if (!confirm('清空整个白板？可用 Ctrl+Z 撤销。')) return;
     shapes = [];
     sel = [];
     updateSelInfo();
@@ -2374,7 +2520,7 @@ if (typeof window !== 'undefined') {
   });
 
   document.getElementById('btnFit').addEventListener('click', () => {
-    const box = G.bboxAll(shapes);
+    const box = G.bboxAll(visibleShapes());
     if (!box) { view = { scale: 1, x: 0, y: 0 }; redraw(); return; }
     const t = G.fitTransform(box, canvas.clientWidth, canvas.clientHeight, 40);
     view = { scale: Math.min(G.MAX_SCALE, Math.max(G.MIN_SCALE, t.scale)), x: t.x, y: t.y };
@@ -2390,8 +2536,8 @@ if (typeof window !== 'undefined') {
   });
 
   document.getElementById('btnSave').addEventListener('click', () => {
-    // 导出只含内容，不带视口空白
-    const box = G.bboxAll(shapes);
+    // 导出只含内容，不带视口空白（折叠起来的节点不算）
+    const box = G.bboxAll(visibleShapes());
     if (!box) return;
     const pad = 20;
     const out = document.createElement('canvas');
@@ -2406,6 +2552,26 @@ if (typeof window !== 'undefined') {
     a.download = 'whiteboard.png';
     a.href = out.toDataURL('image/png');
     a.click();
+  });
+
+  // ---------- 思维导图 ----------
+  // 交互层放在 whiteboard-mind-ui.js；这里只注入闭包变量的访问器。
+  // 任一脚本没加载到就降级：白板其余功能照常，只是没有导图和撤销
+  if (!window.MindmapUI || !window.MIND || !window.WBHistory) {
+    hint.textContent = '⚠️ 思维导图模块未加载，请刷新页面';
+    throw new Error('whiteboard-mind / whiteboard-history 未加载');
+  }
+  MIND_UI = window.MindmapUI.create({
+    getShapes: () => shapes,
+    setShapes: (v) => { shapes = v; },
+    getSel: () => sel,
+    setSel: (v) => { sel = v; updateSelInfo(); },
+    getView: () => view,
+    setView: (v) => { view = v; },
+    canvas, ctx, textInput, hint, FONT,
+    addShapes, markDirty, redraw, updateConnectedArrows,
+    // 新建空节点又取消：把「创建」那条撤销记录一并撤回，不留痕
+    undoCreate: () => { const r = H.undo(history, shapes); if (r) { history = r.hist; committed = r.state; shapes = r.state; } },
   });
 
   window.addEventListener('resize', resize);
@@ -2429,16 +2595,99 @@ if (typeof window !== 'undefined') {
     return { 'Content-Type': 'application/json', Authorization: `Bearer ${window.Auth.getToken()}` };
   }
 
-  // 把当前白板内容写入 session
+  // ---- 撤销 / 重做 ----
+  // 快照 = 整份 shapes 的引用（全程不可变更新，存引用零成本）。
+  // 每次 markDirty 把「变更前」的 committed 入栈；同一同步 tick 内多次 markDirty 只记一条，
+  // 天然对应一次用户手势。tag 相同且间隔 <1s 的连续变更（拖滑块、逐字改文字）合并成一条
+  const H = window.WBHistory;
+  let history = H.create(100);
+  let committed = shapes;
+  let snapPending = false;
+  let lastSnapTag = null;
+  let lastSnapAt = 0;
+
+  function snapshot(tag) {
+    if (shapes === committed || snapPending) return;
+    const now = Date.now();
+    const merge = tag && tag === lastSnapTag && now - lastSnapAt < 1000;
+    if (!merge) history = H.push(history, committed);
+    lastSnapTag = tag || null;
+    lastSnapAt = now;
+    snapPending = true;
+    setTimeout(() => {
+      snapPending = false;
+      // 这一拍若已经在拖动中，shapes 是子树悬在指针上的中途状态，不能当基线；
+      // 用拖动开始时的快照（有的话），否则保持原基线
+      committed = drag ? (drag.before || committed) : shapes;
+    }, 0);
+  }
+
+  // 撤销 / 重做前先把未落栈的改动记下来，避免丢状态
+  function flushSnapshot() {
+    if (shapes !== committed) { history = H.push(history, committed); committed = shapes; }
+    lastSnapTag = null;
+  }
+
+  function restoreBoard(state) {
+    shapes = state;
+    committed = state;
+    sel = [];
+    updateSelInfo();
+    // 快照里公式贴图丢了就按 tex 重建（直接赋值，不算一次编辑）
+    for (const s of shapes) {
+      if (s.type === 'math' && !s.img && s.tex) {
+        renderMath(s.tex, s.color, s.width / 3)
+          .then(({ img }) => {
+            const same = shapes === committed;
+            shapes = shapes.map((x) => (x.id === s.id ? { ...x, img } : x));
+            if (same) committed = shapes;
+            redraw();
+          })
+          .catch(() => {});
+      }
+    }
+    scheduleSave();
+    redraw();
+  }
+
+  function undoBoard() {
+    if (drag) return; // 手势进行中不撤销，否则下一帧 drag.orig 会把旧状态盖回去
+    if (MIND_UI && MIND_UI.isEditing()) MIND_UI.commitNodeEditor();
+    flushSnapshot();
+    const r = H.undo(history, shapes);
+    if (!r) return;
+    history = r.hist;
+    restoreBoard(r.state);
+  }
+
+  function redoBoard() {
+    if (drag) return;
+    if (MIND_UI && MIND_UI.isEditing()) MIND_UI.commitNodeEditor();
+    flushSnapshot();
+    const r = H.redo(history, shapes);
+    if (!r) return;
+    history = r.hist;
+    restoreBoard(r.state);
+  }
+
+  // 1.5s 防抖后把当前白板内容写入 session
   let _saveTimer = null;
-  function markDirty() {
+  function scheduleSave() {
     if (!window.Auth || !window.Auth.isLoggedIn() || !currentSessionId) return;
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(pushSession, 1500);
   }
 
+  // 一次编辑落地：记撤销快照 + 排队保存。tag 用于合并连续的同类变更，见 snapshot
+  function markDirty(tag) {
+    snapshot(tag);
+    scheduleSave();
+  }
+
   async function pushSession() {
     if (!window.Auth || !window.Auth.isLoggedIn() || !currentSessionId) return;
+    // 手势进行中的画面是中途状态（子树悬在指针上），等松手再存
+    if (drag) { scheduleSave(); return; }
     try {
       await fetch(`/api/wb/sessions/${currentSessionId}`, {
         method: 'PUT', headers: authHeaders(), keepalive: true,
@@ -2452,15 +2701,29 @@ if (typeof window !== 'undefined') {
 
   // 把一个对话的数据加载进白板（不触发 markDirty）
   function applySessionData(data) {
-    shapes = Array.isArray(data.shapes) ? data.shapes : [];
+    if (MIND_UI) MIND_UI.abortNodeEditor(); // 换会话时不能把输入框里的字提交到别的图上
+    const raw = Array.isArray(data.shapes) ? data.shapes : [];
+    shapes = window.MIND.repair(raw); // 旧数据 / 悬空 parentId 兜底
     nextId = shapes.reduce((m, s) => Math.max(m, s.id || 0), 0) + 1;
     view = (data.view && typeof data.view.scale === 'number') ? data.view : { scale: 1, x: 0, y: 0 };
+    // 结构被修过：挂回根的孤儿还停在旧坐标上，重排一遍再当基线
+    if (shapes !== raw && MIND_UI) {
+      for (const id of new Set(shapes.filter(window.MIND.isNode).map((s) => s.mapId))) MIND_UI.relayout(id);
+    }
+    history = H.create(100);
+    committed = shapes;
 
     // 重建 math 图像（直接赋值，不经 patch，避免触发 markDirty）
     for (const s of shapes) {
       if (s.type === 'math' && s.tex) {
         renderMath(s.tex, s.color, s.width / 3)
-          .then(({ img }) => { shapes = shapes.map((x) => (x.id === s.id ? { ...x, img } : x)); redraw(); })
+          .then(({ img }) => {
+            // 期间没有别的改动就把撤销基线一起更新，否则撤销回去公式会变成虚线框
+            const same = shapes === committed;
+            shapes = shapes.map((x) => (x.id === s.id ? { ...x, img } : x));
+            if (same) committed = shapes;
+            redraw();
+          })
           .catch(() => {});
       }
     }

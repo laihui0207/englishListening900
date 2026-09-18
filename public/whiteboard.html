@@ -51,6 +51,11 @@ body {
 .tool-btn.active {
   background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;
 }
+/* 工具栏里的线性图标：跟随文字颜色，选中时随 .active 变白 */
+.tool-btn .tool-icon {
+  vertical-align: -3px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
 .tool-sep { width: 1px; height: 26px; background: #e0e0e0; margin: 0 4px; }
 .tool-field { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #666; }
 .tool-field input[type="color"] {
@@ -194,6 +199,11 @@ body {
   display: none; position: absolute; z-index: 6;
   background: rgba(255,255,255,0.92); border: 2px solid #667eea; border-radius: 6px;
   padding: 2px 6px; outline: none; min-width: 140px;
+}
+/* 思维导图节点原地编辑：输入框贴合节点尺寸，边框色跟分支色（由 JS 内联） */
+#textInput.mm-node {
+  min-width: 0; box-sizing: border-box; padding: 0 6px; text-align: center;
+  background: #fff; border-width: 2px;
 }
 /* 默认左下角。拖动后由 JS 写 left/top 覆盖 */
 .minimap-box {
@@ -559,6 +569,7 @@ body {
         </div>
       </div>
     </div>
+    <button class="tool-btn" data-tool="mindmap" title="思维导图"><svg class="tool-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M7.5 12h3M10.5 12c2.5 0 3-2 5-6M10.5 12c2.5 0 3 2 5 6"/></svg> 导图</button>
     <button class="tool-btn" data-tool="text">🅣 文本</button>
     <button class="tool-btn" data-tool="math">∑ 公式</button>
     <button class="tool-btn" data-tool="eraser">🧹 橡皮</button>
@@ -587,7 +598,8 @@ body {
 
     <div class="tool-sep"></div>
 
-    <button class="tool-btn" id="btnUndo">↩️ 撤销</button>
+    <button class="tool-btn" id="btnUndo" title="Ctrl+Z">↩️ 撤销</button>
+    <button class="tool-btn" id="btnRedo" title="Ctrl+Shift+Z">↪️ 重做</button>
     <button class="tool-btn" id="btnSave">⬇️ 存图</button>
     <button class="tool-btn danger" id="btnClear">🗑️ 清屏</button>
 
@@ -599,7 +611,7 @@ body {
   <div class="board-body">
   <div class="canvas-wrap">
     <canvas id="board"></canvas>
-    <input id="textInput" type="text" autocomplete="off">
+    <input id="textInput" type="text" autocomplete="off" enterkeyhint="done" maxlength="200">
     <div class="minimap-box" id="minimapBox">
       <div class="minimap-title" id="minimapTitle">全览 · 拖此移动</div>
       <canvas id="minimap"></canvas>
@@ -801,6 +813,9 @@ window.MathJax = {
 <script src="auth-ui.js"></script>
 <script src="whiteboard-geom.js"></script>
 <script src="whiteboard-quiz.js"></script>
+<script src="whiteboard-history.js"></script>
+<script src="whiteboard-mind.js"></script>
+<script src="whiteboard-mind-ui.js"></script>
 <script src="whiteboard.js"></script>
 </body>
 </html>

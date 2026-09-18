@@ -1,6 +1,6 @@
 // AI 老师输出清洗自检：模型返回不可信，坏块必须丢掉而不是画到白板上
 const assert = require('assert');
-const { sanitize } = require('../ai-teacher');
+const { sanitize } = require('../src/ai-teacher');
 
 const texOf = (tex) => sanitize({ blocks: [{ type: 'formula', tex }] }).blocks[0];
 
@@ -50,7 +50,7 @@ assert.strictEqual(texOf('x'.repeat(600)), undefined, '超长公式丢弃');
 
 // ---------- 题目清洗 ----------
 
-const { cleanQuiz } = require('../ai-teacher');
+const { cleanQuiz } = require('../src/ai-teacher');
 
 const goodChoice = {
   kind: 'choice',
@@ -166,7 +166,7 @@ assert.deepStrictEqual(twoLeak.blocks.map((b) => b.text), ['这是讲解'], '两
 
 // ---------- 题目去重（模型批量出题时最易出错的地方） ----------
 
-const { dedupeQuizzes } = require('../ai-teacher');
+const { dedupeQuizzes } = require('../src/ai-teacher');
 const mk = (question, opts) => ({
   kind: 'choice', question,
   options: (opts || ['x', 'y']).map((t, i) => ({ key: 'AB'[i], text: t })),
@@ -195,7 +195,7 @@ assert.deepStrictEqual(dedupeQuizzes([]), []);
 
 // ---------- 泄题过滤：题干/答案不能出现在白板上 ----------
 
-const { dropLeaks } = require('../ai-teacher');
+const { dropLeaks } = require('../src/ai-teacher');
 
 const qz = {
   kind: 'choice',
@@ -268,7 +268,7 @@ assert.strictEqual(pureQuiz.quizzes.length, 1, '题目仍在');
 
 // ---------- 对话历史清洗（前端传来，不可信） ----------
 
-const { trimHistory } = require('../ai-teacher');
+const { trimHistory } = require('../src/ai-teacher');
 
 assert.deepStrictEqual(trimHistory(undefined), [], 'undefined 不抛错');
 assert.deepStrictEqual(trimHistory(null), []);

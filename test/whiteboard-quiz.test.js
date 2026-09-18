@@ -1,7 +1,7 @@
 // 答题逻辑自检：判分、计时格式化、错题本
 // 判分错了不会抛错，只会静默判错 —— 所以每条分支都要有断言
 const assert = require('assert');
-const Q = require('../whiteboard-quiz');
+const Q = require('../public/whiteboard-quiz');
 
 // ---------- 选择题判分 ----------
 

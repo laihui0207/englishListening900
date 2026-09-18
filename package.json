@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test/auth.test.js"
+    "test": "node test/auth.test.js && node test/whiteboard.test.js && node test/whiteboard-quiz.test.js && node test/ai-teacher.test.js && node test/whiteboard-mind.test.js && node test/whiteboard-mind-ui.test.js && node test/whiteboard-history.test.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",

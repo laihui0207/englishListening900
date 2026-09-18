@@ -1,6 +1,6 @@
 // 白板几何自检：包围盒 / 命中 / 移动缩放 / 视口变换
 const assert = require('assert');
-const G = require('../whiteboard-geom');
+const G = require('../public/whiteboard-geom');
 
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} != ${b}`);
 

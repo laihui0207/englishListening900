@@ -3,7 +3,7 @@
 const assert = require('assert');
 process.env.DB_PATH = ':memory:';
 
-const db = require('../db');
+const db = require('../src/db');
 
 // 密码哈希与校验
 const stored = db.hashPassword('secret123');
