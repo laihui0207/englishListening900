@@ -66,6 +66,56 @@ body {
 .sel-info { font-size: 13px; color: #667eea; font-weight: 600; min-width: 62px; }
 .tool-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .tool-btn.danger:disabled { background: white; color: #f44336; border-color: #ffcdd2; }
+.shape-picker { position: relative; display: inline-block; }
+.shape-picker-btn { display: flex; align-items: center; gap: 4px; }
+.shape-picker-btn .arrow { font-size: 9px; color: #aaa; }
+.shape-picker-btn.active .arrow { color: white; }
+.shape-dropdown {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0;
+  background: white; border: 1px solid #e0e0f0; border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(102,126,234,0.18); z-index: 30; padding: 8px;
+}
+.shape-dropdown.show { display: block; }
+.shape-row { display: flex; gap: 4px; margin-bottom: 4px; }
+.shape-row:last-child { margin-bottom: 0; }
+.shape-opt {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; background: white;
+  font-size: 15px; transition: all 0.15s;
+}
+.shape-opt:hover { border-color: #667eea; color: #667eea; }
+.shape-opt.active { background: linear-gradient(135deg,#667eea,#764ba2); border-color: transparent; filter: brightness(1.08); }
+
+/* shape properties floating panel */
+.shape-props {
+  display: none; position: absolute; z-index: 20;
+  background: white; border: 1px solid #e0e0f0; border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(102,126,234,0.18);
+  padding: 8px 10px; gap: 8px; flex-direction: column;
+  min-width: 220px;
+}
+.shape-props.show { display: flex; }
+.sp-label {
+  width: 100%; padding: 6px 9px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+  font-size: 13px; font-family: inherit; outline: none;
+}
+.sp-label:focus { border-color: #667eea; }
+.sp-row { display: flex; align-items: center; gap: 8px; }
+.sp-swatch-wrap { position: relative; width: 30px; height: 30px; cursor: pointer; flex-shrink: 0; }
+.sp-icon { font-size: 22px; line-height: 30px; text-align: center; pointer-events: none; color: #444; }
+.sp-fill-icon { color: #aaa; }
+.sp-color-input {
+  position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;
+}
+.sp-slider { flex: 1; cursor: pointer; accent-color: #667eea; }
+.sp-no-fill {
+  width: 30px; height: 30px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+  background: white; cursor: pointer; font-size: 16px; color: #aaa;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sp-no-fill:hover { border-color: #667eea; color: #667eea; }
+.sp-no-fill.active { border-color: #667eea; color: #667eea; background: #f0f0ff; }
 
 /* 画布区域：board-body 撑满 board-card 剩余空间，canvas 跟着撑满 */
 .board-body {
@@ -401,7 +451,7 @@ body {
   color: #999; transition: background 0.15s, color 0.15s; line-height: 1;
 }
 .chat-icon-btn:hover { background: #f0f0ff; color: #667eea; }
-.chat-tools { display: flex; align-items: center; gap: 1px; }
+.chat-tools {
   display:inline-flex; align-items:center; gap:4px;
   padding:3px 8px; border-radius:12px; font-size:12px;
   background:#f0f0ff; border:1px solid #d8d8f0; color:#555; max-width:140px;
@@ -482,9 +532,33 @@ body {
   <div class="toolbar">
     <button class="tool-btn active" data-tool="select">🖱️ 选择</button>
     <button class="tool-btn" data-tool="pen">✏️ 画笔</button>
-    <button class="tool-btn" data-tool="rect">▭ 矩形</button>
-    <button class="tool-btn" data-tool="ellipse">◯ 椭圆</button>
-    <button class="tool-btn" data-tool="line">╱ 直线</button>
+    <div class="shape-picker" id="shapePicker">
+      <button class="tool-btn shape-picker-btn" id="shapePickerBtn"><span id="shapePickerLabel">□ 图形</span> <span class="arrow">▾</span></button>
+      <div class="shape-dropdown" id="shapeDropdown">
+        <div class="shape-row">
+          <button class="shape-opt" data-tool="rect" title="矩形">□</button>
+          <button class="shape-opt" data-tool="ellipse" title="椭圆">○</button>
+          <button class="shape-opt" data-tool="triangle" title="三角形">△</button>
+          <button class="shape-opt" data-tool="wide-ellipse" title="扁椭圆">⬭</button>
+          <button class="shape-opt" data-tool="diamond" title="菱形">◇</button>
+        </div>
+        <div class="shape-row">
+          <button class="shape-opt" data-tool="parallelogram" title="平行四边形">▱</button>
+          <button class="shape-opt" data-tool="round-rect" title="圆角矩形">▢</button>
+        </div>
+      </div>
+    </div>
+    <div class="shape-picker" id="arrowPicker">
+      <button class="tool-btn shape-picker-btn" id="arrowPickerBtn"><span id="arrowPickerLabel">╱ 直线</span> <span class="arrow">▾</span></button>
+      <div class="shape-dropdown" id="arrowDropdown">
+        <div class="shape-row">
+          <button class="shape-opt" data-tool="line" title="直线">╱</button>
+          <button class="shape-opt" data-tool="arrow" title="单向箭头">→</button>
+          <button class="shape-opt" data-tool="arrow2" title="双向箭头">↔</button>
+          <button class="shape-opt" data-tool="curve-arrow" title="曲线箭头">↝</button>
+        </div>
+      </div>
+    </div>
     <button class="tool-btn" data-tool="text">🅣 文本</button>
     <button class="tool-btn" data-tool="math">∑ 公式</button>
     <button class="tool-btn" data-tool="eraser">🧹 橡皮</button>
@@ -617,6 +691,23 @@ body {
         <button class="tool-btn primary" id="btnPlotOk">插入</button>
       </div>
     </div>
+    <!-- shape properties panel -->
+    <div class="shape-props" id="shapeProps">
+      <input class="sp-label" id="spLabel" type="text" placeholder="添加文本…" autocomplete="off">
+      <div class="sp-row">
+        <div class="sp-swatch-wrap" title="描边颜色">
+          <div class="sp-icon">○</div>
+          <input type="color" id="spStrokeColor" value="#333333" class="sp-color-input">
+        </div>
+        <input type="range" id="spStrokeWidth" min="1" max="20" value="3" class="sp-slider" title="描边粗细">
+        <div class="sp-swatch-wrap" title="填充颜色">
+          <div class="sp-icon sp-fill-icon" id="spFillIcon">●</div>
+          <input type="color" id="spFillColor" value="#ffffff" class="sp-color-input">
+        </div>
+        <button class="sp-no-fill" id="spNoFill" title="无填充">⊘</button>
+      </div>
+    </div>
+
   </div>
 
   <aside class="chat-panel" id="chatPanel">

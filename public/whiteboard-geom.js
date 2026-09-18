@@ -24,6 +24,29 @@ function bbox(shape) {
     const w = (shape.text ? shape.text.length : 0) * shape.size * 0.6;
     return { x1: shape.x, y1: shape.y - shape.size, x2: shape.x + w, y2: shape.y };
   }
+  const ux1 = Math.min(shape.x, shape.x + shape.w);
+  const ux2 = Math.max(shape.x, shape.x + shape.w);
+  const uy1 = Math.min(shape.y, shape.y + shape.h);
+  const uy2 = Math.max(shape.y, shape.y + shape.h);
+  if (!shape.angle) return { x1: ux1, y1: uy1, x2: ux2, y2: uy2 };
+  // rotated: project all 4 corners and take axis-aligned envelope
+  const cx = (ux1 + ux2) / 2, cy = (uy1 + uy2) / 2;
+  const cos = Math.cos(shape.angle), sin = Math.sin(shape.angle);
+  const corners = [[ux1, uy1], [ux2, uy1], [ux2, uy2], [ux1, uy2]];
+  let rx1 = Infinity, ry1 = Infinity, rx2 = -Infinity, ry2 = -Infinity;
+  for (const [px, py] of corners) {
+    const dx = px - cx, dy = py - cy;
+    const nx = cx + dx * cos - dy * sin;
+    const ny = cy + dx * sin + dy * cos;
+    if (nx < rx1) rx1 = nx; if (nx > rx2) rx2 = nx;
+    if (ny < ry1) ry1 = ny; if (ny > ry2) ry2 = ny;
+  }
+  return { x1: rx1, y1: ry1, x2: rx2, y2: ry2 };
+}
+
+// unrotated bbox (for drawing, before rotation transform)
+function bboxUnrotated(shape) {
+  if (shape.type === 'pen' || shape.type === 'text' || !shape.angle) return bbox(shape);
   const x1 = Math.min(shape.x, shape.x + shape.w);
   const x2 = Math.max(shape.x, shape.x + shape.w);
   const y1 = Math.min(shape.y, shape.y + shape.h);
@@ -276,12 +299,45 @@ function fitTransform(box, w, h, pad) {
   };
 }
 
+// ---------- 连接锚点 ----------
+// 每个图形返回 5 个锚点：中心 + 上下左右边缘中点
+// pen/text/math/plot 无锚点，返回空数组
+const ANCHOR_NAMES = ['c', 'n', 's', 'e', 'w'];
+function anchorPoints(shape) {
+  const b = bboxUnrotated(shape);
+  if (!b || shape.type === 'pen' || shape.type === 'text' || shape.type === 'math' || shape.type === 'plot') return [];
+  const mx = (b.x1 + b.x2) / 2, my = (b.y1 + b.y2) / 2;
+  if (shape.angle) {
+    // rotate anchor points around the shape center
+    const cos = Math.cos(shape.angle), sin = Math.sin(shape.angle);
+    const rot = (x, y) => ({
+      x: mx + (x - mx) * cos - (y - my) * sin,
+      y: my + (x - mx) * sin + (y - my) * cos,
+    });
+    return [
+      { name: 'c', ...rot(mx, my) },
+      { name: 'n', ...rot(mx, b.y1) },
+      { name: 's', ...rot(mx, b.y2) },
+      { name: 'e', ...rot(b.x2, my) },
+      { name: 'w', ...rot(b.x1, my) },
+    ];
+  }
+  return [
+    { name: 'c', x: mx, y: my },
+    { name: 'n', x: mx, y: b.y1 },
+    { name: 's', x: mx, y: b.y2 },
+    { name: 'e', x: b.x2, y: my },
+    { name: 'w', x: b.x1, y: my },
+  ];
+}
+
 const GEOM = {
-  bbox, bboxAll, unionBox, hitShape, hitTest,
+  bbox, bboxUnrotated, bboxAll, unionBox, hitShape, hitTest,
   normBox, boxesIntersect, pointInBox, shapesInBox,
   isCJK, groupSections, flowColumns,
   translateShape, resizeShape,
   HANDLES, handlePoints, handleAt, applyHandle,
+  anchorPoints, ANCHOR_NAMES,
   MIN_SCALE, MAX_SCALE, toWorld, toScreen, zoomAt, viewportBox, centerOn, fitTransform,
 };
 

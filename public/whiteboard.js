@@ -107,6 +107,49 @@ if (typeof window !== 'undefined') {
   // 当前橡皮圆的世界坐标（onMove 时更新，redraw 时画出来）
   let eraserPos = null;
   const ERASER_R_PX = 14; // 屏幕像素半径
+  let snapHint = null; // { x, y, shapeId, anchor } — live snap target while drawing arrow
+
+  const ARROW_TOOL_TYPES = new Set(['line','arrow','arrow2','curve-arrow']);
+  const SNAP_RADIUS_PX = 20; // screen pixels
+
+  // returns nearest anchor within snap radius, or null
+  function findSnap(px, py, excludeId) {
+    const r = SNAP_RADIUS_PX / view.scale;
+    let best = null, bestD = r;
+    for (const s of shapes) {
+      if (s.id === excludeId) continue;
+      for (const a of G.anchorPoints(s)) {
+        const d = Math.hypot(a.x - px, a.y - py);
+        if (d < bestD) { bestD = d; best = { x: a.x, y: a.y, shapeId: s.id, anchor: a.name }; }
+      }
+    }
+    return best;
+  }
+
+  // resolve anchor position from shape id + anchor name (for connected arrows)
+  function anchorPos(shapeId, anchorName) {
+    const s = shapes.find((x) => x.id === shapeId);
+    if (!s) return null;
+    return G.anchorPoints(s).find((a) => a.name === anchorName) || null;
+  }
+
+  // update endpoints of arrows connected to the given shape ids
+  function updateConnectedArrows(movedIds) {
+    const set = new Set(movedIds);
+    shapes = shapes.map((s) => {
+      if (!ARROW_TOOL_TYPES.has(s.type)) return s;
+      let updated = s;
+      if (s.fromId && set.has(s.fromId)) {
+        const p = anchorPos(s.fromId, s.fromAnchor);
+        if (p) updated = { ...updated, x: p.x, y: p.y, w: updated.x + updated.w - p.x, h: updated.y + updated.h - p.y };
+      }
+      if (s.toId && set.has(s.toId)) {
+        const p = anchorPos(s.toId, s.toAnchor);
+        if (p) updated = { ...updated, w: p.x - updated.x, h: p.y - updated.y };
+      }
+      return updated;
+    });
+  }
 
   function eraseAt(p) {
     const r = ERASER_R_PX / view.scale;
@@ -128,6 +171,7 @@ if (typeof window !== 'undefined') {
     const n = sel.length;
     selInfo.textContent = n > 0 ? `已选中 ${n} 个` : '';
     btnDelSel.disabled = n === 0;
+    if (typeof syncPropsPanel === 'function') syncPropsPanel();
   }
   // 按 id 改写图形，找不到就原样返回
   const patch = (id, fn) => { shapes = shapes.map((s) => (s.id === id ? fn(s) : s)); markDirty(); };
@@ -235,10 +279,21 @@ if (typeof window !== 'undefined') {
 
   function drawShape(c, s) {
     c.strokeStyle = s.color;
-    c.fillStyle = s.color;
+    c.fillStyle = s.color;   // text/pen use this; shape fill overridden per-branch
     c.lineWidth = s.width;
     c.lineCap = 'round';
     c.lineJoin = 'round';
+
+    if (s.angle) {
+      const ub = G.bboxUnrotated(s);
+      if (ub) {
+        const cx = (ub.x1 + ub.x2) / 2, cy = (ub.y1 + ub.y2) / 2;
+        c.save();
+        c.translate(cx, cy);
+        c.rotate(s.angle);
+        c.translate(-cx, -cy);
+      }
+    }
 
     if (s.type === 'pen') {
       if (!s.points || s.points.length === 0) return;
@@ -248,26 +303,100 @@ if (typeof window !== 'undefined') {
       if (s.points.length === 1) c.lineTo(s.points[0][0] + 0.1, s.points[0][1]);
       c.stroke();
     } else if (s.type === 'rect') {
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fillRect(s.x, s.y, s.w, s.h); }
       c.strokeRect(s.x, s.y, s.w, s.h);
+      drawShapeLabel(c, s, G.bboxUnrotated(s));
     } else if (s.type === 'ellipse') {
-      const b = G.bbox(s);
+      const b = G.bboxUnrotated(s);
       const rx = (b.x2 - b.x1) / 2;
       const ry = (b.y2 - b.y1) / 2;
       if (rx < 0.5 || ry < 0.5) return;
       c.beginPath();
       c.ellipse(b.x1 + rx, b.y1 + ry, rx, ry, 0, 0, Math.PI * 2);
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
       c.stroke();
-    } else if (s.type === 'line') {
+      drawShapeLabel(c, s, b);
+    } else if (s.type === 'wide-ellipse') {
+      const b = G.bboxUnrotated(s);
+      const rx = (b.x2 - b.x1) / 2;
+      const ry = (b.y2 - b.y1) / 2;
+      if (rx < 0.5 || ry < 0.5) return;
       c.beginPath();
-      c.moveTo(s.x, s.y);
-      c.lineTo(s.x + s.w, s.y + s.h);
+      c.ellipse(b.x1 + rx, b.y1 + ry, rx, ry, 0, 0, Math.PI * 2);
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
       c.stroke();
+      drawShapeLabel(c, s, b);
+    } else if (s.type === 'line' || s.type === 'arrow' || s.type === 'arrow2' || s.type === 'curve-arrow') {
+      const x1 = s.x, y1 = s.y, x2 = s.x + s.w, y2 = s.y + s.h;
+      const ah = Math.max(10, s.width * 3.5); // arrowhead size scales with line width
+      c.beginPath();
+      if (s.type === 'curve-arrow') {
+        // control point: perpendicular offset at midpoint
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+        const dx = x2 - x1, dy = y2 - y1;
+        const len = Math.hypot(dx, dy) || 1;
+        const cx = mx - dy / len * len * 0.25;
+        const cy = my + dx / len * len * 0.25;
+        c.moveTo(x1, y1);
+        c.quadraticCurveTo(cx, cy, x2, y2);
+        c.stroke();
+        // arrowhead tangent from quadratic at t=1: direction = end - control
+        drawArrow(c, cx, cy, x2, y2, ah);
+      } else {
+        c.moveTo(x1, y1);
+        c.lineTo(x2, y2);
+        c.stroke();
+        if (s.type === 'arrow' || s.type === 'arrow2') drawArrow(c, x1, y1, x2, y2, ah);
+        if (s.type === 'arrow2') drawArrow(c, x2, y2, x1, y1, ah);
+      }
+    } else if (s.type === 'triangle') {
+      const b = G.bboxUnrotated(s);
+      c.beginPath();
+      c.moveTo((b.x1 + b.x2) / 2, b.y1);
+      c.lineTo(b.x2, b.y2);
+      c.lineTo(b.x1, b.y2);
+      c.closePath();
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
+      c.stroke();
+      drawShapeLabel(c, s, b);
+    } else if (s.type === 'diamond') {
+      const b = G.bboxUnrotated(s);
+      const mx = (b.x1 + b.x2) / 2, my = (b.y1 + b.y2) / 2;
+      c.beginPath();
+      c.moveTo(mx, b.y1);
+      c.lineTo(b.x2, my);
+      c.lineTo(mx, b.y2);
+      c.lineTo(b.x1, my);
+      c.closePath();
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
+      c.stroke();
+      drawShapeLabel(c, s, b);
+    } else if (s.type === 'parallelogram') {
+      const b = G.bboxUnrotated(s);
+      const off = (b.x2 - b.x1) * 0.2;
+      c.beginPath();
+      c.moveTo(b.x1 + off, b.y1);
+      c.lineTo(b.x2, b.y1);
+      c.lineTo(b.x2 - off, b.y2);
+      c.lineTo(b.x1, b.y2);
+      c.closePath();
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
+      c.stroke();
+      drawShapeLabel(c, s, b);
+    } else if (s.type === 'round-rect') {
+      const b = G.bboxUnrotated(s);
+      const r = Math.min((b.x2 - b.x1) * 0.15, (b.y2 - b.y1) * 0.15, 18);
+      c.beginPath();
+      c.roundRect(b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1, r);
+      if (s.fillColor) { c.fillStyle = s.fillColor; c.fill(); }
+      c.stroke();
+      drawShapeLabel(c, s, b);
     } else if (s.type === 'text') {
       c.font = s.size + 'px -apple-system, "Microsoft YaHei", sans-serif';
       c.textBaseline = 'alphabetic';
       c.fillText(s.text, s.x, s.y);
     } else if (s.type === 'math') {
-      const b = G.bbox(s);
+      const b = G.bboxUnrotated(s);
       if (s.img) {
         c.drawImage(s.img, b.x1, b.y1, b.x2 - b.x1, b.y2 - b.y1);
       } else {
@@ -280,6 +409,34 @@ if (typeof window !== 'undefined') {
     } else if (s.type === 'plot') {
       drawPlot(c, s);
     }
+
+    if (s.angle) c.restore();
+  }
+
+  function drawShapeLabel(c, s, b) {
+    if (!s.label) return;
+    const cx = (b.x1 + b.x2) / 2, cy = (b.y1 + b.y2) / 2;
+    const fontSize = Math.max(12, Math.min((b.y2 - b.y1) * 0.28, 20));
+    c.save();
+    c.fillStyle = s.labelColor || s.color;
+    c.font = `${fontSize}px -apple-system, "Microsoft YaHei", sans-serif`;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText(s.label, cx, cy);
+    c.restore();
+  }
+
+  // draws a filled arrowhead at (tx,ty) pointing away from (fx,fy)
+  function drawArrow(c, fx, fy, tx, ty, size) {
+    const angle = Math.atan2(ty - fy, tx - fx);
+    const a = Math.PI / 6; // half-angle of arrowhead
+    c.beginPath();
+    c.moveTo(tx, ty);
+    c.lineTo(tx - size * Math.cos(angle - a), ty - size * Math.sin(angle - a));
+    c.lineTo(tx - size * Math.cos(angle + a), ty - size * Math.sin(angle + a));
+    c.closePath();
+    c.fillStyle = c.strokeStyle;
+    c.fill();
   }
 
   function drawPlot(c, s) {
@@ -412,6 +569,26 @@ if (typeof window !== 'undefined') {
       ctx.fill();
       ctx.stroke();
     }
+
+    // rotate handle: circle above top-center, only when single shape supports rotation
+    if (sel.length === 1 && canRotate(selShapes()[0])) {
+      const rx = (box.x1 + box.x2) / 2;
+      const ry = box.y1 - 20 * k;
+      ctx.setLineDash([]);
+      ctx.strokeStyle = '#667eea';
+      ctx.lineWidth = 1.5 * k;
+      // stem line
+      ctx.beginPath();
+      ctx.moveTo(rx, box.y1);
+      ctx.lineTo(rx, ry + 6 * k);
+      ctx.stroke();
+      // circle
+      ctx.beginPath();
+      ctx.arc(rx, ry, 6 * k, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -451,8 +628,31 @@ if (typeof window !== 'undefined') {
       ctx.fill();
       ctx.restore();
     }
+    // snap hint: green circle on anchor + alignment guides
+    if (snapHint) {
+      const k = 1 / view.scale;
+      ctx.save();
+      ctx.strokeStyle = '#22c55e';
+      ctx.fillStyle = 'rgba(34,197,94,0.18)';
+      ctx.lineWidth = 2 * k;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(snapHint.x, snapHint.y, 8 * k, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      // crosshair lines through anchor
+      ctx.strokeStyle = 'rgba(34,197,94,0.5)';
+      ctx.lineWidth = 1 * k;
+      ctx.setLineDash([4 * k, 3 * k]);
+      ctx.beginPath();
+      ctx.moveTo(snapHint.x - 24 * k, snapHint.y); ctx.lineTo(snapHint.x + 24 * k, snapHint.y);
+      ctx.moveTo(snapHint.x, snapHint.y - 24 * k); ctx.lineTo(snapHint.x, snapHint.y + 24 * k);
+      ctx.stroke();
+      ctx.restore();
+    }
     drawMinimap();
     zoomLabel.textContent = Math.round(view.scale * 100) + '%';
+    if (typeof syncPropsPanel === 'function') syncPropsPanel();
   }
 
   // 小地图：所有图形 + 当前视口框，都塞进小窗
@@ -495,6 +695,13 @@ if (typeof window !== 'undefined') {
   };
 
   // ---------- 交互 ----------
+
+  // ponytail: pen/text/math/plot don't need rotation; all {x,y,w,h} shapes do
+  const canRotate = (s) => s && !['pen','text','math','plot'].includes(s.type);
+
+  function rotateHandlePos(box, k) {
+    return { x: (box.x1 + box.x2) / 2, y: box.y1 - 20 * (k || 1) };
+  }
 
   function onDown(e) {
     // 输入中再次点击画布：先提交当前文本，再按这次点击继续处理
@@ -542,9 +749,27 @@ if (typeof window !== 'undefined') {
       if (h) {
         drag = {
           mode: 'resize', handle: h, startBox: box,
-          orig: selShapes(), // 快照，每次 move 都从原始状态重算，避免误差累积
+          orig: selShapes(),
         };
         return;
+      }
+
+      // rotate handle hit (single rotatable shape only)
+      if (sel.length === 1 && canRotate(selShapes()[0]) && box) {
+        const k = 1 / view.scale;
+        const rh = rotateHandlePos(box, k);
+        if (Math.hypot(p.x - rh.x, p.y - rh.y) <= 8 * k) {
+          const s = selShapes()[0];
+          const ub = G.bboxUnrotated(s);
+          drag = {
+            mode: 'rotate', id: s.id,
+            cx: (ub.x1 + ub.x2) / 2, cy: (ub.y1 + ub.y2) / 2,
+            startAngle: s.angle || 0,
+            startMouseAngle: Math.atan2(p.y - (ub.y1 + ub.y2) / 2, p.x - (ub.x1 + ub.x2) / 2),
+          };
+          canvas.style.cursor = 'crosshair';
+          return;
+        }
       }
 
       const i = G.hitTest(shapes, p.x, p.y, tol);
@@ -595,6 +820,7 @@ if (typeof window !== 'undefined') {
 
   function onMove(e) {
     if (!drag) {
+      snapHint = null; // clear snap hint when not dragging
       // 橡皮工具：实时更新圆圈预览位置
       if (tool === 'eraser') {
         eraserPos = worldPos(e);
@@ -631,9 +857,18 @@ if (typeof window !== 'undefined') {
     const p = worldPos(e);
 
     if (drag.mode === 'draw') {
-      draft = draft.type === 'pen'
-        ? { ...draft, points: [...draft.points, [p.x, p.y]] }
-        : { ...draft, w: p.x - draft.x, h: p.y - draft.y };
+      if (draft.type === 'pen') {
+        draft = { ...draft, points: [...draft.points, [p.x, p.y]] };
+      } else if (ARROW_TOOL_TYPES.has(draft.type)) {
+        // snap end point to nearby anchor
+        const snap = findSnap(p.x, p.y, null);
+        snapHint = snap;
+        const ex = snap ? snap.x : p.x;
+        const ey = snap ? snap.y : p.y;
+        draft = { ...draft, w: ex - draft.x, h: ey - draft.y };
+      } else {
+        draft = { ...draft, w: p.x - draft.x, h: p.y - draft.y };
+      }
     } else if (drag.mode === 'eraser') {
       eraseAt(p);
     } else if (drag.mode === 'marquee') {
@@ -647,11 +882,20 @@ if (typeof window !== 'undefined') {
       const dy = p.y - drag.py;
       const moved = new Map(drag.orig.map((s) => [s.id, G.translateShape(s, dx, dy)]));
       shapes = shapes.map((s) => moved.get(s.id) || s);
+      updateConnectedArrows(drag.orig.map((s) => s.id));
     } else if (drag.mode === 'resize') {
       // 整组缩放：所有图形按同一对包围盒映射，组内相对位置保持不变
       const nb = G.applyHandle(drag.startBox, drag.handle, p.x, p.y, 4 / view.scale);
       const sized = new Map(drag.orig.map((s) => [s.id, G.resizeShape(s, drag.startBox, nb)]));
       shapes = shapes.map((s) => sized.get(s.id) || s);
+      updateConnectedArrows(drag.orig.map((s) => s.id));
+    } else if (drag.mode === 'rotate') {
+      const mouseAngle = Math.atan2(p.y - drag.cy, p.x - drag.cx);
+      const delta = mouseAngle - drag.startMouseAngle;
+      let angle = drag.startAngle + delta;
+      // snap to 15° increments when Shift held
+      if (e.shiftKey) angle = Math.round(angle / (Math.PI / 12)) * (Math.PI / 12);
+      shapes = shapes.map((s) => s.id === drag.id ? { ...s, angle } : s);
     }
     redraw();
   }
@@ -661,8 +905,19 @@ if (typeof window !== 'undefined') {
     if (drag.mode === 'draw' && draft) {
       const b = G.bbox(draft);
       const tiny = b && (b.x2 - b.x1) < 2 && (b.y2 - b.y1) < 2;
-      if (!(tiny && draft.type !== 'pen')) addShapes([draft]);
+      if (!(tiny && draft.type !== 'pen')) {
+        // store snap connection on arrow end point
+        let finalDraft = draft;
+        if (ARROW_TOOL_TYPES.has(draft.type) && snapHint) {
+          finalDraft = { ...draft, toId: snapHint.shapeId, toAnchor: snapHint.anchor };
+        }
+        const added = addShapes([finalDraft]);
+        sel = added.map((s) => s.id);
+        updateSelInfo();
+        setTool('select', document.querySelector('[data-tool="select"]'));
+      }
       draft = null;
+      snapHint = null;
     }
     if (drag.mode === 'marquee') {
       // 没拖出框（单击空白）就是清空选中集
@@ -685,7 +940,7 @@ if (typeof window !== 'undefined') {
         if (s.type === 'math') reRenderMath(s.id);
       }
     }
-    if (drag.mode === 'move' || drag.mode === 'resize') markDirty();
+    if (drag.mode === 'move' || drag.mode === 'resize' || drag.mode === 'rotate') markDirty();
     drag = null;
     updateSelInfo();
     redraw();
@@ -854,7 +1109,7 @@ if (typeof window !== 'undefined') {
     // 输入框内不触发画布快捷键，否则 Delete/空格会被画布吞掉
     if (e.target === textInput || e.target === mathField
       || e.target === askField || e.target === quizReply
-      || e.target === plotExprs) return;
+      || e.target === plotExprs || e.target.closest('.shape-props')) return;
     if (e.code === 'Space') { spaceDown = true; canvas.style.cursor = 'grab'; e.preventDefault(); }
     if ((e.key === 'Delete' || e.key === 'Backspace') && sel.length > 0) {
       e.preventDefault();
@@ -1906,7 +2161,15 @@ if (typeof window !== 'undefined') {
     pen: '按住拖动即可自由画线',
     rect: '拖拽画矩形',
     ellipse: '拖拽画椭圆',
+    triangle: '拖拽画三角形',
+    'wide-ellipse': '拖拽画扁椭圆',
+    diamond: '拖拽画菱形',
+    parallelogram: '拖拽画平行四边形',
+    'round-rect': '拖拽画圆角矩形',
     line: '拖拽画直线',
+    arrow: '拖拽画单向箭头',
+    arrow2: '拖拽画双向箭头',
+    'curve-arrow': '拖拽画曲线箭头',
     text: '点击画布位置后输入文字，回车确认，Esc 取消',
     math: '点击画布位置后输入 LaTeX 公式；已有公式双击可改',
     erase: '点击某个图形即可单独删除它',
@@ -1916,18 +2179,79 @@ if (typeof window !== 'undefined') {
   // select 下默认抓手：空白处按住就能拖画布
   const cursorFor = (t) => (t === 'select' ? 'grab' : t === 'erase' ? 'pointer' : t === 'eraser' ? 'none' : 'crosshair');
 
+  const SHAPE_TOOLS = new Set(['rect','ellipse','triangle','wide-ellipse','diamond','parallelogram','round-rect']);
+  const shapePickerBtn = document.getElementById('shapePickerBtn');
+  const shapePickerLabel = document.getElementById('shapePickerLabel');
+  const shapeDropdown = document.getElementById('shapeDropdown');
+
+  // Toggle shape dropdown
+  shapePickerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    shapeDropdown.classList.toggle('show');
+  });
+  document.addEventListener('click', () => shapeDropdown.classList.remove('show'));
+
+  function setTool(t, triggerBtn) {
+    tool = t;
+    if (tool !== 'select') { sel = []; updateSelInfo(); }
+    if (tool !== 'eraser') { eraserPos = null; }
+    // Mark active on all plain data-tool buttons
+    document.querySelectorAll('[data-tool]').forEach((b) => b.classList.remove('active'));
+    if (triggerBtn) triggerBtn.classList.add('active');
+    // Shape picker button stays active when any shape tool is selected
+    if (SHAPE_TOOLS.has(tool)) {
+      shapePickerBtn.classList.add('active');
+      if (triggerBtn) shapePickerLabel.textContent = triggerBtn.getAttribute('title');
+    } else {
+      shapePickerBtn.classList.remove('active');
+    }
+    hint.textContent = HINTS[tool] || '';
+    canvas.style.cursor = cursorFor(tool);
+    redraw();
+  }
+
   document.querySelectorAll('[data-tool]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      tool = btn.dataset.tool;
-      if (tool !== 'select') { sel = []; updateSelInfo(); }
-      // 切换离橡皮工具时清除预览圆
-      if (tool !== 'eraser') { eraserPos = null; }
-      document.querySelectorAll('[data-tool]').forEach((b) => b.classList.toggle('active', b === btn));
-      hint.textContent = HINTS[tool] || '';
-      canvas.style.cursor = cursorFor(tool);
-      redraw();
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setTool(btn.dataset.tool, btn);
+      if (SHAPE_TOOLS.has(btn.dataset.tool)) shapeDropdown.classList.remove('show');
     });
   });
+
+  const arrowPickerBtn = document.getElementById('arrowPickerBtn');
+  const arrowPickerLabel = document.getElementById('arrowPickerLabel');
+  const arrowDropdown = document.getElementById('arrowDropdown');
+  const ARROW_TOOLS = new Set(['line', 'arrow', 'arrow2', 'curve-arrow']);
+
+  arrowPickerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    arrowDropdown.classList.toggle('show');
+  });
+  document.addEventListener('click', () => arrowDropdown.classList.remove('show'));
+
+  document.querySelectorAll('#arrowDropdown [data-tool]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setTool(btn.dataset.tool, null);
+      arrowPickerLabel.textContent = btn.getAttribute('title');
+      arrowPickerBtn.classList.add('active');
+      // mark active opt
+      document.querySelectorAll('#arrowDropdown .shape-opt').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      arrowDropdown.classList.remove('show');
+    });
+  });
+
+  // patch setTool to also handle arrow picker active state
+  const _origSetTool = setTool;
+  setTool = function(t, triggerBtn) {
+    _origSetTool(t, triggerBtn);
+    if (ARROW_TOOLS.has(t)) {
+      arrowPickerBtn.classList.add('active');
+    } else {
+      arrowPickerBtn.classList.remove('active');
+    }
+  };
 
   document.getElementById('colorPick').addEventListener('input', (e) => {
     color = e.target.value;
@@ -1948,6 +2272,79 @@ if (typeof window !== 'undefined') {
       markDirty();
       redraw();
     }
+  });
+
+  // ---------- shape properties panel ----------
+
+  const shapeProps = document.getElementById('shapeProps');
+  const spLabel = document.getElementById('spLabel');
+  const spStrokeColor = document.getElementById('spStrokeColor');
+  const spStrokeWidth = document.getElementById('spStrokeWidth');
+  const spFillColor = document.getElementById('spFillColor');
+  const spFillIcon = document.getElementById('spFillIcon');
+  const spNoFill = document.getElementById('spNoFill');
+
+  // shape types that show the props panel
+  const PROPS_TYPES = new Set(['rect','ellipse','triangle','wide-ellipse','diamond','parallelogram','round-rect','line']);
+
+  function syncPropsPanel() {
+    const picked = selShapes().filter((s) => PROPS_TYPES.has(s.type));
+    if (picked.length !== 1) { shapeProps.classList.remove('show'); return; }
+    const s = picked[0];
+
+    // position panel below the selection box, clamped inside canvas
+    const box = G.bbox(s);
+    if (!box) { shapeProps.classList.remove('show'); return; }
+    const sc = G.toScreen(view, (box.x1 + box.x2) / 2, box.y2);
+    const wrap = canvas.getBoundingClientRect();
+    const pw = 240, ph = 76;
+    let left = sc.x - pw / 2;
+    let top = sc.y + 12;
+    left = Math.max(4, Math.min(left, wrap.width - pw - 4));
+    top = Math.max(4, Math.min(top, wrap.height - ph - 4));
+    shapeProps.style.left = left + 'px';
+    shapeProps.style.top = top + 'px';
+    shapeProps.classList.add('show');
+
+    // sync control values
+    spLabel.value = s.label || '';
+    spStrokeColor.value = s.color || '#333333';
+    spStrokeWidth.value = s.width || 3;
+    const hasFill = !!s.fillColor;
+    spFillColor.value = hasFill ? s.fillColor : '#ffffff';
+    spFillIcon.style.color = hasFill ? s.fillColor : '#aaa';
+    spNoFill.classList.toggle('active', !hasFill);
+  }
+
+  spLabel.addEventListener('input', () => {
+    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, label: spLabel.value } : s));
+    markDirty(); redraw();
+  });
+
+  spStrokeColor.addEventListener('input', () => {
+    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, color: spStrokeColor.value } : s));
+    spFillIcon.style.color = spFillColor.value;
+    markDirty(); redraw();
+  });
+
+  spStrokeWidth.addEventListener('input', () => {
+    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, width: Number(spStrokeWidth.value) } : s));
+    markDirty(); redraw();
+  });
+
+  spFillColor.addEventListener('input', () => {
+    const fc = spFillColor.value;
+    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, fillColor: fc } : s));
+    spFillIcon.style.color = fc;
+    spNoFill.classList.remove('active');
+    markDirty(); redraw();
+  });
+
+  spNoFill.addEventListener('click', () => {
+    shapes = shapes.map((s) => (isSel(s) && PROPS_TYPES.has(s.type) ? { ...s, fillColor: null } : s));
+    spFillIcon.style.color = '#aaa';
+    spNoFill.classList.add('active');
+    markDirty(); redraw();
   });
 
   document.getElementById('btnUndo').addEventListener('click', () => {
